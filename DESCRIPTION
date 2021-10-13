@@ -1,0 +1,13 @@
+Package: digiRhythm
+Type: Package
+Title: digiRhythm for analyzing and visualizing animal's Rhythmicity.
+Version: 0.1.0
+Author: Who wrote it
+Maintainer: Roland-Hassan Nasser <roland.nasser@agroscope.admin.c>
+Description: digiRhythm is an R library developed at Agroscope and provides a set of tools to 
+analyze and visualize the rhythmic behavior of animals.
+    The main functionalities of this library are: computing the degree of functional
+coupling, visualizing actograms, clustering day-animal activities and more.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
