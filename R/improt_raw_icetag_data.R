@@ -31,11 +31,12 @@
 #' be used with other functions in digirhythm
 #'
 #' @import xts, readr, tidyr, dplyr
-#' @examples
-#'   filename <- 'datasets_csv/516b_2.csv'
-#'   colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
-#'   data <- improt_raw_icetag_data(filename, skipLines = 7, col.names = colstoread)
 #' @export
+#' @examples
+#'   file <- file.path('data-raw', '516b_2.csv')
+#'   colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
+#'   data <- improt_raw_icetag_data(filename = file, skipLines = 7,
+#'   act.cols.names = colstoread, sampling = 15, verbose = TRUE)
 
 
 improt_raw_icetag_data <- function(filename,
@@ -51,12 +52,13 @@ improt_raw_icetag_data <- function(filename,
 
 
   if(verbose){
-    print(paste0('Reading the CSV file', filename))
+    print(paste('Reading the CSV file', filename))
   }
 
   #Loading data from the CSV (with specific columns and skipping lines)
-  data <- readr::read_csv(filename, skip = skipLines, )[ ,act.cols.names]  %>%
-    unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
+  data <- readr::read_csv(filename, skip = skipLines, )[ ,act.cols.names]
+
+  data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
   data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
 
@@ -90,11 +92,11 @@ improt_raw_icetag_data <- function(filename,
     datetime = index(data_xts_sampled),
     coredata(data_xts_sampled))
 
-  #' Skipping days. A day is skipped if it contains 80% less data that is
-  #' supposed to contains (respecting the sampling value). For example, if the
-  #' sampling value is 15 minutes, then a day should contains at least
-  #' 0.8*60*24/15 samples (76.8 samples)
-  #'
+  #Skipping days. A day is skipped if it contains 80% less data that is
+  #supposed to contains (respecting the sampling value). For example, if the
+  #sampling value is 15 minutes, then a day should contains at least
+  #0.8*60*24/15 samples (76.8 samples)
+
 
   smallest_mandatory_daily_samples = floor(0.8*60*24/sampling)
 
@@ -128,9 +130,9 @@ improt_raw_icetag_data <- function(filename,
 
   if(trim_middle_days){
     for(day in unique(df$date)){
-      n_samples_middle_day <- df %>% filter(date == as.Date(day)) %>% tally()
+      n_samples_middle_day <- df %>% filter(date == day) %>% tally()
       if(n_samples_middle_day < smallest_mandatory_daily_samples){
-        df <- df %>% filter(date != as.Date(day))
+        df <- df %>% filter(date != day)
 
         if(verbose){
           print(paste('Data from the day', as.Date(day), 'has been removed (',

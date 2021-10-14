@@ -1,9 +1,26 @@
-## code to prepare `df678_2` dataset goes here
+#' df678_2 Activity Data Sets
+#'
+#' A dataset containing the Motion index and steps count of a cow.
+#' The data set is sampled with 15 minutes samples.
+#'
+#' @format A data frame of 3 columns
+#' \describe{
+#'  \item{datetime}{a POSIX formatted datetime}
+#'  \item{Motion Index}{The motion index of the cow during the time sample}
+#'  \item{Steps}{The number of steps during the time sample}
+#' }
+#' @source Agroscope Tanikon
+#' @docType data
+#' @keywords datasets activity
+#' @name df678_2
+#' @usage data(df678_2)
+
 library(dplyr)
 library(tidyr)
 library(readr)
 library(xts)
 library(usethis)
+
 df678_2 <- improt_raw_icetag_data(file.path('data-raw', '678_2.csv'),
                                    skipLines = 7,
                                    act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
@@ -15,4 +32,4 @@ df678_2 <- improt_raw_icetag_data(file.path('data-raw', '678_2.csv'),
                                    trim_last_day = TRUE,
                                    verbose = TRUE)
 
-usethis::use_data(df678_2, overwrite = TRUE)
+df678_2  %>% usethis::use_data(overwrite = TRUE)
