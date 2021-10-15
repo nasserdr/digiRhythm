@@ -25,7 +25,9 @@ Imports: magrittr,
     tidyr,
     dplyr,
     xts,
-    lomb
+    lomb,
+    ggplot2,
+    zoo
 Suggests: knitr,
     rmarkdown,
     testthat (>= 3.0.0),

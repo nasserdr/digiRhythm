@@ -38,7 +38,7 @@
 #' @return A dataframe with datetime column and other activity columns, ready to
 #' be used with other functions in digirhythm
 #'
-#' @import xts magrittr readr tidyr dplyr
+#' @import magrittr readr tidyr dplyr zoo xts
 #' @export
 
 
@@ -92,8 +92,8 @@ improt_raw_icetag_data <- function(filename,
 
   #Creating a dataframe from the sampled XTS (what we will return)
   df <- data.frame(
-    datetime = index(data_xts_sampled),
-    coredata(data_xts_sampled))
+    datetime = xts::index(data_xts_sampled),
+    xts::coredata(data_xts_sampled))
 
   #Skipping days. A day is skipped if it contains 80% less data that is
   #supposed to contains (respecting the sampling value). For example, if the
