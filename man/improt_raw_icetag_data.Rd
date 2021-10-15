@@ -37,11 +37,11 @@ contains less than 80\% of the expected data points.}
 \item{trim_middle_days}{if True, removes the data from the MIDDLE days if
 they contain less than 80\% of the expected data points.}
 
+\item{trim_last_day}{if True, removes the data from the last day if it
+contains less than 80\% of the expected data points.}
+
 \item{verbose}{print out some useful information during the execution
 of the function}
-
-\item{trim_last_days}{if True, removes the data from the last day if it
-contains less than 80\% of the expected data points.}
 }
 \value{
 A dataframe with datetime column and other activity columns, ready to
@@ -59,10 +59,12 @@ You can also choose whether to remove partial days (where no data over a
 full day is present) by trimming last, middle or last days.
 This function expects that the first and second columns are respectively
 date and time where the format should be mentioned.
-}
-\examples{
-  file <- file.path('data-raw', '516b_2.csv')
-  colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
-  data <- improt_raw_icetag_data(filename = file, skipLines = 7,
-  act.cols.names = colstoread, sampling = 15, verbose = TRUE)
+
+file <- file.path('data', '516b_2.csv')
+colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
+data <- improt_raw_icetag_data(filename = file,
+skipLines = 7,
+act.cols.names = colstoread,
+sampling = 15,
+verbose = TRUE)
 }

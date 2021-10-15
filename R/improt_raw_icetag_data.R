@@ -11,6 +11,14 @@
 #' This function expects that the first and second columns are respectively
 #' date and time where the format should be mentioned.
 #'
+#' file <- file.path('data', '516b_2.csv')
+#' colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
+#' data <- improt_raw_icetag_data(filename = file,
+#'                                skipLines = 7,
+#'                                act.cols.names = colstoread,
+#'                                sampling = 15,
+#'                                verbose = TRUE)
+
 #' @param filename The file name (full or relative path with extension)
 #' @param skipLines The number of non-useful lines to skip (lines to header)
 #' @param act.cols.names A vector containing the names of columns to read
@@ -22,7 +30,7 @@
 #' contains less than 80% of the expected data points.
 #' @param trim_middle_days if True, removes the data from the MIDDLE days if
 #' they contain less than 80% of the expected data points.
-#' @param trim_last_days if True, removes the data from the last day if it
+#' @param trim_last_day if True, removes the data from the last day if it
 #' contains less than 80% of the expected data points.
 #' @param verbose print out some useful information during the execution
 #' of the function
@@ -30,13 +38,8 @@
 #' @return A dataframe with datetime column and other activity columns, ready to
 #' be used with other functions in digirhythm
 #'
-#' @import xts, readr, tidyr, dplyr
+#' @import xts magrittr readr tidyr dplyr
 #' @export
-#' @examples
-#'   file <- file.path('data-raw', '516b_2.csv')
-#'   colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
-#'   data <- improt_raw_icetag_data(filename = file, skipLines = 7,
-#'   act.cols.names = colstoread, sampling = 15, verbose = TRUE)
 
 
 improt_raw_icetag_data <- function(filename,

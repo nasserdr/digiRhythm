@@ -13,24 +13,21 @@ Description: digiRhythm is an R library developed at Agroscope and provides
     a set of tools to analyze and visualize the rhythmic behavior of animals.
     The main functionalities of this library are: computing the degree of functional
     coupling, visualizing actograms, clustering day-animal activities and more.
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Imports:
-    xts,
-    dplyr,
-    lomb,
+Depends: 
+    R (>= 4.0.0)
+Imports: magrittr, 
     readr,
     tidyr,
-    magrittr
-Suggests: 
-    knitr,
+    dplyr,
+    xts,
+    lomb
+Suggests: knitr,
     rmarkdown,
     testthat (>= 3.0.0),
     usethis
-Config/testthat/edition: 3
 VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)

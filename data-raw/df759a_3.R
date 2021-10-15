@@ -21,7 +21,7 @@ library(readr)
 library(xts)
 library(usethis)
 
-df759a_3 <- improt_raw_icetag_data(file.path('data-raw', '759a_3.csv'),
+df759a_3 <- improt_raw_icetag_data('data-raw/759a_3.csv',
                                    skipLines = 7,
                                    act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                                    date_format = "%d.%m.%Y",
