@@ -9,6 +9,7 @@
 #' @param sampling The sampling period of the data set in minutes
 #' @param outputdir where the data are saved if save is TRUE. The names of saved
 #' files will be(dfc_tag.txt and spec_tag.txt)
+#' @param show_lsp_plot if TRUE, LSP plots will be shown
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -45,7 +46,8 @@ dfc <- function(
   sampling = 15,
   save = FALSE,
   tag = NULL,
-  outputdir = NULL
+  outputdir = NULL,
+  show_lsp_plot = TRUE
 )
 {
   df$date <- date(df$datetime)
@@ -84,7 +86,7 @@ dfc <- function(
     l <- lsp(data_week[,1:2],
              alpha = sig,
              normalize = 'press',
-             plot = TRUE) #Computing the lomb-scargle periodigram
+             plot = show_lsp_plot) #Computing the lomb-scargle periodigram
 
     harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
 

@@ -10,7 +10,8 @@ dfc(
   sampling = 15,
   save = FALSE,
   tag = NULL,
-  outputdir = NULL
+  outputdir = NULL,
+  show_lsp_plot = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ more details)}
 
 \item{outputdir}{where the data are saved if save is TRUE. The names of saved
 files will be(dfc_tag.txt and spec_tag.txt)}
+
+\item{show_lsp_plot}{if TRUE, LSP plots will be shown}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the

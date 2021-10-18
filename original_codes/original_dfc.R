@@ -9,6 +9,7 @@ data("df516b_2", package = "digiRhythm")
 df <- df516b_2
 df <- remove_activity_outliers(df)
 df_act_info(df)
+show_lsp_plot <- FALSE
 
 activity = names(df)[2]
 save = TRUE
@@ -51,7 +52,7 @@ for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
   l <- lsp(data_week[c('datetime', activity)],
            alpha = sig,
            normalize = 'press',
-           plot = TRUE) #Computing the lomb-scargle periodigram
+           plot = show_lsp_plot) #Computing the lomb-scargle periodigram
 
   harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
 
