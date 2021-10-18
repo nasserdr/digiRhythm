@@ -45,6 +45,22 @@
 #' @importFrom zoo coredata index
 #' @importFrom dplyr filter select last tally
 #'
+#' @examples
+#'
+#' filename <- system.file("extdata", "516b_2.csv", package = "digiRhythm")
+#' data <- import_raw_icetag_data(
+#'     filename,
+#'     skipLines = 7,
+#'     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
+#'     date_format = "%d.%m.%Y",
+#'     time_format = "%H:%M:%S",
+#'     sampling = 15,
+#'     trim_first_day = TRUE,
+#'     trim_middle_days = TRUE,
+#'     trim_last_day = TRUE,
+#'     verbose = TRUE)
+#' print(head(data))
+#'
 #' @export
 
 

@@ -1,8 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^data-raw
-^test_codes
+data-raw
+README_files
 Readme.Rmd
 original_codes
 sample_results
-README_files
