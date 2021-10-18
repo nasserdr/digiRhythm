@@ -109,12 +109,8 @@ df <- df516b_2
 df <- remove_activity_outliers(df)
 df_act_info(df)
 activity = names(df)[2]
-my_dfc <- dfc(df, activity , sampling = 15)
-```
+my_dfc <- dfc(df, activity , sampling = 15, show_lsp_plot = FALSE)
 
-![](README_files/figure-gfm/dfc_example-1.png)<!-- -->![](README_files/figure-gfm/dfc_example-2.png)<!-- -->![](README_files/figure-gfm/dfc_example-3.png)<!-- -->![](README_files/figure-gfm/dfc_example-4.png)<!-- -->![](README_files/figure-gfm/dfc_example-5.png)<!-- -->![](README_files/figure-gfm/dfc_example-6.png)<!-- -->![](README_files/figure-gfm/dfc_example-7.png)<!-- -->![](README_files/figure-gfm/dfc_example-8.png)<!-- -->![](README_files/figure-gfm/dfc_example-9.png)<!-- -->![](README_files/figure-gfm/dfc_example-10.png)<!-- -->![](README_files/figure-gfm/dfc_example-11.png)<!-- -->![](README_files/figure-gfm/dfc_example-12.png)<!-- -->![](README_files/figure-gfm/dfc_example-13.png)<!-- -->![](README_files/figure-gfm/dfc_example-14.png)<!-- -->![](README_files/figure-gfm/dfc_example-15.png)<!-- -->![](README_files/figure-gfm/dfc_example-16.png)<!-- -->![](README_files/figure-gfm/dfc_example-17.png)<!-- -->![](README_files/figure-gfm/dfc_example-18.png)<!-- -->![](README_files/figure-gfm/dfc_example-19.png)<!-- -->![](README_files/figure-gfm/dfc_example-20.png)<!-- -->![](README_files/figure-gfm/dfc_example-21.png)<!-- -->![](README_files/figure-gfm/dfc_example-22.png)<!-- -->![](README_files/figure-gfm/dfc_example-23.png)<!-- -->![](README_files/figure-gfm/dfc_example-24.png)<!-- -->![](README_files/figure-gfm/dfc_example-25.png)<!-- -->![](README_files/figure-gfm/dfc_example-26.png)<!-- -->![](README_files/figure-gfm/dfc_example-27.png)<!-- -->![](README_files/figure-gfm/dfc_example-28.png)<!-- -->![](README_files/figure-gfm/dfc_example-29.png)<!-- -->![](README_files/figure-gfm/dfc_example-30.png)<!-- -->![](README_files/figure-gfm/dfc_example-31.png)<!-- -->![](README_files/figure-gfm/dfc_example-32.png)<!-- -->![](README_files/figure-gfm/dfc_example-33.png)<!-- -->![](README_files/figure-gfm/dfc_example-34.png)<!-- -->![](README_files/figure-gfm/dfc_example-35.png)<!-- -->![](README_files/figure-gfm/dfc_example-36.png)<!-- -->![](README_files/figure-gfm/dfc_example-37.png)<!-- -->![](README_files/figure-gfm/dfc_example-38.png)<!-- -->
-
-``` r
 #You may want to explore the two list inside my_dfc.
 #DFC and SPECTRUM are saved inside my_dfc, each as a list
 ```
