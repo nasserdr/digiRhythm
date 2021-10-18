@@ -15,7 +15,7 @@
 #' @usage data(df516b_2)
 #' @format A data frame 3 columns
 #' @source Agroscope Tanikon
-NULL
+#' @export
 
 
 library(dplyr)
@@ -23,8 +23,9 @@ library(tidyr)
 library(readr)
 library(xts)
 library(usethis)
+library(digiRhythm)
 
-df516b_2 <- improt_raw_icetag_data('data-raw/516b_2.csv',
+df516b_2 <- import_raw_icetag_data('data-raw/516b_2.csv',
                                    skipLines = 7,
                                    act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                                    date_format = "%d.%m.%Y",

@@ -17,12 +17,16 @@
 #'
 #' @return None
 #'
-#' @import tidyr readr magrittr dplyr xts ggplot2
+#' @importFrom magrittr %>%
+#' @importFrom zoo index coredata
+#' @importFrom xts xts
+#' @importFrom stats time
+#' @import ggplot2 extrafont
+#'
 #' @export
 #'
-#' @example
+#' @examples
 #' data("df516b_2", package = "digiRhythm")
-#' force(df516b_2)
 #' df <- df516b_2
 #' df <- remove_activity_outliers(df)
 #' df_act_info(df)
@@ -35,7 +39,7 @@
 #' width = 10
 #' device = 'tiff'
 #' height =  5
-#' actogram <- function( df, activity, start, end, save = FALSE,
+#' actogram(df, activity, start, end, save = FALSE,
 #'     outputdir = 'testresults', outplotname = 'actoplot', width = 10,
 #'     height =  5, device = 'tiff')
 
@@ -52,15 +56,17 @@ actogram <- function(
   height =  5
 ){
   #function starts here
+
+  print('start function')
   selection = paste0(start, '/', end)
 
-  start_date <- as.POSIXct(start, format="%Y%m%d", tz = "CET")
-  end_date <- as.POSIXct(end, format="%Y%m%d", tz = "CET")
+  start_date <- as.POSIXct(start, format = "%Y%m%d", tz = "CET")
+  end_date <- as.POSIXct(end, format = "%Y%m%d", tz = "CET")
 
   df_xts <- xts(
     x = df[[activity]],
     order.by = df[,1],
-    tz = "CET"
+    tzone = "CET"
   )
 
   df_xts = df_xts[selection]
@@ -73,7 +79,8 @@ actogram <- function(
   names(df_filtered) <- names(df)[1:ncol(df_filtered)]
 
 
-  df_filtered$date <- as.Date(df_filtered[[activity]], tz = "CET", origin = df_filtered[1,1])
+  print(head(df_filtered))
+  df_filtered$date <- base::as.Date(df_filtered[[activity]], tz = "CET", origin = df_filtered[1,1])
   df_filtered$time <- format(df_filtered[,1], format = "%H:%M", tz = "CET")
 
 
@@ -83,20 +90,21 @@ actogram <- function(
                   color = activity)) +
     geom_tile() +
     ylab("Date") +
-    xlab("Time")+
+    xlab("Time") +
     theme(
-      axis.text.x = element_text(color="#000000"),
-      axis.text.y = element_text(color="#000000"),
-      text=element_text(family = 'Arial', size = 12),
+      axis.text.x = element_text(color = "#000000"),
+      axis.text.y = element_text(color = "#000000"),
+      text = element_text(size = 12),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5),
     )  +
-    scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00"))+
+    scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
     theme(legend.position = "none")
 
-  if(save == TRUE){
+  print('plot done')
+  if (save == TRUE) {
 
-    if (!file.exists(outputdir)){
+    if (!file.exists(outputdir)) {
       dir.create(outputdir)
     }
 

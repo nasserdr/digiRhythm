@@ -6,7 +6,7 @@
 \usage{
 dfc(
   data,
-  activity = "Motion.index",
+  activity = "Motion.Index",
   sampling = 15,
   save = FALSE,
   tag = NULL,
@@ -18,6 +18,8 @@ dfc(
 
 \item{activity}{The name of the activity}
 
+\item{sampling}{The sampling period of the data set in minutes}
+
 \item{save}{TRUE to save results in text files, FALSE otherwise (if TRUE,
 subsequent arguments (tag and outputdir) should be given)}
 
@@ -25,7 +27,7 @@ subsequent arguments (tag and outputdir) should be given)}
 more details)}
 
 \item{outputdir}{where the data are saved if save is TRUE. The names of saved
-files will be(dfc_<tag>.txt and spec_<tag>.txt)}
+files will be(dfc_tag.txt and spec_tag.txt)}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the
@@ -43,4 +45,12 @@ Data are saved in the output directory odir
 }
 \description{
 Computes the Degree of Function coupling for one variable in an activity dataset
+}
+\examples{
+data("df516b_2", package = "digiRhythm")
+df <- df516b_2
+df <- remove_activity_outliers(df)
+df_act_info(df)
+activity = names(df)[2]
+my_dfc <- dfc(df, activity , sampling = 15)
 }

@@ -47,3 +47,21 @@ None
 Takes an activity dataset as input and plot and save an actogram of the
 specified activity column
 }
+\examples{
+data("df516b_2", package = "digiRhythm")
+df <- df516b_2
+df <- remove_activity_outliers(df)
+df_act_info(df)
+activity = names(df)[2]
+start = "2020-30-04"
+end = "2020-06-05"
+save = TRUE
+outputdir = 'testresults'
+outplotname = 'myplot'
+width = 10
+device = 'tiff'
+height =  5
+actogram(df, activity, start, end, save = FALSE,
+    outputdir = 'testresults', outplotname = 'actoplot', width = 10,
+    height =  5, device = 'tiff')
+}

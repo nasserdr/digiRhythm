@@ -6,8 +6,9 @@
 #' subsequent arguments (tag and outputdir) should be given)
 #' @param tag The suffix of the saved files (see the parameter outputdir for
 #' more details)
+#' @param sampling The sampling period of the data set in minutes
 #' @param outputdir where the data are saved if save is TRUE. The names of saved
-#' files will be(dfc_<tag>.txt and spec_<tag>.txt)
+#' files will be(dfc_tag.txt and spec_tag.txt)
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -22,33 +23,32 @@
 #' removed.
 #' Data are saved in the output directory odir
 #'
-#' @import lubridate lomb dplyr stringr gdata
-
+#' @importFrom gdata write.fwf
+#' @importFrom lubridate date
+#' @importFrom lomb lsp
+#' @importFrom dplyr filter
+#'
 #' @export
-#' @example
+#' @examples
 #' data("df516b_2", package = "digiRhythm")
-#' force(df516b_2)
 #' df <- df516b_2
 #' df <- remove_activity_outliers(df)
 #' df_act_info(df)
 #' activity = names(df)[2]
-#' save = TRUE
-#' tag = 'mydfc'
-#' outputdir = 'testresults'
-#' my_dfc <- dfc(df, activity = 'Motion.index', sampling = 15, )
+#' my_dfc <- dfc(df, activity , sampling = 15)
 
 
 #######################################################
 dfc <- function(
   data,
-  activity = 'Motion.index',
+  activity = 'Motion.Index',
   sampling = 15,
   save = FALSE,
   tag = NULL,
   outputdir = NULL
 )
 {
-  df$date <- lubridate::date(df$datetime)
+  df$date <- date(df$datetime)
   days <- unique(df$date)
 
 
@@ -64,7 +64,7 @@ dfc <- function(
                      power = numeric(),
                      pvalue = numeric()) #The data frame for SPEC
 
-  n_days_scanned <- length(days)-7
+  n_days_scanned <- length(days) - 7
 
   i <- 1
   for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
@@ -81,7 +81,7 @@ dfc <- function(
     data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i+6])
 
     cat("Dates filtered are: ", as.character(unique(data_week$date)), "\n")
-    l <- lsp(data_week[c('datetime', activity)],
+    l <- lsp(data_week[,1:2],
              alpha = sig,
              normalize = 'press',
              plot = TRUE) #Computing the lomb-scargle periodigram
@@ -98,10 +98,10 @@ dfc <- function(
     #In case of no missing data, I expect 96 samples (if sampling = 15 min),
     # Therefore, I expect all other vector having 96 cells
 
-    if(length(l$power) < samples_per_day){
+    if (length(l$power) < samples_per_day) {
       len = length(l$power)
       expy <- exp(-l$power)
-    } else{
+    } else {
       len = samples_per_day
       expy <- exp(-l$power[1:len])
     }
@@ -109,10 +109,10 @@ dfc <- function(
     #According to Scargle and Lomb (also as described in numerical recipes)
     effm <- 2*samples_per_day
     prob <- NULL
-    for (j in 1:length(expy)){
+    for (j in 1:length(expy)) {
       prob[j] <- expy[j]*effm
-      if(prob[j] > 0.01){
-        prob[j] <- 1-(1-expy[j])^effm
+      if (prob[j] > 0.01) {
+        prob[j] <- 1 - ( 1 - expy[j])^effm
       }
     }
 
@@ -123,10 +123,10 @@ dfc <- function(
     sumsig <- sum(l$power[which(l$power > l$sig.level)])  #sum of all significant
 
     HP <- ssh / sumallR
-    DFC<- ssh / sumsig
+    DFC <- ssh / sumsig
 
     spec <- rbind(spec, data.frame(
-      rep(paste0(as.character(days[i]), "_to_", as.character(days[i+6])), len),
+      rep(paste0(as.character(days[i]), "_to_", as.character(days[i + 6])), len),
       1:len,
       (1:len)/7,
       l$power[1:len],
@@ -136,8 +136,8 @@ dfc <- function(
   }
 
 
-  if(save){
-    if (!file.exists(outputdir)){
+  if (save) {
+    if (!file.exists(outputdir)) {
       dir.create(outputdir)
     }
 
@@ -146,7 +146,7 @@ dfc <- function(
     spec_file_name <- file.path(outputdir, paste0("spec_", tag, "_", activity,".txt"))
     data_file_name <- file.path(outputdir, paste0("data_", tag, "_", activity,".txt"))
 
-    gdata::write.fwf(df,
+    write.fwf(df,
                      data_file_name,
                      sep = "\t",
                      colnames = TRUE,
@@ -155,11 +155,11 @@ dfc <- function(
     cat("DFC data will be saved in ", dfc_file_name, "\n")
     cat("Spectrum data will be saved in ", spec_file_name, "\n")
     names(dfc) <- c("start_date", "DFC", "HP")
-    gdata::write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
+    write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
 
     #Dumping the Spectrum Data in the spectrum file
     names(spec) <- c("fromtodate", "sample", "frequency", "power", "pvalue")
-    gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
+    write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
   }
 
   result <- NULL

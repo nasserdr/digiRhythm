@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 ^data-raw
 ^test_codes
+Readme.Rmd
+original_codes
+sample_results
+README_files
