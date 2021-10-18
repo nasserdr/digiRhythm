@@ -20,14 +20,16 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Depends: 
     R (>= 4.0.0)
-Imports: magrittr, 
+Imports: tidyr, 
     readr,
-    tidyr,
+    magrittr,
     dplyr,
     xts,
     lomb,
     ggplot2,
-    zoo
+    gdata,
+    lubridate,
+    stringr
 Suggests: knitr,
     rmarkdown,
     testthat (>= 3.0.0),

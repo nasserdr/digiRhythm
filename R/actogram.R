@@ -15,10 +15,9 @@
 #' @param height height of the image in cm
 #' @param device one of 'tiff', 'png', 'pdf', 'jpg'
 #'
-#'
 #' @return None
 #'
-#' @import xts magrittr readr tidyr dplyr ggplot2
+#' @import tidyr readr magrittr dplyr xts ggplot2
 #' @export
 #'
 #' @example
@@ -27,7 +26,6 @@
 #' df <- df516b_2
 #' df <- remove_activity_outliers(df)
 #' df_act_info(df)
-#'
 #' activity = names(df)[2]
 #' start = "2020-30-04"
 #' end = "2020-06-05"

@@ -4,4 +4,5 @@
 .Ruserdata
 README.rmd
 .Rbuildignore
-testresults/
+original_code/
+sample_results/

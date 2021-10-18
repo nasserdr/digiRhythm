@@ -38,7 +38,8 @@
 #' @return A dataframe with datetime column and other activity columns, ready to
 #' be used with other functions in digirhythm
 #'
-#' @import magrittr readr tidyr dplyr zoo xts
+#' @import tidyr readr magrittr dplyr xts ggplot2
+#'
 #' @export
 
 
