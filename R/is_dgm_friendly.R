@@ -1,23 +1,20 @@
 #' Informs if a dataset is digiRhythm Friendly
 #'
-#' Takes an activity dataset as input and gives information about:
-#' \itemize{
-#'   \itemize If a dataset is digiRhythm friendly, i.e., the functions used
-#'   can work with this dataset
-#'   \itemize Tells what's wrong, if any.
-#' }
+#' Takes an activity dataset as input and gives information about 1) If a dataset
+#' is digiRhythm friendly, i.e., the functions used can work with this dataset
+#' and 2) Tells what's wrong, if any.
 #'
-#' @return None
 #' @param data The dataframe containing the activity data
 #' @param verbose if TRUE, prints info about the dataset
 #'
-#' @import crayon
+#' @return None
+#' @importFrom crayon green blue red
 #' @export
 #'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
-#' data <- df516b_2
-#' is_dgm_friendly(data)
+#' d <- df516b_2
+#' is_dgm_friendly(data = d, verbose = TRUE)
 
 
 is_dgm_friendly <- function(data, verbose = FALSE){
@@ -28,7 +25,7 @@ is_dgm_friendly <- function(data, verbose = FALSE){
   #Add minimum 2 days options
   #Add warning that if less than 7 days we cant compute the DFC
 
-  if(class(data[,1]) %in% c("POSIXct", "POSIXt")){
+  if("POSIXct" %in%  class(data[,1])  | "POSIXt" %in%  class(data[,1])){
     if(verbose){
       cat(paste0(green('v Correct time format: '), 'First column has a Posixct Format'))
     }
@@ -65,5 +62,7 @@ is_dgm_friendly <- function(data, verbose = FALSE){
   } else{
     cat(red('The data is NOT digiRhythm friendly'))
   }
+
+  return(is_dgm)
 
 }

@@ -15,15 +15,12 @@ is_dgm_friendly(data, verbose = FALSE)
 None
 }
 \description{
-Takes an activity dataset as input and gives information about:
-\itemize{
-\itemize If a dataset is digiRhythm friendly, i.e., the functions used
-can work with this dataset
-\itemize Tells what's wrong, if any.
-}
+Takes an activity dataset as input and gives information about 1) If a dataset
+is digiRhythm friendly, i.e., the functions used can work with this dataset
+and 2) Tells what's wrong, if any.
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
-data <- df516b_2
-is_dgm_friendly(data)
+d <- df516b_2
+is_dgm_friendly(data = d, verbose = TRUE)
 }
