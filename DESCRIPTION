@@ -31,7 +31,8 @@ Imports: tidyr,
     lubridate,
     stringr,
     zoo,
-    extrafont
+    extrafont,
+    crayon
 Suggests: knitr,
     rmarkdown,
     testthat (>= 3.0.0),
