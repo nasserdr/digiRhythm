@@ -49,3 +49,23 @@ remove_activity_outliers <- function(df){
   }
   return(data)
 }
+
+
+#' Print if Verbose is true
+#'
+#' @param string The string to print
+#' @param verbose if TRUE, print the string
+#'
+#' @importFrom crayon red green
+#'
+#' @export
+
+print_v <- function(
+  string,
+  verbose){
+
+  if(verbose) {
+    cat(string, '\n')
+  }
+
+}

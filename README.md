@@ -29,6 +29,7 @@ tools to analyze and visualize the rhythmic behavior of animals.
 
 -   [x] Define data inside the library
 -   [x] Add and example about the improt_raw_icetag_data to the README.
+-   [ ] Create a function to test if a dataset is digiRhythm friendly.
 -   [ ] Create a proper documentation for the data set.
 -   [ ] configure data sets with lazy loading
 -   [ ] Create test functions.
@@ -53,7 +54,7 @@ This is a basic example which shows you how to solve a common problem:
 library(digiRhythm)
 
 #The file name with the path
-file <- file.path('data-raw', '516b_2.csv')
+file <- file.path('inst/extdata', '516b_2.csv')
 
 #The columns that we are interested in
 colstoread <- c("Date", "Time", "Motion Index", 'Steps') 
@@ -75,7 +76,33 @@ print(head(data))
 This is an example on how to visualize the actogram
 
 ``` r
-activity <- names(data)[2]
+data("df516b_2", package = "digiRhythm")
+df <- remove_activity_outliers(df516b_2)
+df_act_info(df)
+```
+
+    ## [1] "First days of the data set: "
+    ##              datetime Motion.Index Steps
+    ## 1 2020-05-01 00:14:00            7     0
+    ## 2 2020-05-01 00:29:00            3     0
+    ## 3 2020-05-01 00:44:00           39    13
+    ## 4 2020-05-01 00:59:00           37    16
+    ## 5 2020-05-01 01:14:00           33    14
+    ## 6 2020-05-01 01:29:00           12     1
+    ## [1] "Last days of the data set: "
+    ##                 datetime Motion.Index Steps
+    ## 4315 2020-06-14 22:44:00            8     5
+    ## 4316 2020-06-14 22:59:00            6     4
+    ## 4317 2020-06-14 23:14:00           86    29
+    ## 4318 2020-06-14 23:29:00            4     0
+    ## 4319 2020-06-14 23:44:00            0     0
+    ## 4320 2020-06-14 23:59:00            4     0
+    ## [1] "The dataset contains 46 Days"
+    ## [1] "Starting date is: 2020-04-30"
+    ## [1] "Last date is: 2020-06-14"
+
+``` r
+activity = names(df)[2]
 start <- "2020-30-04"
 end <- "2020-06-05"
 save <- TRUE
@@ -105,8 +132,7 @@ This is an example on how to compute the degree of functional coupling.
 
 ``` r
 data("df516b_2", package = "digiRhythm")
-df <- df516b_2
-df <- remove_activity_outliers(df)
+df <- remove_activity_outliers(df516b_2)
 df_act_info(df)
 activity = names(df)[2]
 my_dfc <- dfc(df, activity , sampling = 15, show_lsp_plot = FALSE)

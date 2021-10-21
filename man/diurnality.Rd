@@ -25,4 +25,5 @@ data <- df516b_2
 data <- remove_activity_outliers(data)
 activity = names(data)[2]
 d_index <- diurnality(data, activity)
+
 }

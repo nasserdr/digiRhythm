@@ -16,7 +16,7 @@
 #' data <- remove_activity_outliers(data)
 #' activity = names(data)[2]
 #' d_index <- diurnality(data, activity)
-
+#'
 #' @export
 
 diurnality <- function(data, activity, plot = FALSE){
@@ -70,5 +70,7 @@ diurnality <- function(data, activity, plot = FALSE){
   if (plot) {
     print(p)
   }
+
+  return(diurnality)
 
 }

@@ -118,6 +118,8 @@ dfc <- function(
       }
     }
 
+    #till here LSP
+
     prob_harmonic <- prob[harmonic_indices] # Storing the p-values of the harmonic frequencies
 
     sumallR <- sum(l$power[1:len]) #sum of all powers
