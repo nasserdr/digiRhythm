@@ -50,9 +50,25 @@ dfc <- function(
   show_lsp_plot = TRUE
 )
 {
+
+  if(!is_dgm_friendly(data)){
+    stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
+  }
+
+
   df$date <- date(df$datetime)
   days <- unique(df$date)
 
+  if(length(days) < 7){
+    stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
+  }
+
+  if(length(which(diff(days) != 1)) > 0){
+    warning('There is an interruption in the days sequence, i.e., there are non consecutive
+          days in the data')
+    print('Interruption is at the following days:')
+    cat(which(diff(days) != 1), '\n')
+  }
 
   sampling = 15
   sig <- 0.05
