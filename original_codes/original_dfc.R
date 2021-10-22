@@ -8,13 +8,13 @@ library(gdata) #write.fwf
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
 df <- remove_activity_outliers(df)
-df_act_info(df)
-show_lsp_plot <- FALSE
-
 activity = names(df)[2]
+sampling = 15
+sig <- 0.05
 save = TRUE
 tag = 'test'
 outputdir = 'sample_results'
+show_lsp_plot <- TRUE
 
 
 if(!is_dgm_friendly(df)){
@@ -42,11 +42,6 @@ df$date <- lubridate::date(df$datetime)
 days <- unique(df$date)
 
 
-
-
-
-sampling = 15
-sig <- 0.05
 dfc <- data.frame(date = character(),
                   dfc = numeric(),
                   hp = numeric()) #The data frame for DFC
@@ -65,7 +60,7 @@ for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
   samples_per_day = 24*60/sampling
 
 
-  #Filterning by index. CHANGED beacuase it's dangeous in case of missing data
+  #Filterning by index. CHANGED beacuase it's dangerous in case of missing data
   # ds <- (i - 1) * samples_per_day + 1 #Index of the first data point in the series of 7 days
   # de <- (7 + i - 1) * samples_per_day #Index of the last data point in the series of 7 days
   # data_chunck <- data[ds:de, ] #The 7 days data set
@@ -74,12 +69,27 @@ for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
   data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i+6])
 
   cat("Dates filtered are: ", as.character(unique(data_week$date)), "\n")
+
+  #Test with TS (to check the response with NA data)
+  # data_week <- rbind(data_week[1:20,], data_week[30:nrow(data_week),])
+  # df_xts <- xts::xts(
+  #   x = data_week[activity],
+  # order.by = data_week[,1]
+  # )
+  # ts <- as.ts(df_xts)
+  # l_ts <- lsp(ts,
+  #          alpha = 0.05,
+  #          normalize = 'standard',
+  #          plot = show_lsp_plot) #Computing the lomb-scargle periodogram
+  #
+
+
   l <- lsp(data_week[c('datetime', activity)],
            alpha = sig,
-           normalize = 'press',
+           normalize = 'standard',
            plot = show_lsp_plot) #Computing the lomb-scargle periodigram
 
-  harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
+  harmonic_indices <- seq(7, samples_per_day, by = 7) #The harmonic frequencies
 
   harm_power <- l$power[harmonic_indices] #The harmonic powers
 

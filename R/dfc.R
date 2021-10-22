@@ -1,15 +1,37 @@
-#' Computes the Degree of Function coupling for one variable in an activity dataset
+#' Computes the Degree of Function coupling (DFC), Harmonic Part (HP) and Weekly
+#' Lomb-Scargle Spectrum (LSP Spec) for one variable in an activity dataset.
+#' The dataset should be digiRhythm friendly.
 #'
-#' @param data The activity data set
-#' @param activity The name of the activity
+#' The computation of DFC/HP/LSP parameters is done using a rolling window of 7 days (i.e.,
+#' first, we compute the parameters of Days 1-7 then, of days 2-8 and so on).
+#' For each window of the 7 days, the function will compute the LSP spectrum to
+#' determine the power of each frequency. Using Baluev (2008), we will compute the
+#' significance of the amplitude of each frequency component and determine whether
+#' it is significant or not. Then, we will have all the significant frequencies,
+#' whose amplitudes' summation will be denominated as SUMSIG. Among all the available
+#' frequencies, some are harmonic (those that correspond to waves of period
+#' 24h, 12h, 24h/3, 24h/4, ...). As a result, we will have frequency components
+#' that are significant and harmonic, whose powers' summation is called SSH (sum
+#' significant and harmonic). The summation of all frequency components up to a
+#' frequency reflecting a 24h period is called SUMALL. Therefore, DFC and HP are
+#' computed as follows:
+#'
+#' DFC <- SSH / SUMSIG
+#' HP <- SSH / SUMALL
+#'
+#'
+#' @param data The activity data set.
+#' @param activity The name of the activity.
+#' @param sampling The sampling period of the data set in minutes.
+#' @param sig The significance level that should be used to determine the
+#' significant frequency component.
 #' @param save TRUE to save results in text files, FALSE otherwise (if TRUE,
-#' subsequent arguments (tag and outputdir) should be given)
+#' subsequent arguments (tag and outputdir) should be given).
 #' @param tag The suffix of the saved files (see the parameter outputdir for
-#' more details)
-#' @param sampling The sampling period of the data set in minutes
+#' more details).
 #' @param outputdir where the data are saved if save is TRUE. The names of saved
-#' files will be(dfc_tag.txt and spec_tag.txt)
-#' @param show_lsp_plot if TRUE, LSP plots will be shown
+#' files will be(dfc_tag.txt and spec_tag.txt).
+#' @param show_lsp_plot if TRUE, LSP plots will be shown.
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -55,7 +77,6 @@ dfc <- function(
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
 
-
   df$date <- date(df$datetime)
   days <- unique(df$date)
 
@@ -70,7 +91,6 @@ dfc <- function(
     cat(which(diff(days) != 1), '\n')
   }
 
-  sampling = 15
   sig <- 0.05
   dfc <- data.frame(date = character(),
                     dfc = numeric(),
@@ -84,7 +104,7 @@ dfc <- function(
 
   n_days_scanned <- length(days) - 7
 
-  i <- 1
+
   for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
     cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i+6)]), "\n")
     samples_per_day = 24*60/sampling
@@ -138,11 +158,11 @@ dfc <- function(
 
     prob_harmonic <- prob[harmonic_indices] # Storing the p-values of the harmonic frequencies
 
-    sumallR <- sum(l$power[1:len]) #sum of all powers
+    sumall <- sum(l$power[1:len]) #sum of all powers
     ssh <- sum(harm_power[which(harm_power > l$sig.level)]) #sum of harmonic significant frequencies
     sumsig <- sum(l$power[which(l$power > l$sig.level)])  #sum of all significant
 
-    HP <- ssh / sumallR
+    HP <- ssh / sumall
     DFC <- ssh / sumsig
 
     spec <- rbind(spec, data.frame(

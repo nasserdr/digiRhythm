@@ -2,7 +2,9 @@
 % Please edit documentation in R/dfc.R
 \name{dfc}
 \alias{dfc}
-\title{Computes the Degree of Function coupling for one variable in an activity dataset}
+\title{Computes the Degree of Function coupling (DFC), Harmonic Part (HP) and Weekly
+Lomb-Scargle Spectrum (LSP Spec) for one variable in an activity dataset.
+The dataset should be digiRhythm friendly.}
 \usage{
 dfc(
   data,
@@ -15,22 +17,25 @@ dfc(
 )
 }
 \arguments{
-\item{data}{The activity data set}
+\item{data}{The activity data set.}
 
-\item{activity}{The name of the activity}
+\item{activity}{The name of the activity.}
 
-\item{sampling}{The sampling period of the data set in minutes}
+\item{sampling}{The sampling period of the data set in minutes.}
 
 \item{save}{TRUE to save results in text files, FALSE otherwise (if TRUE,
-subsequent arguments (tag and outputdir) should be given)}
+subsequent arguments (tag and outputdir) should be given).}
 
 \item{tag}{The suffix of the saved files (see the parameter outputdir for
-more details)}
+more details).}
 
 \item{outputdir}{where the data are saved if save is TRUE. The names of saved
-files will be(dfc_tag.txt and spec_tag.txt)}
+files will be(dfc_tag.txt and spec_tag.txt).}
 
-\item{show_lsp_plot}{if TRUE, LSP plots will be shown}
+\item{show_lsp_plot}{if TRUE, LSP plots will be shown.}
+
+\item{sig}{The significance level that should be used to determine the
+significant frequency component.}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the
@@ -47,7 +52,23 @@ removed.
 Data are saved in the output directory odir
 }
 \description{
-Computes the Degree of Function coupling for one variable in an activity dataset
+The computation of DFC/HP/LSP parameters is done using a rolling window of 7 days (i.e.,
+first, we compute the parameters of Days 1-7 then, of days 2-8 and so on).
+For each window of the 7 days, the function will compute the LSP spectrum to
+determine the power of each frequency. Using Baluev (2008), we will compute the
+significance of the amplitude of each frequency component and determine whether
+it is significant or not. Then, we will have all the significant frequencies,
+whose amplitudes' summation will be denominated as SUMSIG. Among all the available
+frequencies, some are harmonic (those that correspond to waves of period
+24h, 12h, 24h/3, 24h/4, ...). As a result, we will have frequency components
+that are significant and harmonic, whose powers' summation is called SSH (sum
+significant and harmonic). The summation of all frequency components up to a
+frequency reflecting a 24h period is called SUMALL. Therefore, DFC and HP are
+computed as follows:
+}
+\details{
+DFC <- SSH / SUMSIG
+HP <- SSH / SUMALL
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
