@@ -10,6 +10,7 @@ dfc(
   data,
   activity = "Motion.Index",
   sampling = 15,
+  sig = 0.05,
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
@@ -23,6 +24,9 @@ dfc(
 
 \item{sampling}{The sampling period of the data set in minutes.}
 
+\item{sig}{The significance level that should be used to determine the
+significant frequency component.}
+
 \item{save}{TRUE to save results in text files, FALSE otherwise (if TRUE,
 subsequent arguments (tag and outputdir) should be given).}
 
@@ -33,9 +37,6 @@ more details).}
 files will be(dfc_tag.txt and spec_tag.txt).}
 
 \item{show_lsp_plot}{if TRUE, LSP plots will be shown.}
-
-\item{sig}{The significance level that should be used to determine the
-significant frequency component.}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the

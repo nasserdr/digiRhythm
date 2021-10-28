@@ -3,7 +3,6 @@
 \docType{data}
 \name{df759a_3}
 \alias{df759a_3}
-\alias{df5}
 \title{df759a_3 Activity Data Sets}
 \format{
 A data frame of 3 columns
@@ -17,7 +16,7 @@ A data frame of 3 columns
 Agroscope Tanikon
 }
 \usage{
-df <- data("df759a_3", package = "digiRhythm")
+df759a_3
 }
 \description{
 A dataset containing the Motion index and steps count of a cow.

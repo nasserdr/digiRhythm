@@ -2,7 +2,8 @@ library(readr) #read_csv
 library(tidyr) #unite
 #tidyr readr magrittr dplyr xts ggplot2
 
-filename <- 'data-raw/516b_2.csv'
+
+filename <- 'D:/Agroscope/digiRhythm/inst/extdata/sample_data.csv'
 skipLines <- 7
 act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
 date_format <- "%d.%m.%Y"
@@ -12,6 +13,8 @@ trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- FALSE
+
+
 
 
 if (verbose) {
@@ -31,6 +34,8 @@ if (verbose) {
   print('Last data point ... ')
   print(data.frame(data[nrow(data):(nrow(data) - 2),]))
 }
+
+data <- data[!is.na(data$datetime),]
 
 #Transforming data to an XTS for easy management of sampling and date removal
 data_xts = xts(

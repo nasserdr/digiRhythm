@@ -60,7 +60,7 @@ full day is present) by trimming last, middle or last days.
 This function expects that the first and second columns are respectively
 date and time where the format should be mentioned.
 
-file <- file.path('data', '516b_2.csv')
+file <- file.path('data', 'sample_data')
 colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
 data <- improt_raw_icetag_data(filename = file,
 skipLines = 7,
@@ -70,7 +70,7 @@ verbose = TRUE)
 }
 \examples{
 
-filename <- system.file("extdata", "516b_2.csv", package = "digiRhythm")
+filename <- system.file("extdata", "sample_data.csv", package = "digiRhythm")
 data <- import_raw_icetag_data(
     filename,
     skipLines = 7,

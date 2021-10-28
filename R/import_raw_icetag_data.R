@@ -11,7 +11,7 @@
 #' This function expects that the first and second columns are respectively
 #' date and time where the format should be mentioned.
 #'
-#' file <- file.path('data', '516b_2.csv')
+#' file <- file.path('data', 'sample_data')
 #' colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
 #' data <- improt_raw_icetag_data(filename = file,
 #'                                skipLines = 7,
@@ -47,7 +47,7 @@
 #'
 #' @examples
 #'
-#' filename <- system.file("extdata", "516b_2.csv", package = "digiRhythm")
+#' filename <- system.file("extdata", "sample_data.csv", package = "digiRhythm")
 #' data <- import_raw_icetag_data(
 #'     filename,
 #'     skipLines = 7,
@@ -86,6 +86,8 @@ import_raw_icetag_data <- function(filename,
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
   data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
+
+  data <- data[!is.na(data$datetime),]
 
   if (verbose) {
     print('First data points ... ')

@@ -3,7 +3,6 @@
 \docType{data}
 \name{df691b_1}
 \alias{df691b_1}
-\alias{df4}
 \title{df691b_1 Activity Data Sets}
 \format{
 A data frame of 3 columns
@@ -17,7 +16,7 @@ A data frame of 3 columns
 Agroscope Tanikon
 }
 \usage{
-df <- data("df691b_1", package = "digiRhythm")
+df691b_1
 }
 \description{
 A dataset containing the Motion index and steps count of a cow.

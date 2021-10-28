@@ -67,6 +67,7 @@ dfc <- function(
   data,
   activity = 'Motion.Index',
   sampling = 15,
+  sig = 0.05,
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
@@ -92,7 +93,6 @@ dfc <- function(
     cat(which(diff(days) != 1), '\n')
   }
 
-  sig <- 0.05
   dfc <- data.frame(date = character(),
                     dfc = numeric(),
                     hp = numeric()) #The data frame for DFC
