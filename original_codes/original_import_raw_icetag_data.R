@@ -1,9 +1,11 @@
 library(readr) #read_csv
 library(tidyr) #unite
-#tidyr readr magrittr dplyr xts ggplot2
 
 
-filename <- 'D:/Agroscope/digiRhythm/inst/extdata/sample_data.csv'
+url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
+download.file(url, destfile = '516b_2.csv')
+
+filename <- file.path(getwd(), '516b_2.csv')
 skipLines <- 7
 act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
 date_format <- "%d.%m.%Y"
@@ -125,3 +127,4 @@ if (verbose) {
     length(unique(as.Date(df$datetime)))
   ))
 }
+
