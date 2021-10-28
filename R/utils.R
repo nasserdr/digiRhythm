@@ -69,3 +69,26 @@ print_v <- function(
   }
 
 }
+
+#' Returns the periodicity of a digiRhythm dataframe
+#'
+#' @param data a gigiRhythm friendly dataframe
+#'
+#' @importFrom xts periodicity as.xts
+#'
+#' @examples
+#' data("df516b_2", package = "digiRhythm")
+#' df <- df516b_2
+#' dgm_periodicity(df)
+#' @export
+
+dgm_periodicity <- function(data){
+
+  xts_data <- data
+  rownames(xts_data) <- data[,1]
+  xts_data[1] <- NULL
+  xts_data <- as.xts(xts_data)
+
+  xts::periodicity(xts_data)
+
+}

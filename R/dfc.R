@@ -50,6 +50,7 @@
 #' @importFrom lubridate date
 #' @importFrom lomb lsp
 #' @importFrom dplyr filter
+#' @importFrom stats ts
 #'
 #' @export
 #' @examples
