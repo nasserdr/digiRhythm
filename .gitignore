@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-README.rmd
 .Rbuildignore
 sample_results/
 README_files/

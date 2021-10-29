@@ -18,7 +18,7 @@
 #'                                act.cols.names = colstoread,
 #'                                sampling = 15,
 #'                                verbose = TRUE)
-
+#'
 #' @param filename The file name (full or relative path with extension)
 #' @param skipLines The number of non-useful lines to skip (lines to header)
 #' @param act.cols.names A vector containing the names of columns to read

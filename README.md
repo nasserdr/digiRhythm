@@ -54,13 +54,15 @@ This is a basic example which shows you how to solve a common problem:
 library(digiRhythm)
 
 #The file name with the path
-file <- file.path('inst/extdata', '516b_2.csv')
+url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
+download.file(url, destfile = '516b_2.csv')
+filename <- file.path(getwd(), '516b_2.csv')
 
 #The columns that we are interested in
 colstoread <- c("Date", "Time", "Motion Index", 'Steps') 
 
 #Reading the activity data from the csv file
-data <- import_raw_icetag_data(filename = file, skipLines = 6, act.cols.names = colstoread, sampling = 15)
+data <- import_raw_icetag_data(filename = filename, skipLines = , act.cols.names = colstoread, sampling = 15)
 
 print(head(data))
 ```
@@ -139,4 +141,26 @@ my_dfc <- dfc(df, activity , sampling = 15, show_lsp_plot = FALSE)
 
 #You may want to explore the two list inside my_dfc.
 #DFC and SPECTRUM are saved inside my_dfc, each as a list
+```
+
+This is an example on how to compute the diurnality index:
+
+``` r
+data("df516b_2", package = "digiRhythm")
+df <- remove_activity_outliers(df516b_2)
+df_act_info(df)
+activity = names(df)[2]
+d_index <- diurnality(data, activity, plot = TRUE)
+```
+
+![](README_files/figure-gfm/dindex_example-1.png)<!-- -->
+
+This is an example on how you can resample your data:
+
+``` r
+data("df516b_2", package = "digiRhythm")
+df <- df516b_2
+df <- remove_activity_outliers(df)
+new_sampling <- 30
+new_dgm <- resample_dgm(df, new_sampling)
 ```
