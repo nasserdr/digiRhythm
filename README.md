@@ -9,13 +9,16 @@ tools to analyze and visualize the rhythmic behavior of animals.
 **TO DO CORE FUNCTIONALITIES:**
 
 -   [x] Create a function that read Icetag data stored in a CSV file.
--   [x] Add the import_raw_icetage_data as an example to the README
+-   [x] Add the import\_raw\_icetage\_data as an example to the README
     file.
 -   [x] Create a function that computes the degree of functional
     coupling.
 -   [x] Add the the dfc as an example to the README file.
--   [ ] Create a function that computes the diurnality index.
--   [ ] Add the the dfc as an example to the README file.
+-   [x] Create a function that computes the diurnality index.
+-   [x] Add the the dfc as an example to the README file.
+-   [ ] Add a function that fills NA values in the activity data set.
+-   [ ] Add a function that creates a histogram for the significant and
+    harmonic frequencies within the DFC (Patricia’s case).
 
 **TO DO - VISUALIZATION FUNCTIONS:**
 
@@ -24,15 +27,23 @@ tools to analyze and visualize the rhythmic behavior of animals.
     activity.
 -   [ ] Create a function that visualize the actogram + average
     activity + DFC.
+-   [ ] Create a function that visualizes all daily activities with
+    control over the number of columns.
 
 **TO DO - UTILITIES AND DOCUMENTATIONS:**
 
 -   [x] Define data inside the library
--   [x] Add and example about the improt_raw_icetag_data to the README.
--   [ ] Create a function to test if a dataset is digiRhythm friendly.
--   [ ] Create a proper documentation for the data set.
--   [ ] configure data sets with lazy loading
--   [ ] Create test functions.
+-   [x] Add and example about the import\_raw\_icetag\_data to the
+    README.
+-   [x] Create a function to test if a data set is digiRhythm friendly.
+-   [x] Create a proper documentation for the data set.
+-   [x] configure data sets with lazy loading
+-   [ ] Create test functions for all the functionalities.
+-   [ ] Add a note about the fact that visualizations were created in a
+    way they are aligned with the standards of common journals and give
+    details about these settings + Add a note where the code can be
+    customized to change these settings.
+-   [ ] Make a series of videos about the digiRhythm library.
 
 ## Installation
 
@@ -79,29 +90,29 @@ This is an example on how to visualize the actogram
 
 ``` r
 data("df516b_2", package = "digiRhythm")
-df <- remove_activity_outliers(df516b_2)
+df <- remove_activity_outliers(df691b_1)
 df_act_info(df)
 ```
 
     ## [1] "First days of the data set: "
     ##              datetime Motion.Index Steps
-    ## 1 2020-05-01 00:14:00            7     0
-    ## 2 2020-05-01 00:29:00            3     0
-    ## 3 2020-05-01 00:44:00           39    13
-    ## 4 2020-05-01 00:59:00           37    16
-    ## 5 2020-05-01 01:14:00           33    14
-    ## 6 2020-05-01 01:29:00           12     1
+    ## 1 2020-08-25 00:14:00           52    46
+    ## 2 2020-08-25 00:29:00           61    39
+    ## 3 2020-08-25 00:44:00           29    18
+    ## 4 2020-08-25 00:59:00           83    26
+    ## 5 2020-08-25 01:14:00           50    23
+    ## 6 2020-08-25 01:29:00           43    15
     ## [1] "Last days of the data set: "
     ##                 datetime Motion.Index Steps
-    ## 4315 2020-06-14 22:44:00            8     5
-    ## 4316 2020-06-14 22:59:00            6     4
-    ## 4317 2020-06-14 23:14:00           86    29
-    ## 4318 2020-06-14 23:29:00            4     0
-    ## 4319 2020-06-14 23:44:00            0     0
-    ## 4320 2020-06-14 23:59:00            4     0
-    ## [1] "The dataset contains 46 Days"
-    ## [1] "Starting date is: 2020-04-30"
-    ## [1] "Last date is: 2020-06-14"
+    ## 4603 2020-10-11 22:44:00           69    32
+    ## 4604 2020-10-11 22:59:00           91    25
+    ## 4605 2020-10-11 23:14:00           32    15
+    ## 4606 2020-10-11 23:29:00           23    10
+    ## 4607 2020-10-11 23:44:00          150    27
+    ## 4608 2020-10-11 23:59:00            0     0
+    ## [1] "The dataset contains 49 Days"
+    ## [1] "Starting date is: 2020-08-24"
+    ## [1] "Last date is: 2020-10-11"
 
 ``` r
 activity = names(df)[2]

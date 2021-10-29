@@ -1,4 +1,5 @@
 library(ggplot2)
+library(xts)
 data("df516b_2")
 df <- df516b_2
 df <- remove_activity_outliers(df)
@@ -38,10 +39,10 @@ df_filtered$date <- as.Date(df_filtered[[activity]], tz = "CET", origin = df_fil
 df_filtered$time <- format(df_filtered[,1], format = "%H:%M", tz = "CET")
 
 
-p <- ggplot(df_filtered,
+ggplot(df_filtered,
             aes(x = time,
                 y = date,
-                color = activity)) +
+                color = Motion.Index)) +
   geom_tile() +
   ylab("Date") +
   xlab("Time") +
@@ -52,8 +53,16 @@ p <- ggplot(df_filtered,
     panel.background = element_rect(fill = "white"),
     axis.line = element_line(size = 0.5),
   ) +
-  scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
-  theme(legend.position = "none")
+  scale_colour_gradient(
+    low = "#000000",
+    high = "#FFFFFF",
+    space = "Lab",
+    na.value = "grey50",
+    guide = "colourbar",
+    aesthetics = "colour"
+  ) +
+  scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00"))
+#  theme(legend.position = "none")
 
 if (save == TRUE) {
 

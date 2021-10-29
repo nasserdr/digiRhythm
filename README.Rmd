@@ -19,23 +19,35 @@ analyze and visualize the rhythmic behavior of animals.
 - [X] Add the import_raw_icetage_data as an example to the README file.
 - [X] Create a function that computes the degree of functional coupling.
 - [X] Add the the dfc as an example to the README file.
-- [ ] Create a function that computes the diurnality index.
-- [ ] Add the the dfc as an example to the README file.
+- [x] Create a function that computes the diurnality index.
+- [x] Add the the dfc as an example to the README file.
+- [ ] Consider adding other sample data sets (check which ones appear to have
+non-noisy data from the previous analysis and visualizations).
+- [ ] Enhance the actogram (from the original codes).
+- [ ] Add a function that fills NA values in the activity data set.
+- [ ] Add a function that creates a histogram for the significant and harmonic
+frequencies within the DFC (Patricia's case).
 
 **TO DO - VISUALIZATION FUNCTIONS:**
 
 - [X] Create a function that visualize the actogram.
 - [ ] Create a function that visualize the actogram + average activity.
 - [ ] Create a function that visualize the actogram + average activity + DFC.
+- [ ] Create a function that visualizes all daily activities with control over
+the number of columns.
 
 **TO DO - UTILITIES AND DOCUMENTATIONS:**
 
 - [X] Define data inside the library
-- [X] Add and example about the improt_raw_icetag_data to the README.
-- [ ] Create a function to test if a dataset is digiRhythm friendly.
-- [ ] Create a proper documentation for the data set.
-- [ ] configure data sets with lazy loading
-- [ ] Create test functions.
+- [X] Add and example about the import_raw_icetag_data to the README.
+- [x] Create a function to test if a data set is digiRhythm friendly.
+- [x] Create a proper documentation for the data set.
+- [x] configure data sets with lazy loading
+- [ ] Create test functions for all the functionalities.
+- [ ] Add a note about the fact that visualizations were created in a way they
+are aligned with the standards of common journals and give details about these 
+settings + Add a note where the code can be customized to change these settings.
+- [ ] Make a series of videos about the digiRhythm library.
 
 
 ## Installation
@@ -73,19 +85,19 @@ print(head(data))
 This is an example on how to visualize the actogram
 
 ```{r visualize, message=FALSE, warning=FALSE, paged.print=FALSE}
-data("df516b_2", package = "digiRhythm")
-df <- remove_activity_outliers(df516b_2)
+data("df691b_1", package = "digiRhythm")
+df <- remove_activity_outliers(df691b_1)
 df_act_info(df)
 activity = names(df)[2]
-start <- "2020-30-04"
-end <- "2020-06-05"
+start <- "2020-08-25"
+end <- "2020-10-11"
 save <- TRUE
 outputdir <- 'testresults'
 outplotname <- 'myplot'
 width <- 10
 device <- 'tiff'
 height <-  5
-actogram(data, activity, start, end, save = FALSE,
+actogram(df, activity, start, end, save = FALSE,
      outputdir = 'testresults', outplotname = 'actoplot', width = 10,
      height =  5, device = 'tiff')
 ```
