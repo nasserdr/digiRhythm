@@ -75,6 +75,8 @@ dfc <- function(
 )
 {
 
+  names(data)[1] <- 'datetime'
+
   if(!is_dgm_friendly(data)){
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
@@ -120,7 +122,7 @@ dfc <- function(
     data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i+6])
 
     cat("Dates filtered are: ", as.character(unique(data_week$date)), "\n")
-    l <- lsp(data_week[,1:2],
+    l <- lsp(data_week[,c('datetime', activity)],
              alpha = sig,
              normalize = 'press',
              plot = show_lsp_plot) #Computing the lomb-scargle periodigram

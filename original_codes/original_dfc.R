@@ -8,7 +8,7 @@ library(gdata) #write.fwf
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
 df <- remove_activity_outliers(df)
-activity = names(df)[2]
+activity = names(df)[1]
 sampling = 15
 sig <- 0.05
 save = TRUE
