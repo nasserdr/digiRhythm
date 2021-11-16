@@ -48,7 +48,7 @@
 #' @examples
 #'
 #' filename <- system.file("extdata", "sample_data.csv", package = "digiRhythm")
-#' data <- import_raw_icetag_data(
+#' data <- import_raw_activity_data(
 #'     filename,
 #'     skipLines = 7,
 #'     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
@@ -64,7 +64,7 @@
 #' @export
 
 
-import_raw_icetag_data <- function(filename,
+import_raw_activity_data <- function(filename,
                               skipLines = 7,
                               act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                               date_format = "%d.%m.%Y",

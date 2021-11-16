@@ -3,10 +3,12 @@ library(xts)
 #inputs
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
-df <- remove_activity_outliers(df)
+df <- digiRhythm::remove_activity_outliers(df)
 new_sampling <- 30
 
 
+#Ensuring that the dataframe has a dataframe class instead of tibble
+df <- as.data.frame(df)
 xts_data <- df
 rownames(xts_data) <- df[,1]
 xts_data[1] <- NULL

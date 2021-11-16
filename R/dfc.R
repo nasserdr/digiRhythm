@@ -32,6 +32,7 @@
 #' @param outputdir where the data are saved if save is TRUE. The names of saved
 #' files will be(dfc_tag.txt and spec_tag.txt).
 #' @param show_lsp_plot if TRUE, LSP plots will be shown.
+#' @param verbose if TRUE, print weekly progress.
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -71,30 +72,37 @@ dfc <- function(
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
-  show_lsp_plot = TRUE
+  show_lsp_plot = TRUE,
+  verbose = TRUE
 )
 {
 
-  names(data)[1] <- 'datetime'
+  df <- as.data.frame(df, row.names = NULL)
 
-  if(!is_dgm_friendly(data)){
+  if (!is_dgm_friendly(df)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
+
 
   df$date <- date(df$datetime)
   days <- unique(df$date)
 
-  if(length(days) < 7){
+  if (length(days) < 7) {
     stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
   }
 
-  if(length(which(diff(days) != 1)) > 0){
+  if (length(which(diff(days) != 1)) > 0) {
     warning('There is an interruption in the days sequence, i.e., there are non consecutive
           days in the data')
     print('Interruption is at the following days:')
     cat(which(diff(days) != 1), '\n')
   }
 
+  df$date <- lubridate::date(df$datetime)
+  days <- unique(df$date)
+
+  dfc <- NULL
+  spec <- NULL
   dfc <- data.frame(date = character(),
                     dfc = numeric(),
                     hp = numeric()) #The data frame for DFC
@@ -107,24 +115,23 @@ dfc <- function(
 
   n_days_scanned <- length(days) - 7
 
+  for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
-  for (i in 1:n_days_scanned){# Loop over the days (7 by 7)
-    cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i+6)]), "\n")
-    samples_per_day = 24*60/sampling
+    if (verbose) {
+      cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i + 6)]), "\n")
 
+    }
 
-    #Filterning by index. CHANGED beacuase it's dangeous in case of missing data
-    # ds <- (i - 1) * samples_per_day + 1 #Index of the first data point in the series of 7 days
-    # de <- (7 + i - 1) * samples_per_day #Index of the last data point in the series of 7 days
-    # data_chunck <- data[ds:de, ] #The 7 days data set
+    samples_per_day = 24*60/sampling #The number of data points per day
 
-    #Filtering by date
-    data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i+6])
+    #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
+    data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
 
-    cat("Dates filtered are: ", as.character(unique(data_week$date)), "\n")
-    l <- lsp(data_week[,c('datetime', activity)],
+    #Selecting the first column (datetime) and the activity column
+    df_var <- data_week %>% select(1, `activity`)
+
+    l <- lsp(df_var,
              alpha = sig,
-             normalize = 'press',
              plot = show_lsp_plot) #Computing the lomb-scargle periodigram
 
     harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
@@ -157,8 +164,6 @@ dfc <- function(
       }
     }
 
-    #till here LSP
-
     prob_harmonic <- prob[harmonic_indices] # Storing the p-values of the harmonic frequencies
 
     sumall <- sum(l$power[1:len]) #sum of all powers
@@ -176,6 +181,10 @@ dfc <- function(
       prob))
 
     dfc[i,] <-  c(as.character(days[i]), DFC, HP)
+
+    if (verbose) {
+      print(dfc[i,])
+    }
   }
 
 
@@ -189,7 +198,7 @@ dfc <- function(
     spec_file_name <- file.path(outputdir, paste0("spec_", tag, "_", activity,".txt"))
     data_file_name <- file.path(outputdir, paste0("data_", tag, "_", activity,".txt"))
 
-    write.fwf(df,
+    gdata::write.fwf(df,
                      data_file_name,
                      sep = "\t",
                      colnames = TRUE,
@@ -198,16 +207,16 @@ dfc <- function(
     cat("DFC data will be saved in ", dfc_file_name, "\n")
     cat("Spectrum data will be saved in ", spec_file_name, "\n")
     names(dfc) <- c("start_date", "DFC", "HP")
-    write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
+    gdata::write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
 
     #Dumping the Spectrum Data in the spectrum file
     names(spec) <- c("fromtodate", "sample", "frequency", "power", "pvalue")
-    write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
+    gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
   }
 
   result <- NULL
   result$dfc <- dfc
   result$spec <- spec
-  result$lomb <- l
   return(result)
+
 }

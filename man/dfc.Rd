@@ -14,7 +14,8 @@ dfc(
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
-  show_lsp_plot = TRUE
+  show_lsp_plot = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ more details).}
 files will be(dfc_tag.txt and spec_tag.txt).}
 
 \item{show_lsp_plot}{if TRUE, LSP plots will be shown.}
+
+\item{verbose}{if TRUE, print weekly progress.}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the
