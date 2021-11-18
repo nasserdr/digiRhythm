@@ -31,7 +31,7 @@
 #' more details).
 #' @param outputdir where the data are saved if save is TRUE. The names of saved
 #' files will be(dfc_tag.txt and spec_tag.txt).
-#' @param show_lsp_plot if TRUE, LSP plots will be shown.
+#' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
@@ -63,6 +63,7 @@
 #' my_dfc <- dfc(df, activity , sampling = 15)
 
 
+
 #######################################################
 dfc <- function(
   data,
@@ -72,7 +73,7 @@ dfc <- function(
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
-  show_lsp_plot = TRUE,
+  plot = TRUE,
   verbose = TRUE
 )
 {
@@ -132,7 +133,7 @@ dfc <- function(
 
     l <- lsp(df_var,
              alpha = sig,
-             plot = show_lsp_plot) #Computing the lomb-scargle periodigram
+             plot = FALSE) #Computing the lomb-scargle periodigram
 
     harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
 
@@ -164,8 +165,6 @@ dfc <- function(
       }
     }
 
-    prob_harmonic <- prob[harmonic_indices] # Storing the p-values of the harmonic frequencies
-
     sumall <- sum(l$power[1:len]) #sum of all powers
     ssh <- sum(harm_power[which(harm_power > l$sig.level)]) #sum of harmonic significant frequencies
     sumsig <- sum(l$power[which(l$power > l$sig.level)])  #sum of all significant
@@ -187,6 +186,7 @@ dfc <- function(
     }
   }
 
+  names(dfc) <- c("start_date", "DFC", "HP")
 
   if (save) {
     if (!file.exists(outputdir)) {
@@ -206,7 +206,6 @@ dfc <- function(
                      quote = FALSE)
     cat("DFC data will be saved in ", dfc_file_name, "\n")
     cat("Spectrum data will be saved in ", spec_file_name, "\n")
-    names(dfc) <- c("start_date", "DFC", "HP")
     gdata::write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
 
     #Dumping the Spectrum Data in the spectrum file
@@ -214,9 +213,34 @@ dfc <- function(
     gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
   }
 
+
+  dfc$start_date <- as.Date(dfc$start_date, format("%Y-%m-%d"))
+  dfc$DFC <- as.numeric(dfc$DFC)
+  dfc$HP <- as.numeric(dfc$HP)
+
+  dfc_plot <- ggplot(dfc, aes(x = start_date)) +
+    geom_line(aes(y = DFC, linetype = "Degree of functional coupling (%)")) +
+    geom_line(aes(y = HP, linetype = "Harmonic power")) +
+    xlab("") +
+    ylab("") +
+    xlim(df$date[1], last(df$date)) +
+    theme(
+      # axis.text.y = element_blank(),
+      panel.background = element_rect(fill = "white"),
+      axis.line = element_line(size = 0.5),
+      legend.key = element_rect(fill = "white"),
+      legend.key.width = unit(0.5, "cm"),
+      legend.justification = "left",
+      legend.key.size = unit(7, "pt"),
+      legend.title = element_blank(),
+      legend.position = c(0.7,0.75))
+
+  if (plot) {
+    print(dfc_plot)
+  }
+
   result <- NULL
   result$dfc <- dfc
   result$spec <- spec
   return(result)
-
 }

@@ -4,41 +4,23 @@
 \alias{actogram}
 \title{Plot a an single actogram over a period of time for a specific variable}
 \usage{
-actogram(
-  df,
-  activity,
-  start,
-  end,
-  save = FALSE,
-  outputdir = "testresults",
-  outplotname = "actoplot",
-  width = 10,
-  device = "tiff",
-  height = 5
-)
+actogram(df, activity, activity_alias, start, end, save = "actogram")
 }
 \arguments{
 \item{df}{The dataframe containing the activity data}
 
 \item{activity}{the name of activity}
 
-\item{start}{The start day (in "\%Y\%m\%d" format)}
+\item{activity_alias}{A string containing the name of the activity to be
+shown on the graph.}
 
-\item{end}{The end day (in "\%Y\%m\%d" format)}
+\item{start}{The start day (in "\%Y-\%m-\%d" format).}
 
-\item{save}{TRUE if you want to save the image (if TRUE, subsequent arguments
-should be provided)}
+\item{end}{The end day (in "\%Y-\%m-\%d" format).}
 
-\item{outputdir}{the directory where you wish to save the image}
-
-\item{outplotname}{the name of the output plot (only name, without device
-extension nor path)}
-
-\item{width}{width of the image in cm}
-
-\item{device}{one of 'tiff', 'png', 'pdf', 'jpg'}
-
-\item{height}{height of the image in cm}
+\item{save}{if NULL, the image is not saved. Otherwise, this parameter will
+be the name of the saved image. it should contain the path and name without
+the extension.}
 }
 \value{
 None
@@ -48,20 +30,12 @@ Takes an activity dataset as input and plot and save an actogram of the
 specified activity column
 }
 \examples{
-data("df516b_2", package = "digiRhythm")
+data("df516b_2")
 df <- df516b_2
-df <- remove_activity_outliers(df)
-df_act_info(df)
-activity = names(df)[2]
-start = "2020-30-04"
-end = "2020-06-05"
-save = TRUE
-outputdir = 'testresults'
-outplotname = 'myplot'
-width = 10
-device = 'tiff'
-height =  5
-actogram(df, activity, start, end, save = FALSE,
-    outputdir = 'testresults', outplotname = 'actoplot', width = 10,
-    height =  5, device = 'tiff')
+activity <- names(df)[2]
+start <- "2020-05-01" #year-month-day
+end <- "2020-08-13" #year-month-day
+activity_alias <- 'Motion Index'
+save <- 'image' #if NULL, don't save the image
+actogram(df, activity, activity_alias, start, end, save)
 }

@@ -18,7 +18,9 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [x] Add the the dfc as an example to the README file.
 -   [ ] Add a function that fills NA values in the activity data set.
 -   [ ] Add a function that creates a histogram for the significant and
-    harmonic frequencies within the DFC (Patricia’s case).
+    harmonic frequencies within the DFC.
+-   [ ] Create a function that makes resampling aligned with several function
+    like (sum, mean, max, median ... ).
 
 **TO DO - VISUALIZATION FUNCTIONS:**
 
@@ -29,6 +31,8 @@ tools to analyze and visualize the rhythmic behavior of animals.
     activity + DFC.
 -   [ ] Create a function that visualizes all daily activities with
     control over the number of columns.
+-   [ ] Create a function that visualize the boxplot of activity per hour from
+    day to day.
 
 **TO DO - UTILITIES AND DOCUMENTATIONS:**
 
@@ -38,7 +42,7 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [x] Create a function to test if a data set is digiRhythm friendly.
 -   [x] Create a proper documentation for the data set.
 -   [x] configure data sets with lazy loading
--   [ ] Create test functions for all the functionalities.
+-   [ ] Create test functions for all the functions.
 -   [ ] Add a note about the fact that visualizations were created in a
     way they are aligned with the standards of common journals and give
     details about these settings + Add a note where the code can be

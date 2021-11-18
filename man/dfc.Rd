@@ -14,7 +14,7 @@ dfc(
   save = FALSE,
   tag = NULL,
   outputdir = NULL,
-  show_lsp_plot = TRUE,
+  plot = TRUE,
   verbose = TRUE
 )
 }
@@ -37,7 +37,7 @@ more details).}
 \item{outputdir}{where the data are saved if save is TRUE. The names of saved
 files will be(dfc_tag.txt and spec_tag.txt).}
 
-\item{show_lsp_plot}{if TRUE, LSP plots will be shown.}
+\item{plot}{if TRUE, the DFC/HP plot will be shown.}
 
 \item{verbose}{if TRUE, print weekly progress.}
 }

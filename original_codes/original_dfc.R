@@ -8,14 +8,13 @@ library(gdata) #write.fwf
 #Arguments configuration
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
-#df <- digiRhythm::remove_activity_outliers(df)
 activity = names(df)[2]
 sampling = 15
 sig <- 0.05
 save = TRUE
 tag = 'test'
 outputdir = 'sample_results'
-show_lsp_plot <- TRUE
+plot <- TRUE
 verbose = TRUE
 
 #Start of the function body
@@ -77,7 +76,7 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
   l <- lsp(df_var,
            alpha = sig,
-           plot = show_lsp_plot) #Computing the lomb-scargle periodigram
+           plot = FALSE) #Computing the lomb-scargle periodigram
 
   harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
 
@@ -108,8 +107,6 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
       prob[j] <- 1 - ( 1 - expy[j])^effm
     }
   }
-
-  prob_harmonic <- prob[harmonic_indices] # Storing the p-values of the harmonic frequencies
 
   sumall <- sum(l$power[1:len]) #sum of all powers
   ssh <- sum(harm_power[which(harm_power > l$sig.level)]) #sum of harmonic significant frequencies
@@ -159,7 +156,33 @@ if (save) {
   gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
 }
 
+
+dfc$start_date <- as.Date(dfc$start_date, format("%Y-%m-%d"))
+dfc$DFC <- as.numeric(dfc$DFC)
+dfc$HP <- as.numeric(dfc$HP)
+
+dfc_plot <- ggplot(dfc, aes(x = start_date)) +
+  geom_line(aes(y = DFC, linetype = "Degree of functional coupling (%)")) +
+  geom_line(aes(y = HP, linetype = "Harmonic power")) +
+  xlab("") +
+  ylab("") +
+  xlim(df$date[1], last(df$date)) +
+  theme(
+    # axis.text.y = element_blank(),
+    panel.background = element_rect(fill = "white"),
+    axis.line = element_line(size = 0.5),
+    legend.key = element_rect(fill = "white"),
+    legend.key.width = unit(0.5, "cm"),
+    legend.justification = "left",
+    legend.key.size = unit(7, "pt"),
+    legend.title = element_blank(),
+    legend.position = c(0.7,0.75))
+
+if(plot){
+  print(dfc_plot)
+}
+
 result <- NULL
 result$dfc <- dfc
 result$spec <- spec
-return(result)
+

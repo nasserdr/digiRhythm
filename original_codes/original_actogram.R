@@ -1,84 +1,65 @@
+#libraries
 library(ggplot2)
-library(xts)
+
+
+#Example
 data("df516b_2")
 df <- df516b_2
-df <- remove_activity_outliers(df)
-df_act_info(df)
 activity <- names(df)[2]
-start <- "2020-30-04"
-end <- "2020-06-05"
-save <- FALSE
-outputdir <- 'testresults'
-outplotname <- 'actoplot'
-width <- 10
-device <- 'tiff'
-height <-  5
+start <- "2020-05-01" #year-month-day
+end <- "2020-08-13" #year-month-day
+activity_alias <- 'Motion Index'
+save <- 'image' #if NULL, don't save the image
 
-selection = paste0(start, '/', end)
+#Start of the function
+start <- date(start)
+end <- date(end)
 
-start_date <- as.POSIXct(start, format = "%Y%m%d", tz = "CET")
-end_date <- as.POSIXct(end, format = "%Y%m%d", tz = "CET")
-
-df_xts <- xts(
-  x = df[[activity]],
-  order.by = df[,1],
-  tzone = "CET"
-)
-
-df_xts = df_xts[selection]
-
-df_filtered = data.frame(
-  datetime = index(df_xts),
-  value = coredata(df_xts)
-)
-
-names(df_filtered) <- names(df)[1:ncol(df_filtered)]
+names(df)[1] <- 'datetime'
 
 
-df_filtered$date <- as.Date(df_filtered[[activity]], tz = "CET", origin = df_filtered[1,1])
-df_filtered$time <- format(df_filtered[,1], format = "%H:%M", tz = "CET")
+df$date <- lubridate::date(df$datetime)
+data_to_plot <- df %>%
+  filter(lubridate::date(datetime) >= start) %>%
+  filter(lubridate::date(datetime) <= end)
+data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
 
-
-ggplot(df_filtered,
-            aes(x = time,
-                y = date,
-                color = Motion.Index)) +
-  geom_tile() +
+act_plot <- ggplot(data_to_plot,
+                   aes(x = time,
+                       y = date,
+                       fill = .data[[activity]])) +
+  geom_tile()+
+  xlab("Time")+
   ylab("Date") +
-  xlab("Time") +
+  ggtitle("Single actogram") +
+  scale_fill_gradient(name = activity_alias,
+                      low = "#FFFFFF",
+                      high = "#000000",
+                      na.value = "yellow")+
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
   theme(
-    axis.text.x = element_text(color = "#000000"),
-    axis.text.y = element_text(color = "#000000"),
-    text = element_text(family = 'Arial', size = 12),
+    axis.text.x = element_text(color="#000000"),
+    axis.text.y = element_text(color="#000000"),
+    text=element_text(family = 'Arial', size = 12),
     panel.background = element_rect(fill = "white"),
-    axis.line = element_line(size = 0.5),
-  ) +
-  scale_colour_gradient(
-    low = "#000000",
-    high = "#FFFFFF",
-    space = "Lab",
-    na.value = "grey50",
-    guide = "colourbar",
-    aesthetics = "colour"
-  ) +
-  scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00"))
-#  theme(legend.position = "none")
-
-if (save == TRUE) {
-
-  if (!file.exists(outputdir)) {
-    dir.create(outputdir)
-  }
+    axis.line = element_line(size = 0.5)
+  )
 
 
-  cat("Saving image in :", outplotname, "\n")
+if (!is.null(save)) {
+
+  cat("Saving image in :", save, "\n")
   ggsave(
-    filename = file.path(outputdir, paste0(outplotname,'.',device)),
-    plot = p,
-    device = device,
-    width = width,
-    height = height,
-    units = 'cm'
-  )} else{
-    print(p)
-  }
+    paste0(save, '.tiff'),
+    act_plot,
+    device = 'tiff',
+    width = 15,
+    height = 6,
+    units = "cm",
+    dpi = 600
+  )
+}
+
+print(act_plot)

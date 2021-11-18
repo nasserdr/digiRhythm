@@ -4,120 +4,89 @@
 #' specified activity column
 #' @param df The dataframe containing the activity data
 #' @param activity the name of activity
-#' @param start The start day (in "%Y%m%d" format)
-#' @param end The end day (in "%Y%m%d" format)
-#' @param save TRUE if you want to save the image (if TRUE, subsequent arguments
-#' should be provided)
-#' @param outputdir the directory where you wish to save the image
-#' @param outplotname the name of the output plot (only name, without device
-#' extension nor path)
-#' @param width width of the image in cm
-#' @param height height of the image in cm
-#' @param device one of 'tiff', 'png', 'pdf', 'jpg'
+#' @param activity_alias A string containing the name of the activity to be
+#' shown on the graph.
+#' @param start The start day (in "%Y-%m-%d" format).
+#' @param end The end day (in "%Y-%m-%d" format).
+#' @param save if NULL, the image is not saved. Otherwise, this parameter will
+#' be the name of the saved image. it should contain the path and name without
+#' the extension.
 #'
 #' @return None
 #'
 #' @importFrom magrittr %>%
-#' @importFrom zoo index coredata
-#' @importFrom xts xts
 #' @importFrom stats time
 #' @import ggplot2 extrafont
 #'
 #' @export
 #'
 #' @examples
-#' data("df516b_2", package = "digiRhythm")
+#' data("df516b_2")
 #' df <- df516b_2
-#' df <- remove_activity_outliers(df)
-#' df_act_info(df)
-#' activity = names(df)[2]
-#' start = "2020-30-04"
-#' end = "2020-06-05"
-#' save = TRUE
-#' outputdir = 'testresults'
-#' outplotname = 'myplot'
-#' width = 10
-#' device = 'tiff'
-#' height =  5
-#' actogram(df, activity, start, end, save = FALSE,
-#'     outputdir = 'testresults', outplotname = 'actoplot', width = 10,
-#'     height =  5, device = 'tiff')
+#' activity <- names(df)[2]
+#' start <- "2020-05-01" #year-month-day
+#' end <- "2020-08-13" #year-month-day
+#' activity_alias <- 'Motion Index'
+#' save <- 'image' #if NULL, don't save the image
+#' actogram(df, activity, activity_alias, start, end, save)
 
 actogram <- function(
   df,
   activity,
+  activity_alias,
   start,
   end,
-  save = FALSE,
-  outputdir = 'testresults',
-  outplotname = 'actoplot',
-  width = 10,
-  device = 'tiff',
-  height =  5
+  save = 'actogram'
 ){
-  #function starts here
+  #Start of the function
+  start <- date(start)
+  end <- date(end)
 
-  print('start function')
-  selection = paste0(start, '/', end)
+  names(df)[1] <- 'datetime'
+  df$date <- lubridate::date(df$datetime)
+  data_to_plot <- df %>%
+    filter(lubridate::date(datetime) >= start) %>%
+    filter(lubridate::date(datetime) <= end)
+  data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
 
-  start_date <- as.POSIXct(start, format = "%Y%m%d", tz = "CET")
-  end_date <- as.POSIXct(end, format = "%Y%m%d", tz = "CET")
-
-  df_xts <- xts(
-    x = df[[activity]],
-    order.by = df[,1],
-    tzone = "CET"
-  )
-
-  df_xts = df_xts[selection]
-
-  df_filtered = data.frame(
-    datetime = index(df_xts),
-    value = coredata(df_xts)
-  )
-
-  names(df_filtered) <- names(df)[1:ncol(df_filtered)]
-
-
-  print(head(df_filtered))
-  df_filtered$date <- base::as.Date(df_filtered[[activity]], tz = "CET", origin = df_filtered[1,1])
-  df_filtered$time <- format(df_filtered[,1], format = "%H:%M", tz = "CET")
-
-
-  p <- ggplot(df_filtered,
-              aes(x = time,
-                  y = date,
-                  color = activity)) +
+  act_plot <- ggplot(data_to_plot,
+                     aes(x = time,
+                         y = date,
+                         fill = .data[[activity]])) +
     geom_tile() +
-    ylab("Date") +
     xlab("Time") +
+    ylab("Date") +
+    ggtitle("Single actogram") +
+    scale_fill_gradient(name = activity_alias,
+                        low = "#FFFFFF",
+                        high = "#000000",
+                        na.value = "yellow") +
+    theme_classic() +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
     theme(
       axis.text.x = element_text(color = "#000000"),
       axis.text.y = element_text(color = "#000000"),
       text = element_text(size = 12),
       panel.background = element_rect(fill = "white"),
-      axis.line = element_line(size = 0.5),
-    )  +
-    scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
-    theme(legend.position = "none")
-
-  print('plot done')
-  if (save == TRUE) {
-
-    if (!file.exists(outputdir)) {
-      dir.create(outputdir)
-    }
+      axis.line = element_line(size = 0.5)
+    )
 
 
-    cat("Saving image in :", outplotname, "\n")
+  if (!is.null(save)) {
+
+    cat("Saving image in :", save, "\n")
     ggsave(
-      filename = file.path(outputdir, paste0(outplotname,'.',device)),
-      plot = p,
-      device = device,
-      width = width,
-      height = height,
-      units = 'cm'
-    )} else{
-      print(p)
-    }
+      paste0(save, '.tiff'),
+      act_plot,
+      device = 'tiff',
+      width = 15,
+      height = 6,
+      units = "cm",
+      dpi = 600
+    )
+  }
+
+  print(act_plot)
+  return(act_plot)
 }
