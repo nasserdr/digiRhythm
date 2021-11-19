@@ -11,7 +11,7 @@ activity <- names(df)[2]
 activity_alias <- 'Motion Index'
 start <- "2020-05-01" #year-month-day
 end <- "2020-08-13" #year-month-day
-save <- 'image' #if NULL, don't save the image
+save <- 'sample_results/daily_activity_wrap' #if NULL, don't save the image
 ncols <- 3
 sampling_rate <- 15
 

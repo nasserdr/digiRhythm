@@ -19,6 +19,7 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [ ] Add a function that fills NA values in the activity data set.
 -   [ ] Add a function that creates a histogram for the significant and
     harmonic frequencies within the DFC.
+-   [ ] Add plotting funtionality to the diurnality index.
 -   [ ] Create a function that makes resampling aligned with several function
     like (sum, mean, max, median ... ).
 -   [ ] Make the code un-sensible to column names in original data frame (call
@@ -81,7 +82,7 @@ filename <- file.path(getwd(), '516b_2.csv')
 colstoread <- c("Date", "Time", "Motion Index", 'Steps') 
 
 #Reading the activity data from the csv file
-data <- import_raw_icetag_data(filename = filename, skipLines = , act.cols.names = colstoread, sampling = 15)
+data <- import_raw_activity_data(filename = filename, skipLines = , act.cols.names = colstoread, sampling = 15)
 
 print(head(data))
 ```

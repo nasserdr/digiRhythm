@@ -55,7 +55,7 @@ diurnality <- function(data, activity, plot = FALSE){
     diurnality = (coredata(day_val) - coredata(night_val))/(coredata(day_val) + coredata(night_val))
   )
 
-  p <- ggplot(data = df, aes(x = dates, y = diurnality)) +
+  diurnality <- ggplot(data = df, aes(x = dates, y = diurnality)) +
     geom_line() +
     ylab("Date") +
     xlab("Diurnality Index") +
@@ -68,7 +68,7 @@ diurnality <- function(data, activity, plot = FALSE){
     )
 
   if (plot) {
-    print(p)
+    print(diurnality)
   }
 
   return(diurnality)

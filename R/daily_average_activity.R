@@ -29,7 +29,7 @@
 #' start <- "2020-05-01" #year-month-day
 #' end <- "2020-08-13" #year-month-day
 #' activity_alias <- 'Motion Index'
-#' save <- 'image' #if NULL, don't save the image
+#' save <- 'sample_results/daily_average_activity' #if NULL, don't save the image
 #' daily_average_activity(df, activity, activity_alias, start, end, save)
 
 

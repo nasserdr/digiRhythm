@@ -47,7 +47,7 @@ df <- data.frame(
   diurnality = (coredata(day_val) - coredata(night_val))/(coredata(day_val) + coredata(night_val))
 )
 
-p <- ggplot(data = df, aes(x = dates, y = diurnality)) +
+diurnality <- ggplot(data = df, aes(x = dates, y = diurnality)) +
   geom_line() +
   ylab("Date") +
   xlab("Diurnality Index") +
@@ -60,5 +60,5 @@ p <- ggplot(data = df, aes(x = dates, y = diurnality)) +
   )
 
 if (plot) {
-  print(p)
+  print(diurnality)
 }

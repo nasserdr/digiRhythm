@@ -9,6 +9,8 @@
 #' @param start The start day (in "%Y-%m-%d" format).
 #' @param end The end day (in "%Y-%m-%d" format).
 #' @param save if NULL, the image is not saved. Otherwise, this parameter will
+#' @param sampling_rate the sampling rate of the data.
+#' @param ncols the number of columns to spread the graphs on.
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
@@ -29,18 +31,23 @@
 #' activity_alias <- 'Motion Index'
 #' start <- "2020-05-01" #year-month-day
 #' end <- "2020-08-13" #year-month-day
-#' save <- 'image' #if NULL, don't save the image
+#' save <- 'sample_results/daily_activity_wrap' #if NULL, don't save the image
 #' ncols <- 3
 #' sampling_rate <- 15
+#' daily_activity_wrap_plot(df, activity, activity_alias, start, end, sampling_rate,
+#' ncols)
 
 
-daily_average_activity <- function(
+daily_activity_wrap_plot <- function(
   df,
   activity,
   activity_alias,
   start,
   end,
-  save = 'actogram'
+  sampling_rate,
+  ncols,
+  save = 'daily_wrap_plot'
+
 ){
   #Function starts here
   df$date <- lubridate::date(df$datetime)
