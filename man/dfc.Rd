@@ -11,9 +11,6 @@ dfc(
   activity = "Motion.Index",
   sampling = 15,
   sig = 0.05,
-  save = FALSE,
-  tag = NULL,
-  outputdir = NULL,
   plot = TRUE,
   verbose = TRUE
 )
@@ -27,15 +24,6 @@ dfc(
 
 \item{sig}{The significance level that should be used to determine the
 significant frequency component.}
-
-\item{save}{TRUE to save results in text files, FALSE otherwise (if TRUE,
-subsequent arguments (tag and outputdir) should be given).}
-
-\item{tag}{The suffix of the saved files (see the parameter outputdir for
-more details).}
-
-\item{outputdir}{where the data are saved if save is TRUE. The names of saved
-files will be(dfc_tag.txt and spec_tag.txt).}
 
 \item{plot}{if TRUE, the DFC/HP plot will be shown.}
 
@@ -53,7 +41,6 @@ Data are supposed to sampled with a specific smpling rate. It should be the same
 as in the given argument @sampling
 Missing days are not permitted. If you have data with half day, it should be
 removed.
-Data are saved in the output directory odir
 }
 \description{
 The computation of DFC/HP/LSP parameters is done using a rolling window of 7 days (i.e.,

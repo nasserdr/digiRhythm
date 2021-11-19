@@ -1,6 +1,6 @@
-#' Reads IceTag Data from csv files
+#' Reads Raw Activity Data from csv files
 #'
-#' Reads Icetag Data (data, time, activity(ies)) from a CSV file where we can skip
+#' Reads Activity Data (data, time, activity(ies)) from a CSV file where we can skip
 #' some lines (usually representing the metadata) and select specific activities.
 #'
 #' This function prepare the data stored in a csv to be compatible with the

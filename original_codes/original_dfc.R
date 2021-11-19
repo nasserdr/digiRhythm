@@ -11,9 +11,6 @@ df <- df516b_2
 activity = names(df)[2]
 sampling = 15
 sig <- 0.05
-save = TRUE
-tag = 'test'
-outputdir = 'sample_results'
 plot <- TRUE
 verbose = TRUE
 
@@ -130,40 +127,13 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 }
 
 
-if (save) {
-  if (!file.exists(outputdir)) {
-    dir.create(outputdir)
-  }
+dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
+dfc$dfc <- as.numeric(dfc$dfc)
+dfc$hp <- as.numeric(dfc$hp)
 
-
-  dfc_file_name <- file.path(outputdir, paste0("dfc_", tag, "_", activity,".txt"))
-  spec_file_name <- file.path(outputdir, paste0("spec_", tag, "_", activity,".txt"))
-  data_file_name <- file.path(outputdir, paste0("data_", tag, "_", activity,".txt"))
-
-  gdata::write.fwf(df,
-                   data_file_name,
-                   sep = "\t",
-                   colnames = TRUE,
-                   rownames = FALSE,
-                   quote = FALSE)
-  cat("DFC data will be saved in ", dfc_file_name, "\n")
-  cat("Spectrum data will be saved in ", spec_file_name, "\n")
-  names(dfc) <- c("start_date", "DFC", "HP")
-  gdata::write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
-
-  #Dumping the Spectrum Data in the spectrum file
-  names(spec) <- c("fromtodate", "sample", "frequency", "power", "pvalue")
-  gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
-}
-
-
-dfc$start_date <- as.Date(dfc$start_date, format("%Y-%m-%d"))
-dfc$DFC <- as.numeric(dfc$DFC)
-dfc$HP <- as.numeric(dfc$HP)
-
-dfc_plot <- ggplot(dfc, aes(x = start_date)) +
-  geom_line(aes(y = DFC, linetype = "Degree of functional coupling (%)")) +
-  geom_line(aes(y = HP, linetype = "Harmonic power")) +
+dfc_plot <- ggplot(dfc, aes(x = date)) +
+  geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+  geom_line(aes(y = hp, linetype = "Harmonic power")) +
   xlab("") +
   ylab("") +
   xlim(df$date[1], last(df$date)) +
@@ -182,7 +152,4 @@ if(plot){
   print(dfc_plot)
 }
 
-result <- NULL
-result$dfc <- dfc
-result$spec <- spec
-
+dfc_plot$spec <- spec

@@ -1,3 +1,5 @@
-# utils::globalVariables(
-#   c("datetime")
-#   )
+utils::globalVariables(
+  c("datetime",
+    'average',
+    'hp')
+  )

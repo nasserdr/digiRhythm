@@ -1,6 +1,6 @@
 #Install digiRhythm for the first time
 #install.packages("devtools")
-#devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
+devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 
 #'Loading digiRhythm____________________________________________________________
 library(digiRhythm)
@@ -9,13 +9,13 @@ library(digiRhythm)
 #'Reading a sample file_________________________________________________________
 url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
 download.file(url, destfile = '516b_2.csv')
-filename <- file.path(getwd(), 'sample_results/516b_2.csv')
+filename <- file.path(getwd(), '516b_2.csv')
 
 #The columns that we are interested in
 colstoread <- c("Date", "Time", "Motion Index", 'Steps')
 
 #Reading the activity data from the csv file
-data <- import_raw_activity_data(filename = filename, skipLines = , act.cols.names = colstoread, sampling = 15)
+data <- import_raw_activity_data(filename = filename, skipLines = 6, act.cols.names = colstoread, sampling = 15)
 
 print(head(data))
 
@@ -43,7 +43,7 @@ actogram(data,
          activity_alias = 'Motion Index',
          start = '2020-04-30',
          end = '2020-06-14',
-         save = 'myactogram')
+         save = 'sample_results/myactogram123')
 
 #'Visualizing and saving average activity_______________________________________
 daily_average_activity(data,
@@ -51,49 +51,55 @@ daily_average_activity(data,
          activity_alias = 'Motion Index',
          start = '2020-04-30',
          end = '2020-06-14',
-         save = 'activity')
+         save = 'sample_results/activity')
 
 #DGM is done in a way we can have control on output plots via the ggplot functionality
 #All plotting functions return a GGPLOT object. This object contains the default
 #plot and the data. This object can also be modified.
 library(ggplot2)
 
-avg_plot <- daily_average_activity(data,
+var <- daily_average_activity(data,
                        activity = 'Motion.Index',
                        activity_alias = 'Motion Index',
                        start = '2020-04-30',
                        end = '2020-06-14',
-                       save = 'activity')
-print(avg_plot)
+                       save = NULL)
+print(var)
 
-avg_plot + theme_dark()
+var + theme_dark()
 
 #Day to day activity___________________________________________________________
-
-daily_activity_wrap_plot(df,
+# Bug
+daily_activity_wrap_plot(data,
                          activity,
                          activity_alias,
                          start,
                          end,
                          sampling_rate,
                          ncols)
+
 #'Periodicity___________________________________________________________________
 dgm_periodicity(data)
+new_data <- resample_dgm(data, 30)
+dgm_periodicity(new_data)
 
 #'Computing the Diurnality______________________________________________________
 diur <- diurnality(data, activity = 'Steps', plot = TRUE)
 
-
 #'Computing the DFC_____________________________________________________________
 #'Output to be modified to a ggplot object instead of a list for maximum control
-my_dfc <- dfc(
-  data,
-  activity = names(data)[2],
+data("df516b_2", package = "digiRhythm")
+df <- df516b_2
+df_act_info(df)
+activity = names(df)[2]
+
+a <- digiRhythm::dfc(
+  data = df,
+  activity = names(df)[2],
   sampling = 15,
   sig = 0.05,
   save = TRUE,
   tag = 'test',
   outputdir = 'sample_results',
   plot = TRUE,
-  verbose = FALSE)
-
+  verbose = TRUE)

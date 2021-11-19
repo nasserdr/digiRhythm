@@ -2,7 +2,7 @@
 % Please edit documentation in R/import_raw_activity_data.R
 \name{import_raw_activity_data}
 \alias{import_raw_activity_data}
-\title{Reads IceTag Data from csv files}
+\title{Reads Raw Activity Data from csv files}
 \usage{
 import_raw_activity_data(
   filename,
@@ -48,7 +48,7 @@ A dataframe with datetime column and other activity columns, ready to
 be used with other functions in digirhythm
 }
 \description{
-Reads Icetag Data (data, time, activity(ies)) from a CSV file where we can skip
+Reads Activity Data (data, time, activity(ies)) from a CSV file where we can skip
 some lines (usually representing the metadata) and select specific activities.
 }
 \details{

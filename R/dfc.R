@@ -25,12 +25,6 @@
 #' @param sampling The sampling period of the data set in minutes.
 #' @param sig The significance level that should be used to determine the
 #' significant frequency component.
-#' @param save TRUE to save results in text files, FALSE otherwise (if TRUE,
-#' subsequent arguments (tag and outputdir) should be given).
-#' @param tag The suffix of the saved files (see the parameter outputdir for
-#' more details).
-#' @param outputdir where the data are saved if save is TRUE. The names of saved
-#' files will be(dfc_tag.txt and spec_tag.txt).
 #' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
 #'
@@ -45,9 +39,7 @@
 #' as in the given argument @sampling
 #' Missing days are not permitted. If you have data with half day, it should be
 #' removed.
-#' Data are saved in the output directory odir
 #'
-#' @importFrom gdata write.fwf
 #' @importFrom lubridate date
 #' @importFrom lomb lsp
 #' @importFrom dplyr filter
@@ -70,9 +62,6 @@ dfc <- function(
   activity = 'Motion.Index',
   sampling = 15,
   sig = 0.05,
-  save = FALSE,
-  tag = NULL,
-  outputdir = NULL,
   plot = TRUE,
   verbose = TRUE
 )
@@ -186,41 +175,14 @@ dfc <- function(
     }
   }
 
-  names(dfc) <- c("start_date", "DFC", "HP")
 
-  if (save) {
-    if (!file.exists(outputdir)) {
-      dir.create(outputdir)
-    }
+  dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
+  dfc$dfc <- as.numeric(dfc$dfc)
+  dfc$hp <- as.numeric(dfc$hp)
 
-
-    dfc_file_name <- file.path(outputdir, paste0("dfc_", tag, "_", activity,".txt"))
-    spec_file_name <- file.path(outputdir, paste0("spec_", tag, "_", activity,".txt"))
-    data_file_name <- file.path(outputdir, paste0("data_", tag, "_", activity,".txt"))
-
-    gdata::write.fwf(df,
-                     data_file_name,
-                     sep = "\t",
-                     colnames = TRUE,
-                     rownames = FALSE,
-                     quote = FALSE)
-    cat("DFC data will be saved in ", dfc_file_name, "\n")
-    cat("Spectrum data will be saved in ", spec_file_name, "\n")
-    gdata::write.fwf(dfc, dfc_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
-
-    #Dumping the Spectrum Data in the spectrum file
-    names(spec) <- c("fromtodate", "sample", "frequency", "power", "pvalue")
-    gdata::write.fwf(spec, spec_file_name, sep = "\t", colnames = TRUE, rownames = FALSE, quote = FALSE)
-  }
-
-
-  dfc$start_date <- as.Date(dfc$start_date, format("%Y-%m-%d"))
-  dfc$DFC <- as.numeric(dfc$DFC)
-  dfc$HP <- as.numeric(dfc$HP)
-
-  dfc_plot <- ggplot(dfc, aes(x = start_date)) +
-    geom_line(aes(y = DFC, linetype = "Degree of functional coupling (%)")) +
-    geom_line(aes(y = HP, linetype = "Harmonic power")) +
+  dfc_plot <- ggplot(dfc, aes(x = date)) +
+    geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+    geom_line(aes(y = hp, linetype = "Harmonic power")) +
     xlab("") +
     ylab("") +
     xlim(df$date[1], last(df$date)) +
@@ -235,12 +197,9 @@ dfc <- function(
       legend.title = element_blank(),
       legend.position = c(0.7,0.75))
 
-  if (plot) {
+  if(plot){
     print(dfc_plot)
   }
 
-  result <- NULL
-  result$dfc <- dfc
-  result$spec <- spec
-  return(result)
+  dfc_plot$spec <- spec
 }
