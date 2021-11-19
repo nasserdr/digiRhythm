@@ -21,6 +21,10 @@ tools to analyze and visualize the rhythmic behavior of animals.
     harmonic frequencies within the DFC.
 -   [ ] Create a function that makes resampling aligned with several function
     like (sum, mean, max, median ... ).
+-   [ ] Make the code un-sensible to column names in original data frame (call
+    them by index rather than by name). For example, no need to call the datetime
+    by its name because it's always the first column (by dgm definition) in the 
+    dataset.
 
 **TO DO - VISUALIZATION FUNCTIONS:**
 

@@ -1,6 +1,7 @@
 #libraries
 library(ggplot2)
-
+library(lubridate)
+library(dplyr)
 
 #Example
 data("df516b_2")
@@ -12,8 +13,8 @@ activity_alias <- 'Motion Index'
 save <- 'image' #if NULL, don't save the image
 
 #Start of the function
-start <- date(start)
-end <- date(end)
+start <- lubridate::date(start)
+end <- lubridate::date(end)
 
 names(df)[1] <- 'datetime'
 

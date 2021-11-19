@@ -1,6 +1,6 @@
-#' Plot a an single actogram over a period of time for a specific variable
+#' Plot daily average over a period of time for a specific variable.
 #'
-#' Takes an activity dataset as input and plot and save an actogram of the
+#' Takes an activity dataset as input and plot and save the daily average of the
 #' specified activity column
 #' @param df The dataframe containing the activity data
 #' @param activity the name of activity
@@ -30,9 +30,10 @@
 #' end <- "2020-08-13" #year-month-day
 #' activity_alias <- 'Motion Index'
 #' save <- 'image' #if NULL, don't save the image
-#' actogram(df, activity, activity_alias, start, end, save)
+#' daily_average_activity(df, activity, activity_alias, start, end, save)
 
-actogram <- function(
+
+daily_average_activity <- function(
   df,
   activity,
   activity_alias,
@@ -40,39 +41,55 @@ actogram <- function(
   end,
   save = 'actogram'
 ){
-  #Start of the function
-  start <- lubridate::date(start)
-  end <- lubridate::date(end)
 
-  names(df)[1] <- 'datetime'
   df$date <- lubridate::date(df$datetime)
   data_to_plot <- df %>%
     filter(lubridate::date(df$datetime) >= start) %>%
     filter(lubridate::date(df$datetime) <= end)
   data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
 
-  act_plot <- ggplot(data_to_plot,
-                     aes(x = time,
-                         y = date,
-                         fill = .data[[activity]])) +
-    geom_tile() +
+  start <- lubridate::date(start)
+  end <- lubridate::date(end)
+
+  sum_of_activity_over_all_days_per_sample = NULL
+  sum_of_activity_over_all_days_per_sample =  data.frame(
+    time = as.character(),
+    average = as.numeric()
+  )
+
+  for(t in unique(data_to_plot$time)){
+    tdf <- data_to_plot %>% filter(time == t)
+    mean = mean(tdf[[activity]])
+    sum_of_activity_over_all_days_per_sample <- rbind(
+      sum_of_activity_over_all_days_per_sample,
+      data.frame(
+        time = t,
+        average = mean)
+    )
+  }
+
+  s <- sum_of_activity_over_all_days_per_sample
+
+  s$datetime <- paste(data_to_plot$date[1], s$time)
+  s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"))
+
+  avg_act_plot <- ggplot(s,
+                         aes(
+                           x = datetime,
+                           y = average
+                         )) +
+    geom_line() +
     xlab("Time") +
-    ylab("Date") +
-    ggtitle("Single actogram") +
-    scale_fill_gradient(name = activity_alias,
-                        low = "#FFFFFF",
-                        high = "#000000",
-                        na.value = "yellow") +
+    ylab(paste0("Daily Average of ", activity_alias)) +
+    scale_x_datetime(date_labels = "%H:%M") +
     theme_classic() +
     theme(plot.title = element_text(hjust = 0.5)) +
-    scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
     theme(
-      axis.text.x = element_text(color = "#000000"),
-      axis.text.y = element_text(color = "#000000"),
-      text = element_text(size = 12),
+      axis.text.x = element_text(color="#000000"),
+      axis.text.y = element_text(color="#000000"),
+      text=element_text(size = 12),
       panel.background = element_rect(fill = "white"),
-      axis.line = element_line(size = 0.5)
-    )
+      axis.line = element_line(size = 0.5))
 
 
   if (!is.null(save)) {
@@ -80,7 +97,7 @@ actogram <- function(
     cat("Saving image in :", save, "\n")
     ggsave(
       paste0(save, '.tiff'),
-      act_plot,
+      avg_act_plot,
       device = 'tiff',
       width = 15,
       height = 6,
@@ -89,6 +106,7 @@ actogram <- function(
     )
   }
 
-  print(act_plot)
-  return(act_plot)
+  print(avg_act_plot)
+
+  return(avg_act_plot)
 }
