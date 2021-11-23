@@ -42,6 +42,8 @@ contains less than 80\% of the expected data points.}
 
 \item{verbose}{print out some useful information during the execution
 of the function}
+
+\item{sep}{The delimiter/separator between the columns}
 }
 \value{
 A dataframe with datetime column and other activity columns, ready to
@@ -75,6 +77,7 @@ data <- import_raw_activity_data(
     filename,
     skipLines = 7,
     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
+    sep = ',',
     date_format = "\%d.\%m.\%Y",
     time_format = "\%H:\%M:\%S",
     sampling = 15,

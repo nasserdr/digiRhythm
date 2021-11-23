@@ -3,12 +3,19 @@ library(tidyr) #unite
 library(xts)
 
 
-url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
-download.file(url, destfile = '516b_2.csv')
+#Read a sample file from github
+# url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
+# download.file(url, destfile = '516b_2.csv')
+#filename <- file.path(getwd(), '603.csv')
+# act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
 
-filename <- file.path(getwd(), '516b_2.csv')
-skipLines <- 7
-act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
+#OR Read a file from local file system
+dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/classification'
+file <- list.files(dir)[1]
+filename <- file.path(dir, file)
+act.cols.names <- c("Date", "Time", "classification")
+
+
 date_format <- "%d.%m.%Y"
 time_format <- "%H:%M:%S"
 sampling <- 15
@@ -16,6 +23,7 @@ trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- FALSE
+sep = ';'
 
 
 
@@ -25,7 +33,10 @@ if (verbose) {
 }
 
 #Loading data from the CSV (with specific columns and skipping lines)
-data <- read_csv(filename, skip = skipLines, )[ ,act.cols.names]
+data <- read.table(filename,
+                   header = TRUE,
+                   skip = 0,
+                   sep = ';')[ ,act.cols.names]
 
 data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
@@ -67,7 +78,6 @@ df <- data.frame(
 #supposed to contains (respecting the sampling value). For example, if the
 #sampling value is 15 minutes, then a day should contains at least
 #0.8*60*24/15 samples (76.8 samples)
-
 
 smallest_mandatory_daily_samples = floor(0.8*60*24/sampling)
 

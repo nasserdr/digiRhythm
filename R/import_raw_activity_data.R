@@ -23,6 +23,7 @@
 #' @param skipLines The number of non-useful lines to skip (lines to header)
 #' @param act.cols.names A vector containing the names of columns to read
 #' (specific to the activity columns)
+#' @param sep The delimiter/separator between the columns
 #' @param date_format The POSIX format of the Date column (or first column)
 #' @param time_format The POSIX format of the Time column (or second column)
 #' @param sampling The sampling frequency in minutes (default 15 min)
@@ -52,6 +53,7 @@
 #'     filename,
 #'     skipLines = 7,
 #'     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
+#'     sep = ',',
 #'     date_format = "%d.%m.%Y",
 #'     time_format = "%H:%M:%S",
 #'     sampling = 15,
@@ -81,7 +83,10 @@ import_raw_activity_data <- function(filename,
   }
 
   #Loading data from the CSV (with specific columns and skipping lines)
-  data <- read_csv(filename, skip = skipLines, )[ ,act.cols.names]
+  data <- read.table(filename,
+                     header = TRUE,
+                     skip = 0,
+                     sep = ';')[ ,act.cols.names]
 
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
