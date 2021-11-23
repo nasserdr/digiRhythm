@@ -35,10 +35,11 @@ if (verbose) {
 }
 
 #Loading data from the CSV (with specific columns and skipping lines)
-data <- read.table(filename,
-                   header = TRUE,
+
+
+data <- read_delim(filename,
                    skip = 7,
-                   sep = ',')
+                   delim = sep)[, act.cols.names]
 
 data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 

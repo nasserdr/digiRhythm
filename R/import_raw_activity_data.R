@@ -41,7 +41,7 @@
 #'
 #' @importFrom tidyr unite
 #' @importFrom magrittr %>%
-#' @importFrom readr read_csv
+#' @importFrom readr read_delim
 #' @importFrom xts endpoints period.apply xts
 #' @importFrom zoo coredata index
 #' @importFrom dplyr filter select last tally
@@ -85,10 +85,9 @@ import_raw_activity_data <- function(filename,
   }
 
   #Loading data from the CSV (with specific columns and skipping lines)
-  data <- read.table(filename,
-                     header = TRUE,
-                     skip = skipLines,
-                     sep = sep)[ ,act.cols.names]
+  data <- read_delim(filename,
+                     skip = 7,
+                     delim = sep)[, act.cols.names]
 
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
