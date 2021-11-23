@@ -10,6 +10,7 @@ import_raw_activity_data(
   act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
   date_format = "\%d.\%m.\%Y",
   time_format = "\%H:\%M:\%S",
+  sep = ",",
   sampling = 15,
   trim_first_day = TRUE,
   trim_middle_days = TRUE,
@@ -29,6 +30,8 @@ import_raw_activity_data(
 
 \item{time_format}{The POSIX format of the Time column (or second column)}
 
+\item{sep}{The delimiter/separator between the columns}
+
 \item{sampling}{The sampling frequency in minutes (default 15 min)}
 
 \item{trim_first_day}{if True, removes the data from the first day if it
@@ -42,8 +45,6 @@ contains less than 80\% of the expected data points.}
 
 \item{verbose}{print out some useful information during the execution
 of the function}
-
-\item{sep}{The delimiter/separator between the columns}
 }
 \value{
 A dataframe with datetime column and other activity columns, ready to

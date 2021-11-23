@@ -67,7 +67,7 @@ dfc <- function(
 )
 {
 
-  df <- as.data.frame(df, row.names = NULL)
+  df <- as.data.frame(data, row.names = NULL)
 
   if (!is_dgm_friendly(df)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')

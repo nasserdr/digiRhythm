@@ -45,6 +45,7 @@
 #' @importFrom xts endpoints period.apply xts
 #' @importFrom zoo coredata index
 #' @importFrom dplyr filter select last tally
+#' @importFrom utils read.table
 #'
 #' @examples
 #'
@@ -71,6 +72,7 @@ import_raw_activity_data <- function(filename,
                               act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                               date_format = "%d.%m.%Y",
                               time_format = "%H:%M:%S",
+                              sep = ',',
                               sampling = 15,
                               trim_first_day = TRUE,
                               trim_middle_days = TRUE,
@@ -85,8 +87,8 @@ import_raw_activity_data <- function(filename,
   #Loading data from the CSV (with specific columns and skipping lines)
   data <- read.table(filename,
                      header = TRUE,
-                     skip = 0,
-                     sep = ';')[ ,act.cols.names]
+                     skip = skipLines,
+                     sep = sep)[ ,act.cols.names]
 
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
