@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "hassan.nasser@me.com",
            comment = c(ORCID = "0000-0003-1821-3234"))
-Maintainer: Roland-Hassan Nasser <roland.nasser@agroscope.admin.c>
+Maintainer: Roland-Hassan Nasser <roland.nasser@agroscope.admin.ch>
 Description: digiRhythm is an R library developed at Agroscope and provides 
     a set of tools to analyze and visualize the rhythmic behavior of animals.
     The main functionalities of this library are: computing the degree of functional
