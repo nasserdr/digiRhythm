@@ -2,28 +2,33 @@ library(readr) #read_csv
 library(tidyr) #unite
 library(xts)
 
+library(stringr)
 
 #Read a sample file from github
 url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
 download.file(url, destfile = '516b_2.csv')
 filename <- file.path(getwd(), '516b_2.csv')
 act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
+date_format <- "%d.%m.%Y"
+time_format <- "%H:%M:%S"
+sep = ','
+skiplines <- 7
 
 #OR Read a file from local file system
 # dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/classification'
 # file <- list.files(dir)[1]
 # filename <- file.path(dir, file)
 # act.cols.names <- c("Date", "Time", "classification")
+# date_format <- "%Y-%m-%d"
+# time_format <- "%H:%M:%S"
+# sep = ';'
+# skiplines <- 0
 
-
-date_format <- "%d.%m.%Y"
-time_format <- "%H:%M:%S"
 sampling <- 15
 trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- FALSE
-sep = ','
 
 
 print(head(data))
@@ -38,12 +43,19 @@ if (verbose) {
 
 
 data <- read_delim(filename,
-                   skip = 7,
-                   delim = sep)[, act.cols.names]
+                   skip = skiplines,
+                   delim = sep,
+                   show_col_types = FALSE)[, act.cols.names]
+data <- data %>%
+  mutate(across(where(is.character), str_trim))
 
 data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
 data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
+
+
+data <- data[!is.na(data$datetime),]
+
 
 if (verbose) {
   print('First data points ... ')
@@ -52,7 +64,6 @@ if (verbose) {
   print(data.frame(data[nrow(data):(nrow(data) - 2),]))
 }
 
-data <- data[!is.na(data$datetime),]
 
 #Transforming data to an XTS for easy management of sampling and date removal
 data_xts = xts(

@@ -46,6 +46,7 @@
 #' @importFrom zoo coredata index
 #' @importFrom dplyr filter select last tally
 #' @importFrom utils read.table
+#' @importFrom stringr str_trim
 #'
 #' @examples
 #'
@@ -85,15 +86,21 @@ import_raw_activity_data <- function(filename,
   }
 
   #Loading data from the CSV (with specific columns and skipping lines)
+
+
   data <- read_delim(filename,
-                     skip = 7,
-                     delim = sep)[, act.cols.names]
+                     skip = skiplines,
+                     delim = sep,
+                     show_col_types = FALSE)[, act.cols.names]
+  data <- data %>%
+    mutate(across(where(is.character), str_trim))
 
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
-  data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
+  data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = 'CET')
 
   data <- data[!is.na(data$datetime),]
+
 
   if (verbose) {
     print('First data points ... ')
@@ -101,6 +108,7 @@ import_raw_activity_data <- function(filename,
     print('Last data point ... ')
     print(data.frame(data[nrow(data):(nrow(data) - 2),]))
   }
+
 
   #Transforming data to an XTS for easy management of sampling and date removal
   data_xts = xts(
