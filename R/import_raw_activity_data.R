@@ -47,7 +47,6 @@
 #' @importFrom dplyr filter select last tally
 #' @importFrom utils read.table
 #' @importFrom stringr str_trim
-#' @importFrom tidyselect where
 #'
 #' @examples
 #'
