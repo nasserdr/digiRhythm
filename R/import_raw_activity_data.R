@@ -47,6 +47,7 @@
 #' @importFrom dplyr filter select last tally
 #' @importFrom utils read.table
 #' @importFrom stringr str_trim
+#' @importFrom tidyselect where
 #'
 #' @examples
 #'
@@ -69,7 +70,7 @@
 
 
 import_raw_activity_data <- function(filename,
-                              skipLines = 7,
+                              skipLines = 0,
                               act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                               date_format = "%d.%m.%Y",
                               time_format = "%H:%M:%S",
@@ -89,7 +90,7 @@ import_raw_activity_data <- function(filename,
 
 
   data <- read_delim(filename,
-                     skip = skiplines,
+                     skip = skipLines,
                      delim = sep,
                      show_col_types = FALSE)[, act.cols.names]
   data <- data %>%

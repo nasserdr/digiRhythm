@@ -6,7 +6,7 @@
 \usage{
 import_raw_activity_data(
   filename,
-  skipLines = 7,
+  skipLines = 0,
   act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
   date_format = "\%d.\%m.\%Y",
   time_format = "\%H:\%M:\%S",
