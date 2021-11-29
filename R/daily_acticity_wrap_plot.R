@@ -49,17 +49,14 @@ daily_activity_wrap_plot <- function(
   save = 'daily_wrap_plot'
 
 ){
-  #Function starts here
   start <- lubridate::date(start)
   end <- lubridate::date(end)
 
-
   df$date <- lubridate::date(df$datetime)
-  data_to_plot <- df %>%
-    filter(lubridate::date(df$datetime) >= start) %>%
-    filter(lubridate::date(df$datetime) <= end)
+  data_to_plot <- df %>% filter(date >= start) %>% filter(date <= end)
 
   data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
+
 
 
   # days <- unique(data_to_plot$date)

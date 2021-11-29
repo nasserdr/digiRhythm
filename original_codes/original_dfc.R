@@ -4,7 +4,7 @@ library(lomb)
 library(dplyr)
 library(stringr) #str_replace
 library(gdata) #write.fwf
-
+library(ggplot2)
 #Arguments configuration
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2

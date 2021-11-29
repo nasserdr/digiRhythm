@@ -202,4 +202,5 @@ dfc <- function(
   }
 
   dfc_plot$spec <- spec
+  return(dfc_plot)
 }

@@ -16,11 +16,11 @@ ncols <- 3
 sampling_rate <- 15
 
 
+
+#Function starts here
 start <- lubridate::date(start)
 end <- lubridate::date(end)
 
-
-#Function starts here
 df$date <- lubridate::date(df$datetime)
 data_to_plot <- df %>% filter(date >= start) %>% filter(date <= end)
 
