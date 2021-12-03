@@ -14,7 +14,10 @@ tools to analyze and visualize the rhythmic behavior of animals.
     to detect these missing days.
 -   [ ] Come up with another name for the function daily_average_activity and 
     create another function for daily and hourly computed activities averaged.
-
+-   [ ] Create a file that conducts a Meta Analysis (like the one of regio_beef)
+    code that takes an input file with data configuration, compute everything
+    and then save all results in an output file. That would hit.
+-   [ ] Add out-of-the-shelf graphical control (width, height, device, line thickness ...)
 
 **TO DO CORE FUNCTIONALITIES:**
 
