@@ -34,6 +34,8 @@ if(is.null(data)){
     is_dgm <- FALSE
   }
 
+
+
   #Checking if we have more than one column
   if(ncol(data) == 1){
     message <- paste0(red('x Illogical number of columns: '), 'The dataset has only one column. Minimum number of columns is 2')

@@ -39,7 +39,7 @@ sampling <- 15
 trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
-verbose <- FALSE
+verbose <- TRUE
 
 
 print(head(data))
@@ -66,6 +66,12 @@ data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time
 
 #Keep the datetime column + all other numeric-only columns
 data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
+
+if (verbose){
+  cat('Removing the following columns because they are not numeric')
+  cat('\n')
+  cat(names(data[2:ncol(data)])[!sapply(data[,2:ncol(data)], is.numeric)])
+}
 
 
 data <- data[!is.na(data$datetime),]

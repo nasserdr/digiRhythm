@@ -4,14 +4,16 @@
 \alias{diurnality}
 \title{Computes the diurnality index based on an activity dataframe}
 \usage{
-diurnality(data, activity, plot = FALSE)
+diurnality(data, activity, save = NULL)
 }
 \arguments{
 \item{data}{a digiRhythm-friendly dataset}
 
 \item{activity}{The number of non-useful lines to skip (lines to header)}
 
-\item{plot}{if True, show the plot of diurnality index on the screen}
+\item{save}{if NULL, the image is not saved. Otherwise, this parameter will
+be the name of the saved image. it should contain the path and name without
+the extension.}
 }
 \value{
 A dataframe with 2 col: date and diurnality index

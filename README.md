@@ -6,6 +6,16 @@ readme
 digiRhythm is an R library developed at Agroscope and provides a set of
 tools to analyze and visualize the rhythmic behavior of animals.
 
+**MOST URGENT TO DO:**
+-   [ ] Create a function that visualize the boxplot of activity per hour from
+    day to day.
+-   [ ] Create duo, trio and quadro plots functionalities.
+-   [ ] Add a dataset that has missing days then update the is_dgm_friendly
+    to detect these missing days.
+-   [ ] Come up with another name for the function daily_average_activity and 
+    create another function for daily and hourly computed activities averaged.
+
+
 **TO DO CORE FUNCTIONALITIES:**
 
 -   [x] Create a function that read Icetag data stored in a CSV file.
@@ -16,28 +26,25 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [x] Add the the dfc as an example to the README file.
 -   [x] Create a function that computes the diurnality index.
 -   [x] Add the the dfc as an example to the README file.
--   [ ] Add a function that fills NA values in the activity data set.
--   [ ] Add a function that creates a histogram for the significant and
-    harmonic frequencies within the DFC.
--   [ ] Add plotting funtionality to the diurnality index.
+-   [x] Add plotting funtionality to the diurnality index.
 -   [ ] Create a function that makes resampling aligned with several function
     like (sum, mean, max, median ... ).
 -   [ ] Make the code un-sensible to column names in original data frame (call
     them by index rather than by name). For example, no need to call the datetime
     by its name because it's always the first column (by dgm definition) in the 
     dataset.
+-   [ ] Add a function that fills NA values in the activity data set.
+-   [ ] Add a function that creates a histogram for the significant and
+    harmonic frequencies within the DFC.
+
 
 **TO DO - VISUALIZATION FUNCTIONS:**
 
 -   [x] Create a function that visualize the actogram.
--   [ ] Create a function that visualize the actogram + average
-    activity.
--   [ ] Create a function that visualize the actogram + average
-    activity + DFC.
--   [ ] Create a function that visualizes all daily activities with
+-   [x] Create a function that visualize the average activity.
+-   [x] Create a function that visualize the DFC/HP.
+-   [x] Create a function that visualizes all daily activities with
     control over the number of columns.
--   [ ] Create a function that visualize the boxplot of activity per hour from
-    day to day.
 
 **TO DO - UTILITIES AND DOCUMENTATIONS:**
 

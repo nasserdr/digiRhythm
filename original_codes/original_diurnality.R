@@ -6,6 +6,7 @@ library(ggplot2)
 #arguments
 #data
 activity <- 'Motion.Index'
+save <- 'sample_results/diurnality' #if NULL, don't save the image
 
 #Configs
 data("df516b_2", package = "digiRhythm")
@@ -59,6 +60,18 @@ diurnality <- ggplot(data = df, aes(x = dates, y = diurnality)) +
     axis.line = element_line(size = 0.5),
   )
 
-if (plot) {
-  print(diurnality)
+if (!is.null(save)) {
+
+  cat("Saving image in :", save, "\n")
+  ggsave(
+    paste0(save, '.tiff'),
+    diurnality,
+    device = 'tiff',
+    width = 15,
+    height = 6,
+    units = "cm",
+    dpi = 600
+  )
 }
+
+print(diurnality)

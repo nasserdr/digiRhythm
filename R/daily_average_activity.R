@@ -72,6 +72,7 @@ daily_average_activity <- function(
 
   s$datetime <- paste(data_to_plot$date[1], s$time)
   s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"))
+  s <- s %>% select(datetime, average)
 
   avg_act_plot <- ggplot(s,
                          aes(

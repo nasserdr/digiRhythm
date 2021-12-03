@@ -2,7 +2,9 @@
 #'
 #' @param data a digiRhythm-friendly dataset
 #' @param activity The number of non-useful lines to skip (lines to header)
-#' @param plot if True, show the plot of diurnality index on the screen
+#' @param save if NULL, the image is not saved. Otherwise, this parameter will
+#' be the name of the saved image. it should contain the path and name without
+#' the extension.
 #'
 #' @return A dataframe with 2 col: date and diurnality index
 #'
@@ -19,7 +21,7 @@
 #'
 #' @export
 
-diurnality <- function(data, activity, plot = FALSE){
+diurnality <- function(data, activity, save = NULL){
 
   #di = (cd/td - cn/tn)/(cd/td + cn/tn)
 
@@ -67,9 +69,21 @@ diurnality <- function(data, activity, plot = FALSE){
       axis.line = element_line(size = 0.5),
     )
 
-  if (plot) {
-    print(diurnality)
+  if (!is.null(save)) {
+
+    cat("Saving image in :", save, "\n")
+    ggsave(
+      paste0(save, '.tiff'),
+      diurnality,
+      device = 'tiff',
+      width = 15,
+      height = 6,
+      units = "cm",
+      dpi = 600
+    )
   }
+
+  print(diurnality)
 
   return(diurnality)
 
