@@ -1,20 +1,21 @@
 library(readr) #read_csv
 library(tidyr) #unite
 library(xts)
+library(dplyr)
 
 library(stringr)
 
 #Read a sample file from github
-url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
-download.file(url, destfile = '516b_2.csv')
-filename <- file.path(getwd(), '516b_2.csv')
-act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
-date_format <- "%d.%m.%Y"
-time_format <- "%H:%M:%S"
-sep = ','
-skiplines <- 7
+# url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
+# download.file(url, destfile = '516b_2.csv')
+# filename <- file.path(getwd(), '516b_2.csv')
+# act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
+# date_format <- "%d.%m.%Y"
+# time_format <- "%H:%M:%S"
+# sep = ','
+# skiplines <- 7
 
-#OR Read a file from local file system
+#OR Read a file from local file system (Aska's data)
 # dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/classification'
 # file <- list.files(dir)[1]
 # filename <- file.path(dir, file)
@@ -23,6 +24,16 @@ skiplines <- 7
 # time_format <- "%H:%M:%S"
 # sep = ';'
 # skiplines <- 0
+
+
+#OR Read a file from local file system (Marie's data)
+filename <- '../digiRhythm/team/marie/12112.csv'
+act.cols.names <- c("Date", "Time", "Motion Index", "Standing", "Lying", "Steps", "Lying Bouts")
+date_format <- "%d.%m.%Y"
+time_format <- "%H:%M:%S"
+sep = ','
+skiplines <- 7
+
 
 sampling <- 15
 trim_first_day <- TRUE
@@ -53,6 +64,9 @@ data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = 
 
 data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
 
+#Keep the datetime column + all other numeric-only columns
+data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
+
 
 data <- data[!is.na(data$datetime),]
 
@@ -73,6 +87,7 @@ data_xts = xts(
 
 #Sampling the data set according to the sampling argument
 data_xts_sampled <- NULL
+
 for (var in names(data_xts)) {
   var_xts <- xts::period.apply(
     data_xts[,var],

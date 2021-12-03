@@ -99,6 +99,10 @@ import_raw_activity_data <- function(filename,
 
   data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = 'CET')
 
+  #Keep the datetime column + all other numeric-only columns
+  data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
+
+  #Remove rows where date is not defined
   data <- data[!is.na(data$datetime),]
 
 

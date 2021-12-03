@@ -1,5 +1,6 @@
 utils::globalVariables(
   c("datetime",
     'average',
-    'hp')
+    'hp',
+    'where')
   )
