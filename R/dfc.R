@@ -181,7 +181,7 @@ dfc <- function(
   dfc$hp <- as.numeric(dfc$hp)
 
   dfc_plot <- ggplot(dfc, aes(x = date)) +
-    geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+    geom_line(aes(y = dfc, linetype = "Degree of functional coupling")) +
     geom_line(aes(y = hp, linetype = "Harmonic power")) +
     xlab("") +
     ylab("") +

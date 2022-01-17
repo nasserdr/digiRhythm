@@ -21,7 +21,7 @@ RoxygenNote: 7.1.2
 Depends: 
     R (>= 4.0.0)
 Imports: tidyr, 
-    readr,
+    readr (>= 2.0.1),
     magrittr,
     dplyr,
     xts,
