@@ -10,7 +10,6 @@
 #'
 #' @importFrom lubridate date
 #' @importFrom xts xts period.apply
-#' @importFrom zoo index coredata
 #'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")

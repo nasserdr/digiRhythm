@@ -43,13 +43,13 @@ Tn <- 44 #44 samples * 15 minutes = 11 hours
 night_val <- Cn/Tn
 
 #Putting indices in date format to account for missing days
-index(day_val) = base::as.Date(index(day_val))
-index(night_val) = base::as.Date(index(night_val))
+zoo::index(day_val) = base::as.Date(zoo::index(day_val))
+zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
 common_dates_series <- merge.xts(day_val, night_val, join ='inner')
 
-dates_series = seq(from = index(common_dates_series)[1],
-                   to = last(index(common_dates_series)),
+dates_series = seq(from = zoo::index(common_dates_series)[1],
+                   to = last(zoo::index(common_dates_series)),
                              by = 1)
 
 all_dates_series = merge.xts(common_dates_series, dates_series)
@@ -57,7 +57,7 @@ d <- all_dates_series
 
 #computing the dirunality index
 df <- data.frame(
-  date = index(d),
+  date = zoo::index(d),
   diurnality = (coredata(d[,'day_val']) - coredata(d[,'night_val']))/(coredata(d[,'day_val']) + coredata(d[,'night_val']))
 )
 names(df) = c('Date', 'Diurnality')
