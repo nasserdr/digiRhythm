@@ -55,13 +55,13 @@ diurnality <- function(data, activity, save = NULL){
   zoo::index(day_val) = base::as.Date(zoo::index(day_val))
   zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
-  common_dates_series <- merge.xts(day_val, night_val, join ='inner')
+  common_dates_series <- xts::merge.xts(day_val, night_val, join ='inner')
 
   dates_series = seq(from = zoo::index(common_dates_series)[1],
                      to = last(zoo::index(common_dates_series)),
                      by = 1)
 
-  all_dates_series = merge.xts(common_dates_series, dates_series)
+  all_dates_series = xts::merge.xts(common_dates_series, dates_series)
   d <- all_dates_series
 
   #computing the dirunality index

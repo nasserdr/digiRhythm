@@ -1,5 +1,5 @@
 #imports
-library(xts) #xts #period.apply #endpoints
+library(xts) #xts period.apply endpoints merge.xts index
 library(lubridate) #date
 library(ggplot2)
 
