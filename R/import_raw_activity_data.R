@@ -24,6 +24,10 @@
 #' @param act.cols.names A vector containing the names of columns to read
 #' (specific to the activity columns)
 #' @param sep The delimiter/separator between the columns
+#' @param original_tz The time zone with which the datetime are encoded
+#' @param target_tz The time zone with which you want to process the data.
+#' Setting this argument to 'GMT' will help you coping with daylight saving time
+#' where changes occur two time a year.
 #' @param date_format The POSIX format of the Date column (or first column)
 #' @param time_format The POSIX format of the Time column (or second column)
 #' @param sampling The sampling frequency in minutes (default 15 min)
@@ -56,6 +60,8 @@
 #'     skipLines = 7,
 #'     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
 #'     sep = ',',
+#'     original_tz = 'CET',
+#'     target_tz = 'CET',
 #'     date_format = "%d.%m.%Y",
 #'     time_format = "%H:%M:%S",
 #'     sampling = 15,
@@ -74,6 +80,8 @@ import_raw_activity_data <- function(filename,
                               date_format = "%d.%m.%Y",
                               time_format = "%H:%M:%S",
                               sep = ',',
+                              original_tz = 'CET',
+                              target_tz = 'CET',
                               sampling = 15,
                               trim_first_day = TRUE,
                               trim_middle_days = TRUE,
@@ -97,7 +105,10 @@ import_raw_activity_data <- function(filename,
 
   data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
-  data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = 'CET')
+  data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = original_tz)
+
+  data$datetime = format(data$datetime, tz = target_tz)
+  data$datetime = as.POSIXct(data$datetime, tz = target_tz)
 
   #Keep the datetime column + all other numeric-only columns // Remove non numeric cols
   if (verbose){
@@ -129,14 +140,14 @@ import_raw_activity_data <- function(filename,
 
   #Sampling the data set according to the sampling argument
   data_xts_sampled <- NULL
-  for (var in names(data_xts)) {
-    var_xts <- period.apply(
-      data_xts[,var],
-      endpoints(data_xts, "minutes", k = sampling),
-      FUN = sum
-    )
-    data_xts_sampled <- cbind(data_xts_sampled, var_xts)
-  }
+    for (var in names(data_xts)) {
+      var_xts <- xts::period.apply(
+        data_xts[,var],
+        endpoints(data_xts, "minutes", k = sampling),
+        FUN = sum
+      )
+      data_xts_sampled <- cbind(data_xts_sampled, var_xts)
+    }
 
 
   #Creating a dataframe from the sampled XTS (what we will return)
@@ -155,7 +166,7 @@ import_raw_activity_data <- function(filename,
   if (verbose) {
     print(paste('Minimum Required number of samples per day', smallest_mandatory_daily_samples))
   }
-  df$date = as.Date(df$datetime, tz = 'CET')
+  df$date = as.Date(df$datetime, tz = target_tz)
 
   if (trim_first_day) {
     n_samples_day1 <- df %>% filter(date == unique(df$date)[1]) %>% tally()

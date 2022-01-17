@@ -9,8 +9,8 @@ activity <- 'Motion.Index'
 save <- 'sample_results/diurnality' #if NULL, don't save the image
 
 #Configs
-data("df516b_2", package = "digiRhythm")
-data <- df516b_2
+data("df", package = "digiRhythm")
+data <- df603
 data <- remove_activity_outliers(data)
 df_act_info(data)
 activity = names(data)[2]
@@ -42,13 +42,28 @@ Cn <- period.apply(X_night, endpoints(X_night, "days"), sum)
 Tn <- 44 #44 samples * 15 minutes = 11 hours
 night_val <- Cn/Tn
 
+#Putting indices in date format to account for missing days
+index(day_val) = base::as.Date(index(day_val))
+index(night_val) = base::as.Date(index(night_val))
 
+common_dates_series <- merge.xts(day_val, night_val, join ='inner')
+
+dates_series = seq(from = index(common_dates_series)[1],
+                   to = last(index(common_dates_series)),
+                             by = 1)
+
+all_dates_series = merge.xts(common_dates_series, dates_series)
+d <- all_dates_series
+
+#computing the dirunality index
 df <- data.frame(
-  date = dates,
-  diurnality = (coredata(day_val) - coredata(night_val))/(coredata(day_val) + coredata(night_val))
+  date = index(d),
+  diurnality = (coredata(d[,'day_val']) - coredata(d[,'night_val']))/(coredata(d[,'day_val']) + coredata(d[,'night_val']))
 )
+names(df) = c('Date', 'Diurnality')
+df <- na.omit(df)
 
-diurnality <- ggplot(data = df, aes(x = dates, y = diurnality)) +
+diurnality <- ggplot(data = df, aes(x = Date, y = Diurnality)) +
   geom_line() +
   ylab("Date") +
   xlab("Diurnality Index") +

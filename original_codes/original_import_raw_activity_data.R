@@ -16,31 +16,32 @@ library(stringr)
 # skiplines <- 7
 
 #OR Read a file from local file system (Aska's data)
-# dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/classification'
-# file <- list.files(dir)[1]
-# filename <- file.path(dir, file)
-# act.cols.names <- c("Date", "Time", "classification")
-# date_format <- "%Y-%m-%d"
-# time_format <- "%H:%M:%S"
-# sep = ';'
-# skiplines <- 0
+dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/all_variables'
+file <- list.files(dir)[1]
+filename <- file.path(dir, file)
+act.cols.names <- c("Date", "Time", "move_x", 'move_y')
+date_format <- "%Y-%m-%d"
+time_format <- "%H:%M:%S"
+sep = ';'
+skiplines <- 0
 
 
 #OR Read a file from local file system (Marie's data)
-filename <- '../digiRhythm/team/marie/12112.csv'
-act.cols.names <- c("Date", "Time", "Motion Index", "Standing", "Lying", "Steps", "Lying Bouts")
-date_format <- "%d.%m.%Y"
-time_format <- "%H:%M:%S"
-sep = ','
-skiplines <- 7
+# filename <- '../digiRhythm/team/marie/12112.csv'
+# act.cols.names <- c("Date", "Time", "Motion Index", "Standing", "Lying", "Steps", "Lying Bouts")
+# date_format <- "%d.%m.%Y"
+# time_format <- "%H:%M:%S"
+# sep = ','
+# skiplines <- 7
 
 
-sampling <- 15
+sampling <- 1
 trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- TRUE
-
+original_tz = 'CET'
+target_tz = 'GMT'
 
 print(head(data))
 
@@ -62,7 +63,11 @@ data <- data %>%
 
 data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
-data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = 'CET')
+data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = original_tz)
+
+data$datetime = format(data$datetime, tz = target_tz)
+data$datetime = as.POSIXct(data$datetime, tz = target_tz)
+
 
 #Keep the datetime column + all other numeric-only columns
 data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
@@ -93,15 +98,14 @@ data_xts = xts(
 
 #Sampling the data set according to the sampling argument
 data_xts_sampled <- NULL
-
-for (var in names(data_xts)) {
-  var_xts <- xts::period.apply(
-    data_xts[,var],
-    endpoints(data_xts, "minutes", k = sampling),
-    FUN = sum
-  )
-  data_xts_sampled <- cbind(data_xts_sampled, var_xts)
-}
+  for (var in names(data_xts)) {
+    var_xts <- xts::period.apply(
+      data_xts[,var],
+      endpoints(data_xts, "minutes", k = sampling),
+      FUN = sum
+    )
+    data_xts_sampled <- cbind(data_xts_sampled, var_xts)
+  }
 
 
 #Creating a dataframe from the sampled XTS (what we will return)
@@ -119,7 +123,8 @@ smallest_mandatory_daily_samples = floor(0.8*60*24/sampling)
 if (verbose) {
   print(paste('Minimum Required number of samples per day', smallest_mandatory_daily_samples))
 }
-df$date = as.Date(df$datetime, tz = 'CET')
+
+df$date = as.Date(df$datetime, tz = target_tz)
 
 if (trim_first_day) {
   n_samples_day1 <- df %>% filter(date == unique(df$date)[1]) %>% tally()

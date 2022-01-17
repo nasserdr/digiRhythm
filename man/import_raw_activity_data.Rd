@@ -11,6 +11,8 @@ import_raw_activity_data(
   date_format = "\%d.\%m.\%Y",
   time_format = "\%H:\%M:\%S",
   sep = ",",
+  original_tz = "CET",
+  target_tz = "CET",
   sampling = 15,
   trim_first_day = TRUE,
   trim_middle_days = TRUE,
@@ -31,6 +33,12 @@ import_raw_activity_data(
 \item{time_format}{The POSIX format of the Time column (or second column)}
 
 \item{sep}{The delimiter/separator between the columns}
+
+\item{original_tz}{The time zone with which the datetime are encoded}
+
+\item{target_tz}{The time zone with which you want to process the data.
+Setting this argument to 'GMT' will help you coping with daylight saving time
+where changes occur two time a year.}
 
 \item{sampling}{The sampling frequency in minutes (default 15 min)}
 
@@ -79,6 +87,8 @@ data <- import_raw_activity_data(
     skipLines = 7,
     act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
     sep = ',',
+    original_tz = 'CET',
+    target_tz = 'CET',
     date_format = "\%d.\%m.\%Y",
     time_format = "\%H:\%M:\%S",
     sampling = 15,
