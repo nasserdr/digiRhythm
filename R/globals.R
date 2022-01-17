@@ -2,5 +2,8 @@ utils::globalVariables(
   c("datetime",
     'average',
     'hp',
-    'where')
+    'where',
+    'na.omit',
+    'Date',
+    'Diurnalit')
   )

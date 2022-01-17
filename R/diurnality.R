@@ -9,7 +9,7 @@
 #' @return A dataframe with 2 col: date and diurnality index
 #'
 #' @importFrom lubridate date
-#' @importFrom xts xts period.apply
+#' @importFrom xts xts period.apply merge.xts
 #'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
