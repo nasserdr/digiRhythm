@@ -27,7 +27,7 @@ df516b_2 <- import_raw_activity_data(filename,
                                    trim_last_day = TRUE,
                                    verbose = TRUE)
 
-df516b_2 %>% usethis::use_data(overwrite = TRUE)
+usethis::use_data(df516b_2, overwrite = TRUE)
 
 
 
@@ -48,7 +48,7 @@ df678_2 <- import_raw_activity_data(filename,
                                   trim_last_day = TRUE,
                                   verbose = TRUE)
 
-df678_2  %>% usethis::use_data(overwrite = TRUE)
+usethis::use_data(df678_2, overwrite = TRUE)
 
 #Data set 3
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/689b_3.csv'
@@ -66,7 +66,7 @@ df689b_3 <- import_raw_activity_data(filename,
                                    trim_middle_days = TRUE,
                                    trim_last_day = TRUE,
                                    verbose = TRUE)
-df689b_3 %>% usethis::use_data(overwrite = TRUE)
+usethis::use_data(df689b_3, overwrite = TRUE)
 
 
 #Data set 4
@@ -86,7 +86,7 @@ df691b_1 <- import_raw_activity_data(filename,
                                    trim_last_day = TRUE,
                                    verbose = TRUE)
 
-df691b_1 %>%usethis::use_data(overwrite = TRUE)
+usethis::use_data(df691b_1, overwrite = TRUE)
 
 #Dataset 5
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/759a_3.csv'
@@ -106,7 +106,7 @@ df759a_3 <- import_raw_activity_data(filename,
                                    trim_last_day = TRUE,
                                    verbose = TRUE)
 
-df759a_3 %>% usethis::use_data(overwrite = TRUE)
+usethis::use_data(df759a_3, overwrite = TRUE)
 
 
 #Dataset 6 (contains 1 missing day)
@@ -129,7 +129,8 @@ df603 <- import_raw_activity_data(filename,
                                    trim_last_day = TRUE,
                                    verbose = FALSE)
 
-df603 %>% usethis::use_data(overwrite = TRUE)
+# a %>% usethis::use_data(overwrite = TRUE)
+usethis::use_data(df603, overwrite = TRUE)
 
 #Dataset 7 (contains 2 missing days)
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
@@ -151,7 +152,7 @@ df625 <- import_raw_activity_data(filename,
                                   trim_last_day = TRUE,
                                   verbose = FALSE)
 
-df625 %>% usethis::use_data(overwrite = TRUE)
+ usethis::use_data(df625, overwrite = TRUE)
 
 
 file.remove(file.path(getwd(), '516b_2.csv'))

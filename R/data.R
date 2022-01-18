@@ -72,3 +72,37 @@
 #'
 #' @source Agroscope Tanikon
 "df759a_3"
+
+
+#' df603 Activity Data Sets
+#'
+#' A dataset containing the x and y acceleration from an accelerometer installed
+#' on a cattle. There are missing days in this dataset.
+#' The data set is sampled with 15 minutes samples. The data is as follows:
+#'
+#' @format A data frame of 3 columns
+#' \describe{
+#'  \item{datetime}{a POSIX formatted datetime}
+#'  \item{move_x}{The acceleration along the x axis}
+#'  \item{move_y}{The acceleration along the y axis}
+#' }
+#'
+#' @source Agroscope Posieux
+"df603"
+
+
+#' df625 Activity Data Sets
+#'
+#' A dataset containing the x and y acceleration from an accelerometer installed
+#' on a cattle. There are missing days in this dataset.
+#' The data set is sampled with 15 minutes samples. The data is as follows:
+#'
+#' @format A data frame of 3 columns
+#' \describe{
+#'  \item{datetime}{a POSIX formatted datetime}
+#'  \item{move_x}{The acceleration along the x axis}
+#'  \item{move_y}{The acceleration along the y axis}
+#' }
+#'
+#' @source Agroscope Posieux
+"df625"

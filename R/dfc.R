@@ -67,7 +67,7 @@ dfc <- function(
 )
 {
 
-  df <- as.data.frame(data, row.names = NULL)
+  df <- as.data.frame(df, row.names = NULL)
 
   if (!is_dgm_friendly(df)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
@@ -75,21 +75,24 @@ dfc <- function(
 
 
   df$date <- date(df$datetime)
-  days <- unique(df$date)
+  ##Change (took into account all days including missing days)
+  # days <- unique(df$date)
+  days <- seq(from = df$date[1],
+              to = last(df$date),
+              by = 1)
+
 
   if (length(days) < 7) {
     stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
   }
 
-  if (length(which(diff(days) != 1)) > 0) {
-    warning('There is an interruption in the days sequence, i.e., there are non consecutive
-          days in the data')
-    print('Interruption is at the following days:')
-    cat(which(diff(days) != 1), '\n')
-  }
-
-  df$date <- lubridate::date(df$datetime)
-  days <- unique(df$date)
+  ##Change (removed)
+  # if (length(which(diff(days) != 1)) > 0) {
+  #   warning('There is an interruption in the days sequence, i.e., there are non consecutive
+  #         days in the data')
+  #   print('Interruption is at the following days:')
+  #   cat(which(diff(days) != 1), '\n')
+  # }
 
   dfc <- NULL
   spec <- NULL
@@ -103,7 +106,9 @@ dfc <- function(
                      power = numeric(),
                      pvalue = numeric()) #The data frame for SPEC
 
-  n_days_scanned <- length(days) - 7
+  n_days_scanned <- length(days) - 6
+
+  i = 1
 
   for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
@@ -116,6 +121,9 @@ dfc <- function(
 
     #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
     data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
+
+    #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
+
 
     #Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
@@ -174,7 +182,6 @@ dfc <- function(
       print(dfc[i,])
     }
   }
-
 
   dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
   dfc$dfc <- as.numeric(dfc$dfc)

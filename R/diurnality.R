@@ -69,10 +69,10 @@ diurnality <- function(data, activity, save = NULL){
     date = zoo::index(d),
     diurnality = (coredata(d[,'day_val']) - coredata(d[,'night_val']))/(coredata(d[,'day_val']) + coredata(d[,'night_val']))
   )
-  names(df) = c('Date', 'Diurnality')
+  names(df) = c('date', 'diurnality')
   df <- na.omit(df)
 
-  diurnality <- ggplot(data = df, aes(x = Date, y = Diurnality)) +
+  diurnality <- ggplot(data = df, aes(x = date, y = diurnality)) +
     geom_line() +
     ylab("Date") +
     xlab("Diurnality Index") +

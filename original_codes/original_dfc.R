@@ -5,18 +5,51 @@ library(dplyr)
 library(stringr) #str_replace
 library(gdata) #write.fwf
 library(ggplot2)
+
 #Arguments configuration
-data("df516b_2", package = "digiRhythm")
-df <- df516b_2
+
+#Dataset without interruption
+# data("df516b_2", package = "digiRhythm")
+# df <- df516b_2
+# activity = names(df)[2]
+# sampling = 15
+# sig <- 0.05
+# plot <- TRUE
+# verbose = TRUE
+
+
+##Dataset with interruption
+url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
+download.file(url, destfile = '625.csv')
+
+filename <- file.path(getwd(), '625.csv')
+
+df625 <- import_raw_activity_data(filename,
+                                  act.cols.names = c("Date", "Time", "move_x", 'move_y'),
+                                  skipLines = 0,
+                                  date_format = "%Y-%m-%d",
+                                  time_format = "%H:%M:%S",
+                                  sep = ';',
+                                  original_tz = 'CET',
+                                  target_tz = 'CET',
+                                  sampling = 15,
+                                  trim_first_day = TRUE,
+                                  trim_middle_days = TRUE,
+                                  trim_last_day = TRUE,
+                                  verbose = FALSE)
 activity = names(df)[2]
 sampling = 15
 sig <- 0.05
 plot <- TRUE
 verbose = TRUE
 
+df <- df625
 #Start of the function body
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
+
+
+
 
 df <- as.data.frame(df, row.names = NULL)
 
@@ -26,21 +59,24 @@ if (!is_dgm_friendly(df)) {
 
 
 df$date <- date(df$datetime)
-days <- unique(df$date)
+##Change (took into account all days including missing days)
+# days <- unique(df$date)
+days <- seq(from = df$date[1],
+            to = last(df$date),
+            by = 1)
+
 
 if (length(days) < 7) {
   stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
 }
 
-if (length(which(diff(days) != 1)) > 0) {
-  warning('There is an interruption in the days sequence, i.e., there are non consecutive
-          days in the data')
-  print('Interruption is at the following days:')
-  cat(which(diff(days) != 1), '\n')
-}
-
-df$date <- lubridate::date(df$datetime)
-days <- unique(df$date)
+##Change (removed)
+# if (length(which(diff(days) != 1)) > 0) {
+#   warning('There is an interruption in the days sequence, i.e., there are non consecutive
+#         days in the data')
+#   print('Interruption is at the following days:')
+#   cat(which(diff(days) != 1), '\n')
+# }
 
 dfc <- NULL
 spec <- NULL
@@ -54,7 +90,9 @@ spec <- data.frame(fromtodate = character(),
                    power = numeric(),
                    pvalue = numeric()) #The data frame for SPEC
 
-n_days_scanned <- length(days) - 7
+n_days_scanned <- length(days) - 6
+
+i = 1
 
 for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
@@ -67,6 +105,9 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
   #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
   data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
+
+  #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
+
 
   #Selecting the first column (datetime) and the activity column
   df_var <- data_week %>% select(1, `activity`)

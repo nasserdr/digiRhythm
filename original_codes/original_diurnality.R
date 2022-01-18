@@ -46,13 +46,13 @@ night_val <- Cn/Tn
 zoo::index(day_val) = base::as.Date(zoo::index(day_val))
 zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
-common_dates_series <- merge.xts(day_val, night_val, join ='inner')
+common_dates_series <- xts::merge.xts(day_val, night_val, join ='inner')
 
 dates_series = seq(from = zoo::index(common_dates_series)[1],
                    to = last(zoo::index(common_dates_series)),
                              by = 1)
 
-all_dates_series = merge.xts(common_dates_series, dates_series)
+all_dates_series = xts::merge.xts(common_dates_series, dates_series)
 d <- all_dates_series
 
 #computing the dirunality index
@@ -60,10 +60,10 @@ df <- data.frame(
   date = zoo::index(d),
   diurnality = (coredata(d[,'day_val']) - coredata(d[,'night_val']))/(coredata(d[,'day_val']) + coredata(d[,'night_val']))
 )
-names(df) = c('Date', 'Diurnality')
+names(df) = c('date', 'diurnality')
 df <- na.omit(df)
 
-diurnality <- ggplot(data = df, aes(x = Date, y = Diurnality)) +
+diurnality <- ggplot(data = df, aes(x = date, y = diurnality)) +
   geom_line() +
   ylab("Date") +
   xlab("Diurnality Index") +
