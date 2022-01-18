@@ -7,6 +7,7 @@ digiRhythm is an R library developed at Agroscope and provides a set of
 tools to analyze and visualize the rhythmic behavior of animals.
 
 **MOST URGENT TO DO:**
+-   [ ] Revamp and reorganize this To-Do list.
 -   [ ] Create a function that visualize the boxplot of activity per hour from
     day to day.
 -   [ ] Create duo, trio and quadro plots functionalities.
