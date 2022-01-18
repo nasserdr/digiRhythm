@@ -20,9 +20,9 @@ library(ggplot2)
 
 ##Dataset with interruption
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
-download.file(url, destfile = '625.csv')
+download.file(url, destfile = '603.csv')
 
-filename <- file.path(getwd(), '625.csv')
+filename <- file.path(getwd(), '603.csv')
 
 df625 <- import_raw_activity_data(filename,
                                   act.cols.names = c("Date", "Time", "move_x", 'move_y'),
