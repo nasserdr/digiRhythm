@@ -43,7 +43,7 @@ sig <- 0.05
 plot <- TRUE
 verbose = TRUE
 
-df <- df625
+data <- df625
 #Start of the function body
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
@@ -51,7 +51,7 @@ df <- df625
 
 
 
-df <- as.data.frame(df, row.names = NULL)
+df <- as.data.frame(data, row.names = NULL)
 
 if (!is_dgm_friendly(df)) {
   stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
