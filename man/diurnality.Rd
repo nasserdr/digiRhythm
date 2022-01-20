@@ -4,12 +4,24 @@
 \alias{diurnality}
 \title{Computes the diurnality index based on an activity dataframe}
 \usage{
-diurnality(data, activity, save = NULL)
+diurnality(
+  data,
+  activity,
+  day_time = c("06:30:00", "16:30:00"),
+  night_time = c("18:00:00", "T05:00:00"),
+  save = NULL
+)
 }
 \arguments{
 \item{data}{a digiRhythm-friendly dataset}
 
 \item{activity}{The number of non-useful lines to skip (lines to header)}
+
+\item{day_time}{an array containing the start and end of the day period. Default:
+c("06:30:00", "16:30:00").}
+
+\item{night_time}{an array containing the start and end of the night period. Default:
+c("18:00:00", "T05:00:00").}
 
 \item{save}{if NULL, the image is not saved. Otherwise, this parameter will
 be the name of the saved image. it should contain the path and name without
