@@ -223,6 +223,7 @@ import_raw_activity_data <- function(filename,
   }
 
   df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
+  df = df[!duplicated(df$datetime),]
 
  gc()
  return(df)

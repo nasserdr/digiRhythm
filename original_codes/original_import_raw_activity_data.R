@@ -55,7 +55,7 @@ if (verbose) {
 
 
 data <- read_delim(filename,
-                   skip = skipLines,
+                   skip = skiplines,
                    delim = sep,
                    show_col_types = FALSE)[, act.cols.names]
 data <- data %>%
@@ -180,4 +180,4 @@ if (verbose) {
 }
 
 df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
-
+df = df[!duplicated(df$datetime),]
