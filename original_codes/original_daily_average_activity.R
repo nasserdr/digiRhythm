@@ -7,7 +7,7 @@ library(dplyr)
 #Example
 data("df516b_2")
 df <- df516b_2
-activity <- names(df)[2]
+activity <- names(df)[3]
 start <- "2020-05-01" #year-month-day
 end <- "2020-08-13" #year-month-day
 
@@ -84,3 +84,4 @@ if (!is.null(save)) {
 }
 
 print(avg_act_plot)
+
