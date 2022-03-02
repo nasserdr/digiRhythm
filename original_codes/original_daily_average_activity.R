@@ -10,6 +10,7 @@ df <- df516b_2
 activity <- names(df)[2]
 start <- "2020-05-01" #year-month-day
 end <- "2020-08-13" #year-month-day
+
 activity_alias <- 'Motion Index'
 save <- 'sample_results/daily_average_activity' #if NULL, don't save the image
 
@@ -49,7 +50,7 @@ s <- s %>% select(datetime, average)
 
 avg_act_plot <- ggplot(s,
                        aes(
-                         x = time,
+                         x = datetime,
                          y = average
                        )) +
   geom_line() +

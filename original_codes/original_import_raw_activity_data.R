@@ -16,8 +16,8 @@ library(stringr)
 # skiplines <- 7
 
 #OR Read a file from local file system (Aska's data)
-dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/all_variables'
-file <- list.files(dir)[1]
+dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/all_variables_separated_missing_days'
+file <- list.files(dir)[26]
 filename <- file.path(dir, file)
 act.cols.names <- c("Date", "Time", "move_x", 'move_y')
 date_format <- "%Y-%m-%d"
@@ -35,13 +35,13 @@ skiplines <- 0
 # skiplines <- 7
 
 
-sampling <- 1
+sampling <- 15
 trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- TRUE
 original_tz = 'CET'
-target_tz = 'GMT'
+target_tz = 'CET'
 
 print(head(data))
 
@@ -179,3 +179,4 @@ if (verbose) {
   ))
 }
 
+df$datetime <- lubridate::round_date(df$datetime, "15 mins")
