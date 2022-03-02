@@ -11,6 +11,8 @@ activity <- names(df)[2]
 start <- "2020-05-01" #year-month-day
 end <- "2020-08-13" #year-month-day
 
+# start <- as.character(lubridate::date(df$datetime[1]))
+# end <- as.character(last(lubridate::date(df$datetime)))
 activity_alias <- 'Motion Index'
 save <- 'sample_results/daily_average_activity' #if NULL, don't save the image
 

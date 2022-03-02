@@ -51,6 +51,7 @@
 #' @importFrom dplyr filter select last tally
 #' @importFrom utils read.table
 #' @importFrom stringr str_trim
+#' @importFrom lubridate date round_date
 #'
 #' @examples
 #'
@@ -166,7 +167,7 @@ import_raw_activity_data <- function(filename,
   if (verbose) {
     print(paste('Minimum Required number of samples per day', smallest_mandatory_daily_samples))
   }
-  df$date = as.Date(df$datetime, tz = target_tz)
+  df$date = lubridate::date(df$datetime)
 
   if (trim_first_day) {
     n_samples_day1 <- df %>% filter(date == unique(df$date)[1]) %>% tally()
@@ -198,7 +199,7 @@ import_raw_activity_data <- function(filename,
         df <- df %>% filter(date != day)
 
         if (verbose) {
-          print(paste('Data from the day', as.Date(day), 'has been removed (',
+          print(paste('Data from the day', lubridate::date(day), 'has been removed (',
                       n_samples_middle_day, ') samples only - Too small'))
         }
       }
@@ -217,7 +218,7 @@ import_raw_activity_data <- function(filename,
       'Total number of samples is',
       nrow(df),
       '- Total number of days is',
-      length(unique(as.Date(df$datetime)))
+      length(unique(lubridate::date(df$datetime)))
     ))
   }
 

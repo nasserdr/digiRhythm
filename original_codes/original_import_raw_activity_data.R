@@ -55,7 +55,7 @@ if (verbose) {
 
 
 data <- read_delim(filename,
-                   skip = skiplines,
+                   skip = skipLines,
                    delim = sep,
                    show_col_types = FALSE)[, act.cols.names]
 data <- data %>%
@@ -63,22 +63,22 @@ data <- data %>%
 
 data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = '-')
 
-data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, "-", time_format), tz = original_tz)
+data$datetime = as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = original_tz)
 
 data$datetime = format(data$datetime, tz = target_tz)
 data$datetime = as.POSIXct(data$datetime, tz = target_tz)
 
-
-#Keep the datetime column + all other numeric-only columns
-data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
-
+#Keep the datetime column + all other numeric-only columns // Remove non numeric cols
 if (verbose){
   cat('Removing the following columns because they are not numeric')
   cat('\n')
   cat(names(data[2:ncol(data)])[!sapply(data[,2:ncol(data)], is.numeric)])
 }
+data <- data[,c(TRUE, sapply(data[,2:ncol(data)], is.numeric))]
 
 
+
+#Remove rows where date is not defined
 data <- data[!is.na(data$datetime),]
 
 
@@ -98,14 +98,14 @@ data_xts = xts(
 
 #Sampling the data set according to the sampling argument
 data_xts_sampled <- NULL
-  for (var in names(data_xts)) {
-    var_xts <- xts::period.apply(
-      data_xts[,var],
-      endpoints(data_xts, "minutes", k = sampling),
-      FUN = sum
-    )
-    data_xts_sampled <- cbind(data_xts_sampled, var_xts)
-  }
+for (var in names(data_xts)) {
+  var_xts <- xts::period.apply(
+    data_xts[,var],
+    endpoints(data_xts, "minutes", k = sampling),
+    FUN = sum
+  )
+  data_xts_sampled <- cbind(data_xts_sampled, var_xts)
+}
 
 
 #Creating a dataframe from the sampled XTS (what we will return)
@@ -118,13 +118,13 @@ df <- data.frame(
 #sampling value is 15 minutes, then a day should contains at least
 #0.8*60*24/15 samples (76.8 samples)
 
+
 smallest_mandatory_daily_samples = floor(0.8*60*24/sampling)
 
 if (verbose) {
   print(paste('Minimum Required number of samples per day', smallest_mandatory_daily_samples))
 }
-
-df$date = as.Date(df$datetime, tz = target_tz)
+df$date = lubridate::date(df$datetime)
 
 if (trim_first_day) {
   n_samples_day1 <- df %>% filter(date == unique(df$date)[1]) %>% tally()
@@ -156,7 +156,7 @@ if (trim_middle_days) {
       df <- df %>% filter(date != day)
 
       if (verbose) {
-        print(paste('Data from the day', as.Date(day), 'has been removed (',
+        print(paste('Data from the day', lubridate::date(day), 'has been removed (',
                     n_samples_middle_day, ') samples only - Too small'))
       }
     }
@@ -175,8 +175,8 @@ if (verbose) {
     'Total number of samples is',
     nrow(df),
     '- Total number of days is',
-    length(unique(as.Date(df$datetime)))
+    length(unique(lubridate::date(df$datetime)))
   ))
 }
 
-df$datetime <- lubridate::round_date(df$datetime, "15 mins")
+df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
