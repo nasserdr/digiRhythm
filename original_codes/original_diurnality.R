@@ -9,6 +9,8 @@ library(ggplot2)
 library(digiRhythm)
 #arguments
 #data
+
+
 activity <- 'Motion.Index'
 day_time <- c("06:30:00", "16:30:00")
 night_time <- c("18:00:00", "T05:00:00")
@@ -21,6 +23,7 @@ data <- df603
 data <- remove_activity_outliers(data)
 data <- resample_dgm(data, 15)
 df_act_info(data)
+data <- df
 activity = names(data)[2]
 
 #Computing Cd

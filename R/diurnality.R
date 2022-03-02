@@ -32,13 +32,13 @@ diurnality <- function(data,
 
   #di = (cd/td - cn/tn)/(cd/td + cn/tn)
 
-  sampling <- dgm_periodicity(data)[["frequency"]]
-
   dates <- unique(lubridate::date(data$datetime))
   X <- xts(
     x = data[[activity]],
     order.by = data$datetime
   )
+
+  sampling <- dgm_periodicity(data)[["frequency"]]
 
   #Code Addition 1
   #Formatting the time range of the day
@@ -88,15 +88,15 @@ diurnality <- function(data,
   Tn <- (hms_24t - hms_night_start +  hms_night_end - hms_midnight)/sample_size
 
   #Check conditions about the day and night time (overlapping, misplacement)
-  if (hms_day_end > hms_night_start) {
+  if(hms_day_end > hms_night_start){
     stop('The end of the day_time period should proceed the beginning of the night_time period')
   }
 
-  if (hour(hms_night_end) < 1) {
+  if(hour(hms_night_end) < 1){
     stop('The of the nightly period should be after midnight')
   }
 
-  if (hour(hms_night_end) > 11) {
+  if(hour(hms_night_end) > 11){
     stop('The end of the nightly period cannot be after mid-day! Come on!')
   }
 
@@ -127,7 +127,7 @@ diurnality <- function(data,
   zoo::index(day_val) = base::as.Date(zoo::index(day_val))
   zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
-  common_dates_series <- xts::merge.xts(day_val, night_val, join = 'inner')
+  common_dates_series <- xts::merge.xts(day_val, night_val, join ='inner')
 
   dates_series = seq(from = zoo::index(common_dates_series)[1],
                      to = last(zoo::index(common_dates_series)),
@@ -171,5 +171,4 @@ diurnality <- function(data,
   }
 
   print(diurnality)
-
 }
