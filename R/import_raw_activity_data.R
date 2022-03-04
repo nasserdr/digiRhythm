@@ -156,6 +156,8 @@ import_raw_activity_data <- function(filename,
     datetime = index(data_xts_sampled),
     coredata(data_xts_sampled))
 
+  df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
+
   #Skipping days. A day is skipped if it contains 80% less data that is
   #supposed to contains (respecting the sampling value). For example, if the
   #sampling value is 15 minutes, then a day should contains at least

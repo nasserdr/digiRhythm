@@ -43,10 +43,6 @@ verbose <- TRUE
 original_tz = 'CET'
 target_tz = 'CET'
 
-print(head(data))
-
-
-
 if (verbose) {
   print(paste('Reading the CSV file', filename))
 }
@@ -112,6 +108,8 @@ for (var in names(data_xts)) {
 df <- data.frame(
   datetime = index(data_xts_sampled),
   coredata(data_xts_sampled))
+
+df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
 
 #Skipping days. A day is skipped if it contains 80% less data that is
 #supposed to contains (respecting the sampling value). For example, if the
