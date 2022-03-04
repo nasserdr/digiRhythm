@@ -23,7 +23,7 @@ act.cols.names <- c("Date", "Time", "move_x", 'move_y')
 date_format <- "%Y-%m-%d"
 time_format <- "%H:%M:%S"
 sep = ';'
-skiplines <- 0
+skipLines <- 0
 
 
 #OR Read a file from local file system (Marie's data)
@@ -51,7 +51,7 @@ if (verbose) {
 
 
 data <- read_delim(filename,
-                   skip = skiplines,
+                   skip = skipLines,
                    delim = sep,
                    show_col_types = FALSE)[, act.cols.names]
 data <- data %>%

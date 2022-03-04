@@ -98,7 +98,7 @@ import_raw_activity_data <- function(filename,
 
 
   data <- read_delim(filename,
-                     skip = skiplines,
+                     skip = skipLines,
                      delim = sep,
                      show_col_types = FALSE)[, act.cols.names]
   data <- data %>%
