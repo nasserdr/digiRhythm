@@ -98,7 +98,7 @@ import_raw_activity_data <- function(filename,
 
 
   data <- read_delim(filename,
-                     skip = skipLines,
+                     skip = skiplines,
                      delim = sep,
                      show_col_types = FALSE)[, act.cols.names]
   data <- data %>%
@@ -141,14 +141,15 @@ import_raw_activity_data <- function(filename,
 
   #Sampling the data set according to the sampling argument
   data_xts_sampled <- NULL
-    for (var in names(data_xts)) {
-      var_xts <- xts::period.apply(
-        data_xts[,var],
-        endpoints(data_xts, "minutes", k = sampling),
-        FUN = sum
-      )
-      data_xts_sampled <- cbind(data_xts_sampled, var_xts)
-    }
+  for (var in names(data_xts)) {
+    var_xts <- xts::period.apply(
+      data_xts[,var],
+      endpoints(data_xts, "minutes", k = sampling),
+      FUN = sum
+    )
+    data_xts_sampled <- cbind(data_xts_sampled, var_xts)
+  }
+
 
   #Creating a dataframe from the sampled XTS (what we will return)
   df <- data.frame(
@@ -204,8 +205,8 @@ import_raw_activity_data <- function(filename,
                       n_samples_middle_day, ') samples only - Too small'))
         }
       }
-     }
     }
+  }
 
   df <- df %>% select(-date)
 
