@@ -150,7 +150,6 @@ import_raw_activity_data <- function(filename,
       data_xts_sampled <- cbind(data_xts_sampled, var_xts)
     }
 
-
   #Creating a dataframe from the sampled XTS (what we will return)
   df <- data.frame(
     datetime = index(data_xts_sampled),
@@ -224,7 +223,6 @@ import_raw_activity_data <- function(filename,
     ))
   }
 
-  df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
   df = df[!duplicated(df$datetime),]
 
  gc()
