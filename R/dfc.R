@@ -27,6 +27,7 @@
 #' significant frequency component.
 #' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
+#' @param plot_harmonic_part if TRUE, it shows the harmonic part in the DFC plot
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -63,7 +64,8 @@ dfc <- function(
   sampling = 15,
   sig = 0.05,
   plot = TRUE,
-  verbose = TRUE
+  plot_harmonic_part = TRUE,
+  verbose = TRUE,
 )
 {
 
@@ -187,23 +189,40 @@ dfc <- function(
   dfc$dfc <- as.numeric(dfc$dfc)
   dfc$hp <- as.numeric(dfc$hp)
 
-  dfc_plot <- ggplot(dfc, aes(x = date)) +
-    geom_line(aes(y = dfc, linetype = "Degree of functional coupling")) +
-    geom_line(aes(y = hp, linetype = "Harmonic power")) +
-    xlab("") +
-    ylab("") +
-    xlim(df$date[1], last(df$date)) +
-    theme(
-      # axis.text.y = element_blank(),
-      panel.background = element_rect(fill = "white"),
-      axis.line = element_line(size = 0.5),
-      legend.key = element_rect(fill = "white"),
-      legend.key.width = unit(0.5, "cm"),
-      legend.justification = "left",
-      legend.key.size = unit(7, "pt"),
-      legend.title = element_blank(),
-      legend.position = c(0.7,0.75))
-
+  if(plot_harmonic_part){
+    dfc_plot <- ggplot(dfc, aes(x = date)) +
+      geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+      geom_line(aes(y = hp, linetype = "Harmonic part")) +
+      xlab("") +
+      ylab("") +
+      xlim(df$date[1], last(df$date)) +
+      theme(
+        # axis.text.y = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_line(size = 0.5),
+        legend.key = element_rect(fill = "white"),
+        legend.key.width = unit(0.5, "cm"),
+        legend.justification = "left",
+        legend.key.size = unit(7, "pt"),
+        legend.title = element_blank(),
+        legend.position = c(0.7,0.75))
+  } else{
+    dfc_plot <- ggplot(dfc, aes(x = date)) +
+      geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+      xlab("") +
+      ylab("") +
+      xlim(df$date[1], last(df$date)) +
+      theme(
+        # axis.text.y = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_line(size = 0.5),
+        legend.key = element_rect(fill = "white"),
+        legend.key.width = unit(0.5, "cm"),
+        legend.justification = "left",
+        legend.key.size = unit(7, "pt"),
+        legend.title = element_blank(),
+        legend.position = c(0.7,0.75))
+  }
   if(plot){
     print(dfc_plot)
   }

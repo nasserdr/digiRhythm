@@ -42,6 +42,8 @@ sampling = 15
 sig <- 0.05
 plot <- TRUE
 verbose = TRUE
+plot_harmonic_part = TRUE
+
 
 data <- df625
 #Start of the function body
@@ -150,8 +152,17 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   ssh <- sum(harm_power[which(harm_power > l$sig.level)]) #sum of harmonic significant frequencies
   sumsig <- sum(l$power[which(l$power > l$sig.level)])  #sum of all significant
 
+  # frequencies (each one has a power)
+  # sumall: sum of powers for all frequencies (96) ==> 100: ALL
+  # sumsig: 10 significant frequencies ==> 20             : subset of ALL
+  # ssh: a subset of 10 ( 5 frequencies) ==> 10           : Subset of a subset of ALL
+  # Because sumsig is always smaller than sumall and HP and DFC, then DFC is always
+  # Bigger than HP
+
   HP <- ssh / sumall
   DFC <- ssh / sumsig
+
+
 
   spec <- rbind(spec, data.frame(
     rep(paste0(as.character(days[i]), "_to_", as.character(days[i + 6])), len),
@@ -172,22 +183,40 @@ dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
 dfc$dfc <- as.numeric(dfc$dfc)
 dfc$hp <- as.numeric(dfc$hp)
 
-dfc_plot <- ggplot(dfc, aes(x = date)) +
-  geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
-  geom_line(aes(y = hp, linetype = "Harmonic power")) +
-  xlab("") +
-  ylab("") +
-  xlim(df$date[1], last(df$date)) +
-  theme(
-    # axis.text.y = element_blank(),
-    panel.background = element_rect(fill = "white"),
-    axis.line = element_line(size = 0.5),
-    legend.key = element_rect(fill = "white"),
-    legend.key.width = unit(0.5, "cm"),
-    legend.justification = "left",
-    legend.key.size = unit(7, "pt"),
-    legend.title = element_blank(),
-    legend.position = c(0.7,0.75))
+if(plot_harmonic_part){
+  dfc_plot <- ggplot(dfc, aes(x = date)) +
+    geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+    geom_line(aes(y = hp, linetype = "Harmonic part")) +
+    xlab("") +
+    ylab("") +
+    xlim(df$date[1], last(df$date)) +
+    theme(
+      # axis.text.y = element_blank(),
+      panel.background = element_rect(fill = "white"),
+      axis.line = element_line(size = 0.5),
+      legend.key = element_rect(fill = "white"),
+      legend.key.width = unit(0.5, "cm"),
+      legend.justification = "left",
+      legend.key.size = unit(7, "pt"),
+      legend.title = element_blank(),
+      legend.position = c(0.7,0.75))
+} else{
+  dfc_plot <- ggplot(dfc, aes(x = date)) +
+    geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+    xlab("") +
+    ylab("") +
+    xlim(df$date[1], last(df$date)) +
+    theme(
+      # axis.text.y = element_blank(),
+      panel.background = element_rect(fill = "white"),
+      axis.line = element_line(size = 0.5),
+      legend.key = element_rect(fill = "white"),
+      legend.key.width = unit(0.5, "cm"),
+      legend.justification = "left",
+      legend.key.size = unit(7, "pt"),
+      legend.title = element_blank(),
+      legend.position = c(0.7,0.75))
+}
 
 if(plot){
   print(dfc_plot)
