@@ -12,6 +12,7 @@ dfc(
   sampling = 15,
   sig = 0.05,
   plot = TRUE,
+  plot_harmonic_part = TRUE,
   verbose = TRUE
 )
 }
@@ -26,6 +27,8 @@ dfc(
 significant frequency component.}
 
 \item{plot}{if TRUE, the DFC/HP plot will be shown.}
+
+\item{plot_harmonic_part}{if TRUE, it shows the harmonic part in the DFC plot}
 
 \item{verbose}{if TRUE, print weekly progress.}
 }

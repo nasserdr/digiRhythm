@@ -29,7 +29,7 @@ library(digiRhythm)
 #Example
 data("df516b_2")
 df <- df516b_2
-df_act_info(df)
+digiRhythm::df_act_info(df)
 
 
 #Agruments
@@ -42,8 +42,8 @@ sampling_rate <- 15
 filename <- 'image.tiff'
 
 #Start of the function
-start <- date(start)
-end <- date(end)
+start <- lubridate::date(start)
+end <- lubridate::date(end)
 
 `%nin%` = Negate(`%in%`)
 

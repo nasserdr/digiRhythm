@@ -65,7 +65,7 @@ dfc <- function(
   sig = 0.05,
   plot = TRUE,
   plot_harmonic_part = TRUE,
-  verbose = TRUE,
+  verbose = TRUE
 )
 {
 

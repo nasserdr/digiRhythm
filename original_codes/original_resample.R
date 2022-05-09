@@ -37,3 +37,4 @@ new_data <- data.frame(
   datetime = index(sampled_xts),
   coredata(sampled_xts)
 )
+
