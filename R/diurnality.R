@@ -32,10 +32,10 @@ diurnality <- function(data,
 
   #di = (cd/td - cn/tn)/(cd/td + cn/tn)
 
-  dates <- unique(lubridate::date(data$datetime))
+  dates <- unique(lubridate::date(data[,1]))
   X <- xts(
     x = data[[activity]],
-    order.by = data$datetime
+    order.by = data[,1]
   )
 
   sampling <- dgm_periodicity(data)[["frequency"]]

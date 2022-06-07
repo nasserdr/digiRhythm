@@ -18,19 +18,18 @@ night_time <- c("18:00:00", "T05:00:00")
 save <- 'sample_results/diurnality' #if NULL, don't save the image
 
 #Configs
-data("df603", package = "digiRhythm")
-data <- df603
+# data(df603, package = "digiRhythm")
+data <- digiRhythm::df603
 data <- remove_activity_outliers(data)
 data <- resample_dgm(data, 15)
 df_act_info(data)
-data <- df
 activity = names(data)[2]
 
 #Computing Cd
-dates <- unique(lubridate::date(data$datetime))
+dates <- unique(lubridate::date(data[,1]))
 X <- xts(
   x = data[[activity]],
-  order.by = data$datetime
+  order.by = data[,1]
 )
 
 sampling <- dgm_periodicity(data)[["frequency"]]
