@@ -8,3 +8,5 @@ original_codes
 sample_results
 team
 examples
+.readthedocs.yaml
+^docs/
