@@ -16,4 +16,12 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(digiRhythm)
+data <- digiRhythm::df691b_1
+data <- remove_activity_outliers(data)
+data <- resample_dgm(data, 15)
+activity = names(data)[2]
 ```
+
+# Degree of functional Coupling and harmonic power
+
+# Accessing output data and changing the plots using DigiRhythm
