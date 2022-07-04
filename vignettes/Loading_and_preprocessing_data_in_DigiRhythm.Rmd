@@ -1,0 +1,94 @@
+---
+title: "Loading and preprocessing data in DigiRhythm"
+author: "Hassan Roland Nasser"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading_and_preprocessing_data_in_DigiRhythm}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This Vignette will help you making sure that the data you give to DigiRhythm follows the library's guideline. We will also make tackle few useful utility functions that might be helpful, especially:
+- import_raw_data_activity: a wrapper function that takes data where date and time are in two separate columns and transform a dataset to a digiRhythm friendly data set.
+- resample_dgm: this function increases the sampling period of a digiRhythm friendly dataset. Usually, data are acquired in terms with sampling period of seconds or minutes while most of the DigiRhythm functions would be preferably run with a sampling period of 15 minutes.
+- is_dgm_friendly: this function will investigate whethere a dataset is digiRhythm friendly or not and will output a verbose explaining why.
+
+# Loading data from a sample CSV file
+```{r setup}
+library(digiRhythm)
+
+#A sample dataset could be found here
+url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/516b_2.csv'
+download.file(url, destfile = '516b_2.csv')
+
+filename <- file.path(getwd(), '516b_2.csv')
+
+
+# system(paste("head -n 15",  filename)) #Run it only on linux
+# IceTag ID:,,50001962,,,,
+# Site ID:,,n/a,,,,
+# Animal ID:,,n/a,,,,
+# First Record:,,30.04.2020,11:54:20,,,
+# Last Record:,,15.06.2020,11:06:55,,,
+# File Time Zone:,,W. Europe Standard Time,,,,
+# 
+# Date,Time,Motion Index,Standing,Lying,Steps,Lying Bouts
+# 30.04.2020,11:54:20,0,0:00.0,0:40.0,0,0
+# 30.04.2020,11:55:00,0,0:00.0,1:00.0,0,0
+# 30.04.2020,11:56:00,0,0:00.0,1:00.0,0,0
+# 30.04.2020,11:57:00,0,0:00.0,1:00.0,0,0
+# 30.04.2020,11:58:00,0,0:00.0,1:00.0,0,0
+# 30.04.2020,11:59:00,0,0:00.0,1:00.0,0,0
+# 30.04.2020,12:00:00,0,0:00.0,1:00.0,0,0
+
+```
+
+As shown in the previous lines, there are some information that are not needed for working with the data, namely, the first 7 lines. The date and time columns are in two separate columns. In this case, the import_raw_activity_data function is useful. We did not really want to make a universal import function because there might be an unlimited number of cases. However, we only create a function called import_raw_activity_data that solves a couple of most encountered problems, namely the following:
+- If the date and time are in two separate columns.
+- If the user wants to change the timezone of the data (by using the arguments original_tz and target_tz).
+- If the user wants to change directly the sampling period.
+- If the user wants to remove the dates that do not contains a whole day recording by using trim_first_day or trim_last_day or trim_middle_days. If one of these arguments is TRUE, then the function will remove the data of the first (or last day, respectively) if they contains data less than 80% of what they are supposed to contains.
+
+For our particular example, as mentionned in the function call below, we would like to skip 7 lines, we need to read 4 columns, we specified the date and time formats, the separator, the original and target time zones, the sampling rate and we want to remove all days that contains less than 80% of data.
+
+```{r Importing}
+df516b_2 <- import_raw_activity_data(filename,
+                                   skipLines = 7,
+                                   act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
+                                   date_format = "%d.%m.%Y",
+                                   time_format = "%H:%M:%S",
+                                   sep = ',',
+                                   original_tz = 'CET',
+                                   target_tz = 'CET',
+                                   sampling = 15,
+                                   trim_first_day = TRUE,
+                                   trim_middle_days = TRUE,
+                                   trim_last_day = TRUE,
+                                   verbose = TRUE)
+
+```
+
+As Shown, the argument verbose = TRUE outputs some useful information about the data loading process. We particularly mention the following output:
+Minimum Required number of samples per day 76. The 76 is obtained by computing 80% of the hypothetical data samples. In fact, if the sampling period is 15 min, then we are supposed to have 96 samples per day. 80% of the 96 samples is equal to 76, therefore, days with less than 96 data points are removed.
+
+# Checking if the data is digiRhythm friendly
+
+```{r dgm_friendly}
+```
+
+# Removing the outliers
+```{r outliers}
+```
+
+
+# Resampling data
+```{r resampling}
+```
+

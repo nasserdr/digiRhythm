@@ -1,0 +1,19 @@
+---
+title: "DFC_and_HP_and_changing_plots"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DFC_and_HP_and_changing_plots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(digiRhythm)
+```

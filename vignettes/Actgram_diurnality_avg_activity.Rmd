@@ -1,0 +1,19 @@
+---
+title: "Actgram_diurnality_avg_activity"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Actgram_diurnality_avg_activity}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(digiRhythm)
+```
