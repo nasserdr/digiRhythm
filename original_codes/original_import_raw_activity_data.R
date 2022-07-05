@@ -6,24 +6,24 @@ library(dplyr)
 library(stringr)
 
 #Read a sample file from github
-# url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv'
-# download.file(url, destfile = '516b_2.csv')
-# filename <- file.path(getwd(), '516b_2.csv')
-# act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
-# date_format <- "%d.%m.%Y"
-# time_format <- "%H:%M:%S"
-# sep = ','
-# skiplines <- 7
+url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/689b_3.csv'
+download.file(url, destfile = 'df689b_3.csv')
+filename <- file.path(getwd(), 'df689b_3.csv')
+act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
+date_format <- "%d.%m.%Y"
+time_format <- "%H:%M:%S"
+sep = ','
+skipLines <- 7
 
 #OR Read a file from local file system (Aska's data)
-dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/all_variables_separated_missing_days'
-file <- list.files(dir)[26]
-filename <- file.path(dir, file)
-act.cols.names <- c("Date", "Time", "move_x", 'move_y')
-date_format <- "%Y-%m-%d"
-time_format <- "%H:%M:%S"
-sep = ';'
-skipLines <- 0
+# dir <- '~/mnt/Data-Work-RE/26_Agricultural_Engineering-RE/262.2_VT_Nutztierhaltung/Rhythmizität_Milchkühe/PM_4_semaines/rawdatamin/raw_data_binded/all_variables_separated_missing_days'
+# file <- list.files(dir)[26]
+# filename <- file.path(dir, file)
+# act.cols.names <- c("Date", "Time", "move_x", 'move_y')
+# date_format <- "%Y-%m-%d"
+# time_format <- "%H:%M:%S"
+# sep = ';'
+# skipLines <- 0
 
 
 #OR Read a file from local file system (Marie's data)
@@ -54,6 +54,9 @@ data <- read_delim(filename,
                    skip = skipLines,
                    delim = sep,
                    show_col_types = FALSE)[, act.cols.names]
+
+data <- na.omit(data)
+
 data <- data %>%
   mutate(across(where(is.character), str_trim))
 
@@ -178,3 +181,4 @@ if (verbose) {
 }
 
 df = df[!duplicated(df$datetime),]
+

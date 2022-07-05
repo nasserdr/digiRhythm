@@ -1,5 +1,7 @@
 ---
 title: "DFC_and_HP_and_changing_plots"
+author: "Hassan Roland Nasser"
+date: Sys.date()
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{DFC_and_HP_and_changing_plots}
@@ -16,12 +18,23 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(digiRhythm)
-data <- digiRhythm::df691b_1
-data <- remove_activity_outliers(data)
+data <- digiRhythm::df689b_3 
 data <- resample_dgm(data, 15)
+# data <- remove_activity_outliers(data)
 activity = names(data)[2]
 ```
 
 # Degree of functional Coupling and harmonic power
+The degree of functional coupling and the harmonic power could be computed using the dfc function as shown below.
 
+The DFC algorithm is a bit complicated. It's, therefore, needed that we clarify few points about some computing considerations and also about the arguments of the function itself:
+
+- The recommended sampling period is between 15 and 30 min.
+- The DFC and HP are computed based on 7 days of data. If the data contains 8 days of data, then we will only have two DFC and HP values. The first value is computed based on Day1-Day7 and the second value is computed based on Day2-Day8. Therefore, the number of DFC and HP data points would be exactly equal: D - 6 (where D is the total number of days).
+- Since the DFC is based on the Lomb-Scargle Periodogram, then the DFC allows having complete missing days in the dataset. In order to compute a DFC for each subset of data, one needs to split the data into two different subsets beforehand.
+
+```{r dfc_hp}
+dfc(data, activity = activity,  plot = FALSE, verbose = TRUE)
+```
+The DFC function returns a 
 # Accessing output data and changing the plots using DigiRhythm

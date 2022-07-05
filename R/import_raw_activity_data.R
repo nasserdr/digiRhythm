@@ -101,6 +101,9 @@ import_raw_activity_data <- function(filename,
                      skip = skipLines,
                      delim = sep,
                      show_col_types = FALSE)[, act.cols.names]
+
+  data <- na.omit(data)
+
   data <- data %>%
     mutate(across(where(is.character), str_trim))
 
@@ -225,6 +228,7 @@ import_raw_activity_data <- function(filename,
   }
 
   df = df[!duplicated(df$datetime),]
+
 
  gc()
  return(df)

@@ -1,5 +1,7 @@
 ---
 title: "Actgram_diurnality_avg_activity"
+author: "Hassan Roland Nasser"
+date: Sys.date()
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Actgram_diurnality_avg_activity}

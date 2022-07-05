@@ -36,18 +36,18 @@ df_act_info <- function(df){
 
 remove_activity_outliers <- function(df){
 
-  data <- df
+  data <- as.data.frame(df)
   for (i in 2:ncol(df)) {
-    Q <- quantile(data[,i], probs = c(.25, .75), na.rm = FALSE)
+    Q <- quantile(data[,i], probs = c(.25, .75), na.rm = TRUE)
     iqr <- IQR(data[,i])
     up <-  Q[2] + 1.5*iqr # Upper Range
     low <- Q[1] - 1.5*iqr # Lower Range
     non_outliers <- which(data[,i] <= up | data[,i] >= low)
     outliers <- which(data[,i] > up | data[,i] < low)
-    mean_without_outliers <- mean(data[non_outliers,i])
+    mean_without_outliers <- mean(data[non_outliers,i], na.rm = TRUE)
     data[outliers, i] <- mean_without_outliers
   }
-  return(data)
+  data
 }
 
 

@@ -10,3 +10,5 @@ team
 examples
 .readthedocs.yaml
 ^docs/
+publication_jstatsoft/
+^.csv
