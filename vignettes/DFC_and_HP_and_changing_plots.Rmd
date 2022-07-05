@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(digiRhythm)
-data <- digiRhythm::df689b_3 
+data <- digiRhythm::df625 
 data <- resample_dgm(data, 15)
 data <- remove_activity_outliers(data)
-activity = names(data)[2]
+activity = names(data)[3]
 ```
 
 # Degree of functional Coupling and harmonic power
@@ -33,8 +33,40 @@ The DFC algorithm is a bit complicated. It's, therefore, needed that we clarify 
 - The DFC and HP are computed based on 7 days of data. If the data contains 8 days of data, then we will only have two DFC and HP values. The first value is computed based on Day1-Day7 and the second value is computed based on Day2-Day8. Therefore, the number of DFC and HP data points would be exactly equal: D - 6 (where D is the total number of days).
 - Since the DFC is based on the Lomb-Scargle Periodogram, then the DFC allows having complete missing days in the dataset. In order to compute a DFC for each subset of data, one needs to split the data into two different subsets beforehand.
 
+The below plot shows the DFC and HP in the same graph. Both variables are percentages.
+
 ```{r dfc_hp}
-dfc(data, activity = activity,  plot = FALSE, verbose = TRUE)
+my_dfc <- dfc(data, activity = activity,  plot = FALSE, verbose = TRUE)
 ```
-The DFC function returns a 
 # Accessing output data and changing the plots using DigiRhythm
+
+The DFC function returns a object of type ggplot:
+
+```{r type_dfc}
+class(my_dfc)
+```
+
+As shown, the class is gg or ggplot. This allows the user to:
+- Access the data of DFC or HP directly from the returned object.
+- Add aesthetics layer to the plot as needed.
+
+To access the data, one has to use the *data* component of the DFC object. We illustrate this in the below code:
+
+```{r return_data}
+head(my_dfc$data)
+```
+As shown, we can access a dataframe where the first comlumn is the date and the second two columns are the DFC and HP respectively. This will allow the users to be able to use the returned data in further studies such as modelling.
+
+Users can also change the aesthetics of the plot directly if they wish. This is possible by adding a ggplot layer to the returned DFC object. For instance, this is the original plot returned by the DFC:
+
+```{r og_plot}
+print(my_dfc)
+```
+As an illustrative example, in the below code we add a new aesthetic layer to the ggplot object. This layer does nothing but increasing the width of the x-axis. Users can add any other aesthetic layer as they wish; the immagination is the only limit.
+
+```{r change_aes}
+library(ggplot2)
+new_plot <- my_dfc + 
+  theme(axis.line.x.bottom=element_line(size=2))
+print(new_plot)
+```
