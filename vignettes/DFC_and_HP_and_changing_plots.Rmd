@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(digiRhythm)
 data <- digiRhythm::df689b_3 
 data <- resample_dgm(data, 15)
-# data <- remove_activity_outliers(data)
+data <- remove_activity_outliers(data)
 activity = names(data)[2]
 ```
 
