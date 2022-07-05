@@ -7,11 +7,7 @@ Authors@R: person(given = "Hassan (Roland)",
            role = c("aut", "cre"),
            email = "hassan.nasser@me.com",
            comment = c(ORCID = "0000-0003-1821-3234"))
-Author: person(given = "Hassan (Roland)",
-           family = "Nasser",
-           role = c("aut", "cre"),
-           email = "hassan.nasser@me.com",
-           comment = c(ORCID = "0000-0003-1821-3234"))
+Author: Hassan (Roland) Nasser <hassan.nasser@me.com>
 Maintainer: Hassan (Roland) Nasser <hassan.nasser@me.com>
 Description: This package provides a set of tools to analyze and visualize the 
     rhythmic behavior of animals. The main functionalities of this library are: 
