@@ -29,8 +29,8 @@
 #' start <- "2020-05-01" #year-month-day
 #' end <- "2020-08-13" #year-month-day
 #' activity_alias <- 'Motion Index'
-#' save <- 'sample_results/daily_average_activity' #if NULL, don't save the image
-#' daily_average_activity(df, activity, activity_alias, start, end, save)
+#' my_daa <- daily_average_activity(df, activity, activity_alias, start, end, save = NULL)
+#' print(my_daa)
 
 
 daily_average_activity <- function(
@@ -39,7 +39,7 @@ daily_average_activity <- function(
   activity_alias,
   start,
   end,
-  save = 'actogram'
+  save
 ){
 
   df$date <- lubridate::date(df$datetime)
