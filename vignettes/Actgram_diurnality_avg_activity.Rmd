@@ -1,10 +1,10 @@
 ---
-title: "Actgram_diurnality_avg_activity"
+title: "Visualizing actograms, average activity and diurnality index"
 author: "Hassan Roland Nasser"
-date: Sys.date()
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Actgram_diurnality_avg_activity}
+  %\VignetteIndexEntry{Visualizing actograms, average activity and diurnality index}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,13 +12,16 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", fig.width = 7
 )
 ```
 
 The most three commonly used tools to perform a first inspection on activity data are:
+
 - Actograms: These are 2D graphs that shows tiled activity during 24h period over several days. These graphs are useful to visualize daily cycles of activities. In actograms, the x-axis represent the day time, the y-axis represent the day and the intensity of the colors represents the activity amplitude.
+
 - Average activity plots: these graphs show the average activity for a specific moment of the day. The average is done over all days taking one data point from each day and averaging all the values.
+
 - Diurnality index: this type of graphs shows whether the activity tends to be more diurnal or nocturnal. In another word, this shows whether the subject of the study is more active during the day or during the night.
 
 We start by loading a dataset from the library digiRhythm, we then remove the outliers and resample it to 15 min. We choose one activity to study.
@@ -29,6 +32,7 @@ data <- digiRhythm::df691b_1
 data <- remove_activity_outliers(data)
 data <- resample_dgm(data, 15)
 activity = names(data)[2]
+head(data)
 ```
 
 # Actograms
@@ -37,12 +41,12 @@ The actogram function also offers the possibility to save then graph directly in
 
 User have the possibility to save the plot with another extension or configuration simply by saving the actogram object in a variable (which is a ggplot object) and control it as they wish to.
 
-```{r actogram, echo=FALSE, warning=FALSE}
+```{r actogram}
 start <- "2020-08-25" #year-month-day
 end <- "2020-10-11" #year-month-day -->
 activity_alias <- 'Motion Index'
 #save <- 'sample_results/actogram' #if NULL, don't save the image
-actogram(data, activity, activity_alias , start, end, save = NULL)
+my_actogram <- actogram(data, activity, activity_alias , start, end, save = NULL)
 ```
 
 # Average Activity
@@ -50,18 +54,18 @@ actogram(data, activity, activity_alias , start, end, save = NULL)
 Now, we plot the average activity. We follow the same dataframe and same logic like for the actograms.
 
 
-```{r activity, echo=FALSE, message=FALSE, warning=FALSE}
+```{r activity}
 start <- "2020-08-25" #year-month-day
 end <- "2020-10-11" #year-month-day -->
 activity_alias <- 'Motion Index'
 #save <- 'sample_results/actogram' #if NULL, don't save the image
-daily_average_activity(data, activity, activity_alias , start, end)
+my_daa <- daily_average_activity(data, activity, activity_alias , start, end, save = NULL)
 ```
 
 # Diurnality Index
 
 The diurnality index could be computed and plotted using the diurnality function as follows.
 
-```{r diurnality, echo=FALSE, message=FALSE, warning=FALSE}
+```{r diurnality}
 diurnality(data, activity)
 ```

@@ -1,10 +1,10 @@
 ---
-title: "DFC_and_HP_and_changing_plots"
+title: "Computing the DFC/HP and manipulating the functions returned objects"
 author: "Hassan Roland Nasser"
-date: Sys.date()
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DFC_and_HP_and_changing_plots}
+  %\VignetteIndexEntry{Computing the DFC/HP and manipulating the functions returned objects}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,7 +12,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", fig.width = 7
 )
 ```
 
@@ -22,6 +22,7 @@ data <- digiRhythm::df625
 data <- resample_dgm(data, 15)
 data <- remove_activity_outliers(data)
 activity = names(data)[3]
+head(activity)
 ```
 
 # Degree of functional Coupling and harmonic power
@@ -36,7 +37,8 @@ The DFC algorithm is a bit complicated. It's, therefore, needed that we clarify 
 The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
 ```{r dfc_hp}
-my_dfc <- dfc(data, activity = activity,  plot = FALSE, verbose = TRUE)
+my_dfc <- dfc(data, activity = activity,  plot = FALSE, verbose = FALSE)
+print(my_dfc)
 ```
 # Accessing output data and changing the plots using DigiRhythm
 

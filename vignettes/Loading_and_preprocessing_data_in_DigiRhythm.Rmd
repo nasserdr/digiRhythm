@@ -1,10 +1,10 @@
 ---
 title: "Loading and preprocessing data in DigiRhythm"
 author: "Hassan Roland Nasser"
-date: Sys.date()
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Loading_and_preprocessing_data_in_DigiRhythm}
+  %\VignetteIndexEntry{Loading and preprocessing data in DigiRhythm}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,7 +12,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", fig.width = 8
 )
 ```
 
