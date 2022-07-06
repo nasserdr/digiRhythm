@@ -2,17 +2,23 @@ Package: digiRhythm
 Type: Package
 Title: Analyzing Animal's Rhythmicity
 Version: 1.0
-Authors@R: person(given = "Hassan (Roland)",
-           family = "Nasser",
-           role = c("aut", "cre"),
-           email = "hassan.nasser@me.com",
-           comment = c(ORCID = "0000-0003-1821-3234"))
-Author: Hassan (Roland) Nasser <hassan.nasser@me.com>
-Maintainer: Hassan (Roland) Nasser <hassan.nasser@me.com>
-Description: This package provides a set of tools to analyze and visualize the 
-    rhythmic behavior of animals. The main functionalities of this library are: 
-    computing the degree of functional coupling and harmonic power, visualizing
-    actograms, computing average activity and diurnality index.
+Authors@R: c(person("Hassan Roland", "Nasser", role = c("aut", "cre"),
+                     email = "hassan.nasser@me.com"),
+              person("Marie", "Schneider", role = "ctb",
+              email = "marieschnellbaecher@outlook.de"),
+              person("Joanna", "Stachowicz ", role = "rev",
+                     email = "joa.stachowi@gmail.com"),
+              person("Christina", "Umstaetter ", role = "ths",
+                     email = "christina.umstaetter@thuenen.de"))
+Author: Hassan Roland Nasser [aut, cre],
+        Marie Schneider [ctb],
+        Joanna Stachowicz [rev],
+        Christina Umstaetter [ths]
+Maintainer: Hassan Roland Nasser <hassan.nasser@me.com>
+Description: Analyze and visualize the rhythmic behavior of animals using the 
+degree of functional coupling (See Scheibe (1999) <doi:10.1076/brhm.30.2.216.1420>).
+Compute and visualize harmonic power, actograms, average activity and diurnality 
+index..
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
