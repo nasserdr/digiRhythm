@@ -67,5 +67,7 @@ my_daa <- daily_average_activity(data, activity, activity_alias , start, end, sa
 The diurnality index could be computed and plotted using the diurnality function as follows.
 
 ```{r diurnality}
-diurnality(data, activity)
+day_time = c("06:30:00", "16:30:00")
+night_time = c("18:00:00", "T05:00:00")
+my_di <- diurnality(data, activity,day_time, night_time)
 ```

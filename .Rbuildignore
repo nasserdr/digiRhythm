@@ -12,3 +12,5 @@ examples
 ^docs/
 publication_jstatsoft/
 ^.csv
+old_codes/
+.git/

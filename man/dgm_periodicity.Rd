@@ -7,7 +7,7 @@
 dgm_periodicity(data)
 }
 \arguments{
-\item{data}{a gigiRhythm friendly dataframe}
+\item{data}{a digiRhythm friendly dataframe}
 }
 \description{
 Returns the periodicity of a digiRhythm dataframe

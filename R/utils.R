@@ -72,7 +72,7 @@ print_v <- function(
 
 #' Returns the periodicity of a digiRhythm dataframe
 #'
-#' @param data a gigiRhythm friendly dataframe
+#' @param data a digiRhythm friendly dataframe
 #'
 #' @importFrom xts periodicity as.xts
 #'
@@ -92,3 +92,46 @@ dgm_periodicity <- function(data){
   xts::periodicity(xts_data)
 
 }
+
+
+#' Returns p-value of a frequency peack according to pbaluev (2008) given Z,
+#' fmax and tm. Copied from the LOMB library.
+#'
+#' @param Z the power of the frequency
+#' @param fmax the maximum frequency in the spectrum
+#' @param tm the time grid of the original time series
+#'
+#' @export
+
+#Copied from the LOMB library
+pbaluev <- function(Z, fmax, tm) {
+  #code copied from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
+  N = length(tm)
+  Dt = mean(tm^2) - mean(tm)^2
+  NH = N - 1
+  NK <- N - 3
+  fsingle <- (1 - Z) ^ (0.5 * NK)
+  Teff <- sqrt(4 * pi * Dt) # Effective baseline
+  W <- fmax * Teff
+  ggamma_NH <- sqrt(2 / N) * exp(lgamma(N / 2) - lgamma((N - 1) / 2))
+  tau <- ggamma_NH * W * (1 - Z) ^ (0.5 * (NK - 1))*sqrt(0.5 * NH * Z)
+  p = -(exp(-tau) - 1) + fsingle * exp(-tau)
+  return(p)
+}
+
+#' Returns the level given the p-value computed with pbaluev (2008). Copied from
+#'  the LOMB library.
+#'
+#' @param Z the power of the frequency
+#' @param fmax the maximum frequency in the spectrum
+#' @param tm the time grid of the original time series
+#' @param alpha the significance level
+#'
+#' @export
+
+
+levopt <-  function(Z,alpha,fmax,tm){
+  prob = pbaluev(Z,fmax,tm)
+  (log(prob) - log(alpha))^2
+}
+

@@ -20,44 +20,38 @@ library(ggplot2)
 
 ##Dataset with interruption
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
-# download.file(url, destfile = '603.csv')
-#
-# filename <- file.path(getwd(), '603.csv')
-#
-# df625 <- import_raw_activity_data(filename,
-#                                   act.cols.names = c("Date", "Time", "move_x", 'move_y'),
-#                                   skipLines = 0,
-#                                   date_format = "%Y-%m-%d",
-#                                   time_format = "%H:%M:%S",
-#                                   sep = ';',
-#                                   original_tz = 'CET',
-#                                   target_tz = 'CET',
-#                                   sampling = 15,
-#                                   trim_first_day = TRUE,
-#                                   trim_middle_days = TRUE,
-#                                   trim_last_day = TRUE,
-#                                   verbose = FALSE)
-# df625 <- remove_activity_outliers(df625)
-# activity = names(df625)[2]
-# sampling = 15
-# sig <- 0.05
-# plot <- TRUE
-# verbose = TRUE
-# plot_harmonic_part = TRUE
+download.file(url, destfile = '603.csv')
 
-#dataset df691b_1 (for testing the new LSP function)
-data("df691b_1", package = "digiRhythm")
-data <- df691b_1[1:1344, c(1,2)]
-sig = 0.05
-activity = names(data)[2]
+filename <- file.path(getwd(), '603.csv')
+
+df625 <- import_raw_activity_data(filename,
+                                  act.cols.names = c("Date", "Time", "move_x", 'move_y'),
+                                  skipLines = 0,
+                                  date_format = "%Y-%m-%d",
+                                  time_format = "%H:%M:%S",
+                                  sep = ';',
+                                  original_tz = 'CET',
+                                  target_tz = 'CET',
+                                  sampling = 15,
+                                  trim_first_day = TRUE,
+                                  trim_middle_days = TRUE,
+                                  trim_last_day = TRUE,
+                                  verbose = FALSE)
+activity = names(df)[2]
 sampling = 15
+sig <- 0.05
 plot <- TRUE
 verbose = TRUE
 plot_harmonic_part = TRUE
 
+
+data <- df625
 #Start of the function body
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
+
+
+
 
 df <- as.data.frame(data, row.names = NULL)
 
@@ -120,10 +114,14 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   #Selecting the first column (datetime) and the activity column
   df_var <- data_week %>% select(1, `activity`)
 
-  lsp <- lomb_scargle_periodogram(df_var, alpha = sig, plot = TRUE)
+  l <- lsp(df_var,
+           alpha = sig,
+           normalize = 'standard',
+           plot = FALSE) #Computing the lomb-scargle periodigram
 
-  # lomb::lsp(df_var, alpha =  sig, plot = TRUE)
+  harmonic_indices <- seq(7, 96, by = 7) #The harmonic frequencies
 
+  harm_power <- l$power[harmonic_indices] #The harmonic powers
 
   #Computing the p-values for each frequency
   # From timbre: seems they did not take the case where p>0.01 into account
@@ -133,33 +131,27 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   #In case of no missing data, I expect 96 samples (if sampling = 15 min),
   # Therefore, I expect all other vector having 96 cells
 
-  if (length(lsp$lsp_data$power) < samples_per_day) {
-    len = length(lsp$lsp_data$power)
-    expy <- exp(-lsp$lsp_data$power)
+  if (length(l$power) < samples_per_day) {
+    len = length(l$power)
+    expy <- exp(-l$power)
   } else {
     len = samples_per_day
-    expy <- exp(-lsp$lsp_data$power[1:len])
+    expy <- exp(-l$power[1:len])
   }
 
+  #According to Scargle and Lomb (also as described in numerical recipes)
+  effm <- 2*samples_per_day
+  prob <- NULL
+  for (j in 1:length(expy)) {
+    prob[j] <- expy[j]*effm
+    if (prob[j] > 0.01) {
+      prob[j] <- 1 - ( 1 - expy[j])^effm
+    }
+  }
 
-  lsp_data <- lsp$lsp_data[1:len,]
-  harm_power <- lsp_data$power[lsp_data$status_harmonic == TRUE] #The harmonic powers
-
-
-  sumall <- sum(lsp_data$power) #sum of all powers
-
-  #
-  # new_lsp_data <- lsp_data %>% filter(
-  #   power >= lsp$sig.level | p_values <= sig | harm_power == TRUE
-  # )
-
-  ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
-                            & lsp_data$status_harmonic == TRUE])
-
-  sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
-
-  # sumsig <- sum(lsp_data$power[which(lsp_data$p_values <= sig)])
-
+  sumall <- sum(l$power[1:len]) #sum of all powers
+  ssh <- sum(harm_power[which(harm_power > l$sig.level)]) #sum of harmonic significant frequencies
+  sumsig <- sum(l$power[which(l$power > l$sig.level)])  #sum of all significant
 
   # frequencies (each one has a power)
   # sumall: sum of powers for all frequencies (96) ==> 100: ALL
@@ -177,8 +169,8 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
     rep(paste0(as.character(days[i]), "_to_", as.character(days[i + 6])), len),
     1:len,
     (1:len)/7,
-    lsp_data$power,
-    lsp_data$p_values))
+    l$power[1:len],
+    prob))
 
   dfc[i,] <-  c(as.character(days[i]), DFC, HP)
 
@@ -232,5 +224,4 @@ if(plot){
 }
 
 dfc_plot$spec <- spec
-
 
