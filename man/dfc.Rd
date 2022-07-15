@@ -10,7 +10,6 @@ dfc(
   data,
   activity,
   sampling = 15,
-  sliding_window_day = 7,
   sig = 0.05,
   plot = TRUE,
   plot_harmonic_part = TRUE,
@@ -22,9 +21,7 @@ dfc(
 
 \item{activity}{The name of the activity.}
 
-\item{sampling}{The sampling period of the data set in minutes.}
-
-\item{sliding_window_day}{recommended to be 7 days. The sliding window on which
+\item{sampling}{The sampling period of the data set in minutes.
 the Lomb Scargle Periodogram is computed.}
 
 \item{sig}{The significance level that should be used to determine the
@@ -74,5 +71,5 @@ df <- df516b_2[1:672, c(1,2)]
 df <- remove_activity_outliers(df)
 df_act_info(df)
 activity = names(df)[2]
-my_dfc <- dfc(df, activity, sliding_window_day = 3, sampling = 15)
+my_dfc <- dfc(df, activity, sampling = 15)
 }

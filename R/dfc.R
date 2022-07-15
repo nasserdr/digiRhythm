@@ -24,7 +24,6 @@
 #' @param data The activity data set.
 #' @param activity The name of the activity.
 #' @param sampling The sampling period of the data set in minutes.
-#' @param sliding_window_day recommended to be 7 days. The sliding window on which
 #' the Lomb Scargle Periodogram is computed.
 #' @param sig The significance level that should be used to determine the
 #' significant frequency component.
@@ -55,14 +54,13 @@
 #' df <- remove_activity_outliers(df)
 #' df_act_info(df)
 #' activity = names(df)[2]
-#' my_dfc <- dfc(df, activity, sliding_window_day = 3, sampling = 15)
+#' my_dfc <- dfc(df, activity, sampling = 15)
 
 #######################################################
 dfc <- function(
     data,
     activity,
     sampling = 15, #in minutes
-    sliding_window_day = 7,
     sig = 0.05,
     plot = TRUE,
     plot_harmonic_part = TRUE,
@@ -85,9 +83,6 @@ dfc <- function(
               by = 1)
 
 
-  if (length(days) < sliding_window_day) {
-    stop(paste('You need at least', sliding_window_day, 'days of data to run the Degree of Functional Coupling algorithm'))
-  }
 
   ##Change (removed)
   # if (length(which(diff(days) != 1)) > 0) {
@@ -109,21 +104,21 @@ dfc <- function(
                      power = numeric(),
                      pvalue = numeric()) #The data frame for SPEC
 
-  n_days_scanned <- length(days) - sliding_window_day - 1
+  n_days_scanned <- length(days) - 6
 
   i = 1
 
   for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
     if (verbose) {
-      cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i + sliding_window_day - 1)]), "\n")
+      cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i + 6)]), "\n")
 
     }
 
     samples_per_day = 24*60/sampling #The number of data points per day
 
     #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
-    data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + sliding_window_day - 1])
+    data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
 
     #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
 
@@ -131,7 +126,7 @@ dfc <- function(
     #Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
 
-    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, plot = TRUE)
+    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, sampling = sampling, plot = TRUE)
 
     # lomb::lsp(df_var, alpha =  sig, plot = TRUE)
 
@@ -185,9 +180,9 @@ dfc <- function(
 
 
     spec <- rbind(spec, data.frame(
-      rep(paste0(as.character(days[i]), "_to_", as.character(days[i + sliding_window_day - 1])), len),
+      rep(paste0(as.character(days[i]), "_to_", as.character(days[i + 6])), len),
       1:len,
-      (1:len)/(sliding_window_day),
+      (1:len)/7,
       lsp_data$power,
       lsp_data$p_values))
 

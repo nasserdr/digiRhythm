@@ -5,6 +5,7 @@
 #' computation of the DFC
 #'
 #' @param data a digiRhythm friendly dataframe of only two columns
+#' @param sampling the sampling period in minutes. default = 15 min.
 #' @param alpha the statistical significance for the false alarm
 #' @param plot if TRUE, the LSP will be plotted
 #'
@@ -26,10 +27,15 @@
 #' lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
 
 
-lomb_scargle_periodogram <- function (data, alpha = 0.01, plot = TRUE) {
+lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = TRUE) {
 
   if (!is_dgm_friendly(data, verbose = TRUE)) {
-    warning('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
+    stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
+  }
+
+  if (length(unique(as.Date(data[,1]))) != 7 ) {
+    warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
+         A dynamic number of days will be introduced in a later version.')
   }
 
   x <- data
@@ -138,7 +144,7 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, plot = TRUE) {
   lsp_data <- lsp_data %>% mutate(period_seconds = (1/frequency_hz))
   lsp_data <- lsp_data %>% mutate(period_hours = period_seconds/3600)
 
-  harmonic_periods <- 24/seq(1,12)
+  harmonic_periods <- 24/seq(1,12) #24h, 12h, 8h, ....
   l <- lapply(harmonic_periods, function(x){
     which.min(abs(x-lsp_data$period_hours))
   })
@@ -150,9 +156,11 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, plot = TRUE) {
 
   output <- list(lsp_data = lsp_data, sig.level = level, alpha = alpha)
 
-  lsp_data <- lsp_data[1:96,]
+  len <- 24*60/sampling
+  lsp_data <- lsp_data[1:len,]
   if(plot){
     hdata <- lsp_data %>% filter(status_harmonic ==TRUE) %>%
+      # filter(power > 0.01) %>%
       select(frequency_hz, power, period_hours) %>%
       mutate(new_h = paste(round(period_hours, digits = 1), 'h'))
 
@@ -165,7 +173,7 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, plot = TRUE) {
                x = max(lsp_data$frequency_hz),
                y = level*1.05,
                label = paste("P<", alpha), size = 6, vjust = 0) +
-      labs(fill = 'Is harmonic?', y = 'Power', x = '1/Frequency') +
+      labs(fill = 'Is harmonic?', y = 'Power', x = 'Frequency (Hz)') +
       theme(
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
@@ -184,7 +192,7 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, plot = TRUE) {
       ggtitle(paste('LSP for ', datanames[2],from_to))
 
 
-    # print(p)
+    print(p)
   }
 
   return(output)

@@ -8,12 +8,14 @@ in the spectrum is possible. The function is inspired from the Lomb library in
 a great part, with modifications to fit the requirements of harmonic powers and
 computation of the DFC}
 \usage{
-lomb_scargle_periodogram(data, alpha = 0.01, plot = TRUE)
+lomb_scargle_periodogram(data, alpha = 0.01, sampling = 15, plot = TRUE)
 }
 \arguments{
 \item{data}{a digiRhythm friendly dataframe of only two columns}
 
 \item{alpha}{the statistical significance for the false alarm}
+
+\item{sampling}{the sampling period in minutes. default = 15 min.}
 
 \item{plot}{if TRUE, the LSP will be plotted}
 }

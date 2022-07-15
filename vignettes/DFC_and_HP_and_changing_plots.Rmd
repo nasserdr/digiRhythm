@@ -38,15 +38,18 @@ The user does not need worry about looping over days, extract the lomb scargle p
 is also a function call lomb_scargle_periodogram where the user can investigate the activity a little bit deeper. We preview the lomb_scargle_periodogram function and its output, then we go to the dfc function.
 
 ```{r lsp}
-#df <- data[, activity]
-#lomb_scargle_periodogram(df, alpha = 0.01, plot = TRUE)
+df <- data[1:672, c('datetime', activity)]
+my_lsp <- lomb_scargle_periodogram(df, alpha = 0.01, plot = TRUE)
 ```
 
+In the above plot, we see plenty of information. First, we have the whole periodogram for the dataframe df visualized. Second, we can distinguish between
+harmonic and non harmonic frequencies. Harmonic frequencies are plotted in blue and tagged with the time period they correspond to. For instance, we can check the power of the 24h cycles, 12h cycles, 6h cycles and so on. Third, we have a dotted horizontal line that makes it easy to visually check which frequencies are considered to originated from noise rather than from a actual signal. Frequency bars that make it above this line are considered to be originated from a real activity. The probability of this event is calculated using the method of Baluev (2008). The plot also shows, as title, the activity time span used for the computation.
 
-The below plot shows the DFC and HP in the same graph. Both variables are percentages.
+Now, to the DFC. The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
 ```{r dfc_hp}
 my_dfc <- dfc(data, activity = activity,  plot = FALSE, verbose = FALSE)
+#Setting plot to TRUE will visualize all the LSP plots (like the one above) during each sliding window. Rather used for deeper investigation and debugging.
 print(my_dfc)
 ```
 # Accessing output data and changing the plots using DigiRhythm
