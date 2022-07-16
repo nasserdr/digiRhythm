@@ -29,10 +29,8 @@ library(digiRhythm)
 
 #A sample dataset could be found here
 url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/516b_2.csv'
-download.file(url, destfile = '516b_2.csv')
-
-filename <- file.path(getwd(), '516b_2.csv')
-
+destination <- file.path(tempdir(), '516b_2.csv')
+download.file(url, destfile = destination)
 
 # system(paste("head -n 15",  filename)) #Run it only on linux
 # IceTag ID:,,50001962,,,,
@@ -63,7 +61,7 @@ As shown in the previous lines, there are some information that are not needed f
 For our particular example, as mentionned in the function call below, we would like to skip 7 lines, we need to read 4 columns, we specified the date and time formats, the separator, the original and target time zones, the sampling rate and we want to remove all days that contains less than 80% of data.
 
 ```{r Importing}
-data <- import_raw_activity_data(filename,
+data <- import_raw_activity_data(destination,
                                    skipLines = 7,
                                    act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
                                    date_format = "%d.%m.%Y",

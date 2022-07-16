@@ -5,6 +5,8 @@
 #'
 #' @export
 #'
+#' @return No return value. Prints the head and tail as well as the starting and
+#'  end date of a digiRhythm friendly dataframe.
 
 df_act_info <- function(df){
 
@@ -32,6 +34,9 @@ df_act_info <- function(df){
 #' @importFrom stats IQR quantile
 #'
 #' @export
+#'
+#' @return return a dataframe where columns start the second one have undergone
+#' an outlier removal.
 
 
 remove_activity_outliers <- function(df){
@@ -57,12 +62,10 @@ remove_activity_outliers <- function(df){
 #' @param verbose if TRUE, print the string
 #'
 #' @importFrom crayon red green
-#'
-#' @export
 
 print_v <- function(
-  string,
-  verbose){
+    string,
+    verbose){
 
   if(verbose) {
     cat(string, '\n')
@@ -81,6 +84,8 @@ print_v <- function(
 #' df <- df516b_2
 #' dgm_periodicity(df)
 #' @export
+#'
+#' @return returns a periodicity object of type xts.
 
 dgm_periodicity <- function(data){
 
@@ -100,8 +105,7 @@ dgm_periodicity <- function(data){
 #' @param Z the power of the frequency
 #' @param fmax the maximum frequency in the spectrum
 #' @param tm the time grid of the original time series
-#'
-#' @export
+
 
 #Copied from the LOMB library
 pbaluev <- function(Z, fmax, tm) {
@@ -126,8 +130,6 @@ pbaluev <- function(Z, fmax, tm) {
 #' @param fmax the maximum frequency in the spectrum
 #' @param tm the time grid of the original time series
 #' @param alpha the significance level
-#'
-#' @export
 
 
 levopt <-  function(Z,alpha,fmax,tm){
