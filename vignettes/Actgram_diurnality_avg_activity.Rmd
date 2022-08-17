@@ -18,11 +18,12 @@ knitr::opts_chunk$set(
 
 The three most commonly used tools to perform a first inspection on activity data are:
 
-- Actograms: These are 2D graphs that shows tiled activity during 24h period over several days. These graphs are useful to visualize daily cycles of activities. In actograms, the x-axis represent the day time, the y-axis represent the day and the intensity of the colors represents the activity amplitude.
+- Actograms: These are 2D graphs that show tiled (15 min per tile) activity during 24h period over several days. These graphs are useful to visualize daily cycles of activities. In actograms, the x-axis represent the day time, the y-axis represent the day and the intensity of the colors represents the activity amplitude.
 
-- Average activity plots: these graphs show the average activity for a specific moment of the day. The average is done over all days taking one data point from each day and averaging all the values.
+- Average activity plots: These graphs show the average (arithmetic mean) activity for a specific moment of the day. The average is done over all days taking one data point from each day and averaging all the values.
 
-- Diurnality index: this type of graphs shows whether the activity tends to be more diurnal or nocturnal. In another word, this shows whether the subject of the study is more active during the day or during the night.
+- Diurnality index: This type of graphs show whether the activity tends to be more diurnal or nocturnal. In another word, this shows whether the subject of the study is more active during the day or during the night.
+                    The value ranges from -1 to +1. Whereas -1 means a completely nocturnal activity and +1 means a comletely diurnal activity. Animal's result with balanced day and night activity is 0.
 
 We start by loading a dataset from the library digiRhythm, we then remove the outliers and resample it to 15 min. We choose one activity to study.
 
@@ -37,9 +38,10 @@ head(data)
 
 # Actograms
 We then proceed to plot the actogram of the activity. We can choose the start and end date of the actogram. We can also choose an alias for the activity. This alias is used for aesthetics purpose in the plots. For instance, if the name of the activity column is motion.index, we don't probably want to show this string in the plot's legend, but rather have it coded properly as 'Motion Index'.
-The actogram function also offers the possibility to save then graph directly in a path as shown in the commented line below. Users only provide the path (relative or physical) without the file name ignoring the extension. All pictures in digiRhythm are saved with the tiff format as it's the most widely used extension for scientific publications. 
+The actogram function also offers the possibility to save the graph directly in a path as shown in the commented line below. Users only provide the path (relative or physical) without the file name ignoring the extension. All pictures in digiRhythm are saved with the tiff format as it's the most widely used extension for scientific publications. 
 
 User have the possibility to save the plot with another extension or configuration simply by saving the actogram object in a variable (which is a ggplot object) and control it as they wish to.
+User could additionally use this actogram object to work on the calculated data.
 
 ```{r actogram}
 start <- "2020-08-25" #year-month-day
@@ -52,9 +54,9 @@ my_actogram <- actogram(data, activity, activity_alias , start, end, save = NULL
 # Average Activity
 
 Now, we plot the average activity. We follow the same dataframe and same logic like for the actograms.
+And user could use the resulted object as the actogram object.
 
-
-```{r activity}
+```{r daily_average_activity}
 start <- "2020-08-25" #year-month-day
 end <- "2020-10-11" #year-month-day -->
 activity_alias <- 'Motion Index'
@@ -65,9 +67,10 @@ my_daa <- daily_average_activity(data, activity, activity_alias , start, end, sa
 # Diurnality Index
 
 The diurnality index could be computed and plotted using the diurnality function as follows.
+As the actogram function it offers the possibility to save the graph directly or using the ggplot object to configurate a different plot.
 
 ```{r diurnality}
 day_time = c("06:30:00", "16:30:00")
 night_time = c("18:00:00", "T05:00:00")
-my_di <- diurnality(data, activity,day_time, night_time)
+my_di <- diurnality(data, activity, day_time, night_time, save = NULL)
 ```
