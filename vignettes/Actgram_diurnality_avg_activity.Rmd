@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The most three commonly used tools to perform a first inspection on activity data are:
+The three most commonly used tools to perform a first inspection on activity data are:
 
 - Actograms: These are 2D graphs that shows tiled activity during 24h period over several days. These graphs are useful to visualize daily cycles of activities. In actograms, the x-axis represent the day time, the y-axis represent the day and the intensity of the colors represents the activity amplitude.
 
