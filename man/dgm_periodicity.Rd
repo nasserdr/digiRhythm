@@ -9,6 +9,9 @@ dgm_periodicity(data)
 \arguments{
 \item{data}{a digiRhythm friendly dataframe}
 }
+\value{
+returns a periodicity object of type xts.
+}
 \description{
 Returns the periodicity of a digiRhythm dataframe
 }
@@ -16,4 +19,5 @@ Returns the periodicity of a digiRhythm dataframe
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
 dgm_periodicity(df)
+
 }

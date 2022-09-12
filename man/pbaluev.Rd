@@ -14,6 +14,10 @@ pbaluev(Z, fmax, tm)
 
 \item{tm}{the time grid of the original time series}
 }
+\value{
+an intermediate calculation step needed to compute the p-value according to
+pbaluev (2008).
+}
 \description{
 Returns p-value of a frequency peack according to pbaluev (2008) given Z,
 fmax and tm. Copied from the LOMB library.

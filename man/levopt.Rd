@@ -16,6 +16,9 @@ levopt(Z, alpha, fmax, tm)
 
 \item{tm}{the time grid of the original time series}
 }
+\value{
+Returns the level given the p-value computed with pbaluev (2008).
+}
 \description{
 Returns the level given the p-value computed with pbaluev (2008). Copied from
 the LOMB library.

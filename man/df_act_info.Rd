@@ -9,6 +9,10 @@ df_act_info(df)
 \arguments{
 \item{df}{The dataframe containing the activity data}
 }
+\value{
+No return value. Prints the head and tail as well as the starting and
+end date of a digiRhythm friendly dataframe.
+}
 \description{
 Outputs some information about the activity dataframe
 }

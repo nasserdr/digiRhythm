@@ -2,11 +2,10 @@
 #'
 #' @param df The dataframe containing the activity data
 #' @importFrom utils head tail
-#'
-#' @export
-#'
 #' @return No return value. Prints the head and tail as well as the starting and
 #'  end date of a digiRhythm friendly dataframe.
+#' @export
+#'
 
 df_act_info <- function(df){
 
@@ -32,11 +31,10 @@ df_act_info <- function(df){
 #' @param df The dataframe containing the activity data
 #'
 #' @importFrom stats IQR quantile
-#'
-#' @export
-#'
 #' @return return a dataframe where columns start the second one have undergone
 #' an outlier removal.
+#' @export
+#'
 
 
 remove_activity_outliers <- function(df){
@@ -62,6 +60,10 @@ remove_activity_outliers <- function(df){
 #' @param verbose if TRUE, print the string
 #'
 #' @importFrom crayon red green
+#'
+#' @return No return value. Prints the string concatenated with a verbose if the
+#'  latter is not NULL.
+#'
 
 print_v <- function(
     string,
@@ -79,13 +81,13 @@ print_v <- function(
 #'
 #' @importFrom xts periodicity as.xts
 #'
+#' @return returns a periodicity object of type xts.
+#' @export
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
 #' df <- df516b_2
 #' dgm_periodicity(df)
-#' @export
 #'
-#' @return returns a periodicity object of type xts.
 
 dgm_periodicity <- function(data){
 
@@ -105,7 +107,9 @@ dgm_periodicity <- function(data){
 #' @param Z the power of the frequency
 #' @param fmax the maximum frequency in the spectrum
 #' @param tm the time grid of the original time series
-
+#' @return an intermediate calculation step needed to compute the p-value according to
+#' pbaluev (2008).
+#'
 
 #Copied from the LOMB library
 pbaluev <- function(Z, fmax, tm) {
@@ -130,6 +134,9 @@ pbaluev <- function(Z, fmax, tm) {
 #' @param fmax the maximum frequency in the spectrum
 #' @param tm the time grid of the original time series
 #' @param alpha the significance level
+#'
+#' @return Returns the level given the p-value computed with pbaluev (2008).
+#'
 
 
 levopt <-  function(Z,alpha,fmax,tm){

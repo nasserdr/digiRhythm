@@ -11,6 +11,10 @@ print_v(string, verbose)
 
 \item{verbose}{if TRUE, print the string}
 }
+\value{
+No return value. Prints the string concatenated with a verbose if the
+latter is not NULL.
+}
 \description{
 Print if Verbose is true
 }

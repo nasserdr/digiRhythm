@@ -9,6 +9,10 @@ remove_activity_outliers(df)
 \arguments{
 \item{df}{The dataframe containing the activity data}
 }
+\value{
+return a dataframe where columns start the second one have undergone
+an outlier removal.
+}
 \description{
 Remove outliers from the data
 }
