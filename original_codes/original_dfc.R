@@ -1,9 +1,7 @@
 library(digiRhythm)
 library(lubridate) #data
-library(lomb)
 library(dplyr)
 library(stringr) #str_replace
-library(gdata) #write.fwf
 library(ggplot2)
 
 #Arguments configuration
@@ -19,7 +17,7 @@ library(ggplot2)
 
 
 ##Dataset with interruption
-url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
+# url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/625.csv'
 # download.file(url, destfile = '603.csv')
 #
 # filename <- file.path(getwd(), '603.csv')
@@ -46,18 +44,42 @@ url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/ma
 # plot_harmonic_part = TRUE
 
 #dataset df691b_1 (for testing the new LSP function)
-data("df691b_1", package = "digiRhythm")
-data <- df691b_1[1:1344, c(1,2)]
+# data("df691b_1", package = "digiRhythm")
+# data <- df691b_1[1:1344, c(1,2)]
+# sig = 0.05
+# activity = names(data)[2]
+# sampling = 15
+# plot <- TRUE
+# verbose = TRUE
+# plot_harmonic_part = TRUE
+
+#Example from Marie's dataset
+
+#Start of the function body
+#We assume that the first column is a datetime column and the other columns are activity columns
+#df should be a dataframe
+
+target_tz <- 'GMT'
+data <- import_raw_activity_data("team/marie/12112.csv",
+                               skipLines = 7,
+                               act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+                               date_format = "%d.%m.%Y",
+                               time_format = "%H:%M:%S",
+                               sep = ",",
+                               original_tz = "CET",
+                               target_tz = target_tz,
+                               sampling = 15,
+                               trim_first_day = TRUE,
+                               trim_middle_days = TRUE,
+                               trim_last_day = TRUE,
+                               verbose = FALSE)
+
 sig = 0.05
 activity = names(data)[2]
 sampling = 15
 plot <- TRUE
 verbose = TRUE
 plot_harmonic_part = TRUE
-
-#Start of the function body
-#We assume that the first column is a datetime column and the other columns are activity columns
-#df should be a dataframe
 
 df <- as.data.frame(data, row.names = NULL)
 
@@ -66,13 +88,13 @@ if (!is_dgm_friendly(df)) {
 }
 
 
-df$date <- date(df$datetime)
-##Change (took into account all days including missing days)
-# days <- unique(df$date)
+df$date <- as.Date(df$datetime)
 days <- seq(from = df$date[1],
             to = last(df$date),
             by = 1)
-
+tz(df$date) <- target_tz
+tz(days) <- target_tz
+print(days)
 
 if (length(days) < 7) {
   stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
@@ -112,8 +134,9 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   samples_per_day = 24*60/sampling #The number of data points per day
 
   #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
-  data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
+  data_week <- df %>% filter(date >= days[i]) %>% filter(date <= days[i + 6])
 
+  print(paste('Length Unique days', length(unique(as.Date(data_week[,1])))))
   #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
 
 
@@ -188,7 +211,8 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 }
 
 
-dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
+# dfc$date <- date(dfc$date, format("%Y-%m-%d"))
+dfc$date <- as.Date(dfc$date)
 dfc$dfc <- as.numeric(dfc$dfc)
 dfc$hp <- as.numeric(dfc$hp)
 

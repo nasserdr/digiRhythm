@@ -204,7 +204,7 @@ import_raw_activity_data <- function(filename,
         df <- df %>% filter(date != day)
 
         if (verbose) {
-          print(paste('Data from the day', lubridate::date(day), 'has been removed (',
+          print(paste('Data from the day', as.Date(day), 'has been removed (',
                       n_samples_middle_day, ') samples only - Too small'))
         }
       }

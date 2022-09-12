@@ -6,9 +6,9 @@ library(dplyr)
 library(stringr)
 
 #Read a sample file from github
-url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/689b_3.csv'
-download.file(url, destfile = 'df689b_3.csv')
-filename <- file.path(getwd(), 'df689b_3.csv')
+# url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/689b_3.csv'
+# download.file(url, destfile = 'df689b_3.csv')
+# filename <- file.path(getwd(), 'df689b_3.csv')
 act.cols.names <- c("Date", "Time", "Motion Index", 'Steps')
 date_format <- "%d.%m.%Y"
 time_format <- "%H:%M:%S"
@@ -34,14 +34,14 @@ skipLines <- 7
 # sep = ','
 # skiplines <- 7
 
-
+filename <- "team/marie/12112.csv"
 sampling <- 15
 trim_first_day <- TRUE
 trim_middle_days <-  TRUE
 trim_last_day <- TRUE
 verbose <- TRUE
 original_tz = 'CET'
-target_tz = 'CET'
+target_tz = 'GMT'
 
 if (verbose) {
   print(paste('Reading the CSV file', filename))
@@ -157,7 +157,7 @@ if (trim_middle_days) {
       df <- df %>% filter(date != day)
 
       if (verbose) {
-        print(paste('Data from the day', lubridate::date(day), 'has been removed (',
+        print(paste('Data from the day', as.Date(day), 'has been removed (',
                     n_samples_middle_day, ') samples only - Too small'))
       }
     }

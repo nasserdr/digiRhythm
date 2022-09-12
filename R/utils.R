@@ -91,10 +91,18 @@ print_v <- function(
 
 dgm_periodicity <- function(data){
 
-  xts_data <- data
-  rownames(xts_data) <- data[,1]
-  xts_data[1] <- NULL
-  xts_data <- as.xts(xts_data)
+  # Replaced by the below because it gives a bug of rownames when the daylight saving
+  # changes
+  # xts_data <- data
+  # rownames(xts_data) <- data[,1]
+  # xts_data[1] <- NULL
+  # xts_data <- as.xts(xts_data)
+
+  xts_data <- xts(
+    x =  data[,2],
+    order.by = data[,1]
+  )
+
 
   xts::periodicity(xts_data)
 
