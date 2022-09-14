@@ -11,6 +11,7 @@
 #' @param sampling the sampling period in minutes. default = 15 min.
 #' @param alpha the statistical significance for the false alarm
 #' @param plot if TRUE, the LSP will be plotted
+#' @param extra_info_plot if True, extra information will be shown on the plot
 #'
 #' @return a list that contains a dataframe (detailed below), the significance
 #' level and alpha (for the record). The dataframe contains the power the frequency,
@@ -30,7 +31,7 @@
 #' lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
 
 
-lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = TRUE) {
+lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE) {
 
   if (!is_dgm_friendly(data, verbose = TRUE)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
@@ -191,8 +192,11 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
         y = power,
         label = new_h,
         angle = 90,
-        hjust = -0.4)) +
-      ggtitle(paste('LSP for ', datanames[2],from_to))
+        hjust = -0.4))
+    if(extra_info_plot){
+      p <- p + ggtitle(paste('LSP for ', datanames[2],from_to))
+    }
+
 
 
     print(p)
