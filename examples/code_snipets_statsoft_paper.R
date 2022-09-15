@@ -216,3 +216,42 @@ ggsave(
   dpi = 500,
   limitsize = TRUE)
 
+#Verifying the datasets
+data("df516b_2", package = 'digiRhythm')
+df <- df516b_2
+df <- resample_dgm(df, 15)
+activity = names(df)[2]
+
+my_dfc <- dfc(df, activity = activity,  sig = 0.05, plot = TRUE, verbose = FALSE)
+
+my_dfc +
+  theme(
+    text=element_text(family="Times", size=8),
+    axis.text.y=element_text(size=15, colour="red"))
+
+
+data <- df[1:672,c(1,2)]
+
+ggplot(data = data, aes(x = datetime, y = Motion.Index)) +
+  geom_line() +
+  xlab('Date') +
+  ylab('Motion Index') +
+  ggtitle('') +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.line = element_line(size = 0.5),
+    legend.key = element_rect(fill = "white"),
+    legend.key.width = unit(1, "cm"),
+    legend.justification ="right",
+    legend.key.size = unit(7, "pt"),
+    legend.position = c(1,0.89),
+    plot.margin = margin(t = 50))
+
+
+digiRhythm::df516b_2
+digiRhythm::df603
+digiRhythm::df625
+digiRhythm::df678_2
+digiRhythm::df689b_3
+digiRhythm::df691b_1
+digiRhythm::df759a_3
