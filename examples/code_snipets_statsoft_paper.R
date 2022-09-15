@@ -60,7 +60,7 @@ for (period in c(24, 6)){
     dpi = dp,
     limitsize = TRUE)
 
-  lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE)
+  lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE )
 
   name <- paste0('../jstatsoft/figures/lsp', period, '.pdf')
   ggsave(
@@ -88,9 +88,9 @@ wrap_plots(all_plots, ncol = 2)
 #adding all signals together and computing the LSP
 
 all_signals = sin(2*pi*(1/24/3600)*as.numeric(time)) +
-  sin(2*pi*(1/12/3600)*as.numeric(time)) +
-  sin(2*pi*(1/6/3600)*as.numeric(time)) +
-  sin(2*pi*(1/4/3600)*as.numeric(time))
+  # sin(2*pi*(1/12/3600)*as.numeric(time)) +
+  sin(2*pi*(1/6/3600)*as.numeric(time))
+  # sin(2*pi*(1/4/3600)*as.numeric(time))
 
 
 df <- data.frame(
@@ -100,9 +100,20 @@ df <- data.frame(
 
 ggplot(data = df, aes(x = datetime, y = activity)) +
   geom_line() +
-  xlab('Signal') +
-  ylab('Date') +
-  ggtitle(period)
+  xlab('') +
+  ylab('') +
+  ggtitle('') +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.line = element_line(size = 0.5),
+    legend.key = element_rect(fill = "white"),
+    legend.key.width = unit(0.5, "cm"),
+    legend.justification ="right",
+    legend.key.size = unit(7, "pt"),
+    legend.position = c(1,0.89),
+    plot.margin = margin(t = 50),
+    axis.text  = element_blank(),
+    axis.ticks  = element_blank())
 
 name <- paste0('../jstatsoft/figures/all_sig.pdf')
 ggsave(
@@ -115,7 +126,7 @@ ggsave(
   dpi = dp,
   limitsize = TRUE)
 
-lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE)
+lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
 
 name <- paste0('../jstatsoft/figures/all_lsp.pdf')
 ggsave(
@@ -128,28 +139,51 @@ ggsave(
   dpi = dp,
   limitsize = TRUE)
 
-all_plots[[9]] <- signal
-all_plots[[10]] <- lsp
+all_plots[[5]] <- signal
+all_plots[[6]] <- lsp
 
 wrap_plots(all_plots, ncol = 2)
 
+name <- paste0('../jstatsoft/figures/signalVslsp.pdf')
+
+ggsave(
+  name,
+  plot = last_plot(),
+  device = 'pdf',
+  width = 10,
+  height = 6,
+  scale = 1.5,
+  dpi = 500,
+  limitsize = TRUE)
+
+
 #Real data
 #Example
-data("df516b_2")
-df <- df516b_2
+library(digiRhythm)
+data("df691b_1", package = 'digiRhythm')
+df <- df691b_1
 df <- df[1:672,c(1,2)]
 
-pdf("../jstatsoft/figures/sig_real.pdf",   # The directory you want to save the file in
-    width = w, # The width of the plot in inches
-    height = h) # The height of the plot in inches
+ggplot(data = df, aes(x = datetime, y = Motion.Index)) +
+  geom_line() +
+  xlab('Date') +
+  ylab('Motion Index') +
+  ggtitle('') +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.line = element_line(size = 0.5),
+    legend.key = element_rect(fill = "white"),
+    legend.key.width = unit(1, "cm"),
+    legend.justification ="right",
+    legend.key.size = unit(7, "pt"),
+    legend.position = c(1,0.89),
+    plot.margin = margin(t = 50))
 
-plot(df$datetime, df$Motion.Index, type = 'l', ylab = 'Motion Index', xlab = 'Date')
-dev.off()
+name <- paste0('../jstatsoft/figures/real_sig.pdf')
 
-lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE)
 ggsave(
-  '../jstatsoft/figures/lsp_real.pdf',
-  plot = p,
+  name,
+  plot = signal <- last_plot(),
   device = 'pdf',
   width = w,
   height = h,
@@ -157,4 +191,28 @@ ggsave(
   dpi = dp,
   limitsize = TRUE)
 
+lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
+
+name <- paste0('../jstatsoft/figures/real_lsp.pdf')
+ggsave(
+  name,
+  plot = lsp <- last_plot(),
+  device = 'pdf',
+  width = w,
+  height = h,
+  scale = 1,
+  dpi = dp,
+  limitsize = TRUE)
+
+signal | lsp
+name <- paste0('../jstatsoft/figures/real_lsp_signal.pdf')
+ggsave(
+  name,
+  plot = last_plot(),
+  device = 'pdf',
+  width = 10,
+  height = 3,
+  scale = 1.5,
+  dpi = 500,
+  limitsize = TRUE)
 

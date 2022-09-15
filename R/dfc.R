@@ -30,6 +30,7 @@
 #' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
 #' @param plot_harmonic_part if TRUE, it shows the harmonic part in the DFC plot
+#' @param plot_lsp if TRUE, the LSP of each sliding week will be plotted
 #'
 #' @return A list containing 2 dataframe. DFC dataframe that contain the
 #' results of a DFC computation and SPEC Dataframe that contains the result of
@@ -64,7 +65,8 @@ dfc <- function(
     sig = 0.05,
     plot = TRUE,
     plot_harmonic_part = TRUE,
-    verbose = TRUE
+    verbose = TRUE,
+    plot_lsp = TRUE
 )
 {
 
@@ -126,7 +128,7 @@ dfc <- function(
     #Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
 
-    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, sampling = sampling, plot = TRUE)
+    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, sampling = sampling, plot = plot_lsp)
 
     # lomb::lsp(df_var, alpha =  sig, plot = TRUE)
 

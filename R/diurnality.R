@@ -146,8 +146,8 @@ diurnality <- function(data,
 
   diurnality <- ggplot(data = df, aes(x = date, y = diurnality)) +
     geom_line() +
-    ylab("Date") +
-    xlab("Diurnality Index") +
+    ylab("Diurnality Index") +
+    xlab("Date") +
     theme(
       axis.text.x = element_text(color = "#000000"),
       axis.text.y = element_text(color = "#000000"),

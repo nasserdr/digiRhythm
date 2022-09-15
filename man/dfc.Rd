@@ -13,7 +13,8 @@ dfc(
   sig = 0.05,
   plot = TRUE,
   plot_harmonic_part = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  plot_lsp = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ significant frequency component.}
 \item{plot_harmonic_part}{if TRUE, it shows the harmonic part in the DFC plot}
 
 \item{verbose}{if TRUE, print weekly progress.}
+
+\item{plot_lsp}{if TRUE, the LSP of each sliding week will be plotted}
 }
 \value{
 A list containing 2 dataframe. DFC dataframe that contain the

@@ -10,7 +10,7 @@ team
 examples
 .readthedocs.yaml
 ^docs/
-publication_jstatsoft/
+jstatsoft/
 ^.csv
 old_codes/
 .git/
