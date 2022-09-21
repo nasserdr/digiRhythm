@@ -1,6 +1,6 @@
 ---
 title: "Visualizing actograms, average activity and diurnality index"
-author: "Hassan Roland Nasser"
+author: "Hassan Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -67,7 +67,10 @@ my_daa <- daily_average_activity(data, activity, activity_alias , start, end, sa
 # Diurnality Index
 
 The diurnality index could be computed and plotted using the diurnality function as follows.
-As the actogram function it offers the possibility to save the graph directly or using the ggplot object to configurate a different plot.
+The user has the opportunity to change day- and night-time. The default daytime is 06:30 to 16:30. Default night-time occurred from 18:00 to 05:00. 
+The user can adapt the time to lighttime or exclude some management times of the animals. 
+Management times are periods when humans influence the activity of the animal, so that it is not possible to realize their own activity  (for excample milking time in dairy cows).
+As the actogram function it offers the possibility to save the graph directly or using the ggplot object to configurate a different plot or work on the calculated data.
 
 ```{r diurnality}
 day_time = c("06:30:00", "16:30:00")

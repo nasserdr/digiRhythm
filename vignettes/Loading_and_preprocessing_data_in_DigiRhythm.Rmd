@@ -1,6 +1,6 @@
 ---
 title: "Loading and preprocessing data in DigiRhythm"
-author: "Hassan Roland Nasser"
+author: "Hassan Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -55,7 +55,7 @@ As shown in the previous lines, there are some information that are not needed f
 
 - If the date and time are in two separate columns.
 - If the user wants to change the timezone of the data (by using the arguments original_tz and target_tz).
-- If the user wants to change directly the sampling period.
+- If the user wants to change  the sampling period directly.
 - If the user wants to remove the dates that do not contains a whole day recording by using trim_first_day or trim_last_day or trim_middle_days. If one of these arguments is TRUE, then the function will remove the data of the first (or last day, respectively) if they contains data less than 80% of what they are supposed to contains.
 
 For our particular example, as mentionned in the function call below, we would like to skip 7 lines, we need to read 4 columns, we specified the date and time formats, the separator, the original and target time zones, the sampling rate and we want to remove all days that contains less than 80% of data.
@@ -87,7 +87,7 @@ has the following properties:
 - It has at least two columns.
 - The first column should be of a POSIX format (datetime).
 - All other columns should be numeric.
-- The dataset should contains data for 7 days at least (7 days are required to compute the DFC).
+- The dataset should contains data for 7 consecutive days at least (7 days are required to compute the DFC).
 
 The function [dgm_friendly()] returns a boolean. If verbose is set to TRUE, it will output
 details about why or why not the data is not considered digiRhythm friendly.
@@ -109,7 +109,7 @@ head(data_without_outliers)
 
 # Resampling data
 
-Often, data are acquired with milliseconds or seconds sampling periods. However, transforming data to higher sampling periods is recommended for some algorithms like the degree of functional coupling. The library offers resampling function as it is useful in this case. However, here are two considerations here:
+Often, data are acquired with milliseconds or seconds sampling periods. However, transforming data to higher sampling periods is recommended for some algorithms like the degree of functional coupling. The library offers resampling function as it is useful in this case. However, here are two considerations:
 
 - The sampling period can be increased but not decreased. For instance, we can transform data from 1 min sampling period to 15 minutes sampling period.
 - The resampling concerns only activity variables where it makes sense to make an additive resampling. For instance, if we are measuring the number of steps every 1 min and we want to resample it to 15 minutes, we can simply add all the steps during these 15 minutes. For other types of variables, this might not be the case. For example, if we are measuring the speed or the acceleration, addition would not probably make sense, and a further transformation is required (in this case, it would be dividing by 15 to obtain the average speed or acceleration). In other case where the variable reflect a categorical entity that could be transformed into a dummy variable, we argue that resampling would not at all make sense.
@@ -122,6 +122,7 @@ head(resampled_data)
 # Periodicity of a dataset
 
 Users can have access to the periodicity of a dataset using the dgm_periodicity function as shown below:
+ - The output of the function shows the periodicity and start- and end-dates of the data.
 
 ```{r periodicity}
 s <- dgm_periodicity(data)
