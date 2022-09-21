@@ -1,6 +1,6 @@
 ---
 title: "Computing the DFC/HP and manipulating the functions returned objects"
-author: "Hassan Roland Nasser"
+author: "Hassan Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -25,16 +25,16 @@ activity = names(data)[3]
 head(activity)
 ```
 
-# Degree of functional Coupling and harmonic power
+# Degree of Functional Coupling (DFC) and Harmonic Power (HP)
 The degree of functional coupling and the harmonic power could be computed using the dfc function as shown below.
 
 The DFC algorithm is a bit complicated. It's, therefore, needed that we clarify few points about some computing considerations and also about the arguments of the function itself:
 
 - The recommended sampling period is between 15 and 30 min.
 - The DFC and HP are computed based on 7 days of data. If the data contains 8 days of data, then we will only have two DFC and HP values. The first value is computed based on Day1-Day7 and the second value is computed based on Day2-Day8. Therefore, the number of DFC and HP data points would be exactly equal: D - 6 (where D is the total number of days).
-- Since the DFC is based on the Lomb-Scargle Periodogram, then the DFC allows having complete missing days in the dataset. In order to compute a DFC for each subset of data, one needs to split the data into two different subsets beforehand.
+- Since the DFC is based on the Lomb-Scargle Periodogram (LSP), then the DFC allows having complete missing days in the dataset. In order to compute a DFC for each subset of data, the user needs to split the data into two different subsets beforehand.
 
-The user does not need worry about looping over days, extract the lomb scargle periodogram for every 7 days and then compile the results to obtain the degree of functional coupling. This is done in loop inside the dfc function. However, the
+The user does not need to worry about looping over days, extract the lomb scargle periodogram for every 7 days and then compile the results to obtain the degree of functional coupling. This is done in loop inside the dfc function. However, there
 is also a function call lomb_scargle_periodogram where the user can investigate the activity a little bit deeper. We preview the lomb_scargle_periodogram function and its output, then we go to the dfc function.
 
 ```{r lsp}
@@ -44,6 +44,7 @@ my_lsp <- lomb_scargle_periodogram(df, alpha = 0.01, plot = TRUE)
 
 In the above plot, we see plenty of information. First, we have the whole periodogram for the dataframe df visualized. Second, we can distinguish between
 harmonic and non harmonic frequencies. Harmonic frequencies are plotted in blue and tagged with the time period they correspond to. For instance, we can check the power of the 24h cycles, 12h cycles, 6h cycles and so on. Third, we have a dotted horizontal line that makes it easy to visually check which frequencies are considered to originated from noise rather than from a actual signal. Frequency bars that make it above this line are considered to be originated from a real activity. The probability of this event is calculated using the method of Baluev (2008). The plot also shows, as title, the activity time span used for the computation.
+Warning: At the moment, function only computes the LSP the first 7 days of the data. A loop, to calculate LSP for the whole data, will be included in a later version. However, at the moment user can see the LSP-diagrams of the whole data, if running the dfc function. Before the complete DFC and HP diagramm, each LSP diagramm of the sliding 7-day periods were computed.
 
 Now, to the DFC. The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
@@ -64,7 +65,7 @@ As shown, the class is gg or ggplot. This allows the user to:
 - Access the data of DFC or HP directly from the returned object.
 - Add aesthetics layer to the plot as needed.
 
-To access the data, one has to use the *data* component of the DFC object. We illustrate this in the below code:
+To access the data, user has to use the *data* component of the DFC object. We illustrate this in the below code:
 
 ```{r return_data}
 head(my_dfc$data)
