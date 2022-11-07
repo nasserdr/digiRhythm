@@ -45,6 +45,7 @@ avg_plot <- ggplot(data_to_plot, aes(
   ggtitle(paste(activity_alias, "(", data_to_plot$date[1], "-", last(data_to_plot$date),")")) +
   xlab("Time") +
   theme(
+    axis.text = element_text(color = 'black'),
     panel.background = element_rect(fill = "white"),
     legend.key = element_rect(fill = "white"),
     legend.key.width= unit(0.5, "cm"),

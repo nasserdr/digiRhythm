@@ -78,25 +78,15 @@ dfc <- function(
 
 
   df$date <- date(df$datetime)
-  ##Change (took into account all days including missing days)
-  # days <- unique(df$date)
+
   days <- seq(from = df$date[1],
               to = last(df$date),
               by = 1)
 
-
-
-  ##Change (removed)
-  # if (length(which(diff(days) != 1)) > 0) {
-  #   warning('There is an interruption in the days sequence, i.e., there are non consecutive
-  #         days in the data')
-  #   print('Interruption is at the following days:')
-  #   cat(which(diff(days) != 1), '\n')
-  # }
-
   dfc <- NULL
   spec <- NULL
-  dfc <- data.frame(date = character(),
+  dfc <- data.frame(from = character(),
+                    to = character(),
                     dfc = numeric(),
                     hp = numeric()) #The data frame for DFC
 
@@ -113,7 +103,7 @@ dfc <- function(
   for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
     if (verbose) {
-      cat("Processing dates ", as.character(days[i]), " until ", as.character(days[(i + 6)]), "\n")
+      cat("Processing dates ", format(days[i]), " until ", format(days[(i + 6)]), "\n")
 
     }
 
@@ -122,16 +112,11 @@ dfc <- function(
     #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
     data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
 
-    #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
-
 
     #Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
 
-    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, sampling = sampling, plot = plot_lsp)
-
-    # lomb::lsp(df_var, alpha =  sig, plot = TRUE)
-
+    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, plot = TRUE)
 
     #Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
@@ -155,19 +140,9 @@ dfc <- function(
 
 
     sumall <- sum(lsp_data$power) #sum of all powers
-
-    #
-    # new_lsp_data <- lsp_data %>% filter(
-    #   power >= lsp$sig.level | p_values <= sig | harm_power == TRUE
-    # )
-
     ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
                               & lsp_data$status_harmonic == TRUE])
-
     sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
-
-    # sumsig <- sum(lsp_data$power[which(lsp_data$p_values <= sig)])
-
 
     # frequencies (each one has a power)
     # sumall: sum of powers for all frequencies (96) ==> 100: ALL
@@ -182,33 +157,34 @@ dfc <- function(
 
 
     spec <- rbind(spec, data.frame(
-      rep(paste0(as.character(days[i]), "_to_", as.character(days[i + 6])), len),
+      rep(paste0(format(days[i]), "_to_", format(days[i + 6])), len),
       1:len,
       (1:len)/7,
       lsp_data$power,
       lsp_data$p_values))
 
-    dfc[i,] <-  c(as.character(days[i]), DFC, HP)
+    dfc[i,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
 
     if (verbose) {
       print(dfc[i,])
     }
   }
 
-
-  dfc$date <- as.Date(dfc$date, format("%Y-%m-%d"))
+  dfc$from <- as.Date(dfc$from, format("%Y-%m-%d"))
+  dfc$to <- as.Date(dfc$to, format("%Y-%m-%d"))
   dfc$dfc <- as.numeric(dfc$dfc)
   dfc$hp <- as.numeric(dfc$hp)
 
   if(plot_harmonic_part){
-    dfc_plot <- ggplot(dfc, aes(x = date)) +
+    dfc_plot <- ggplot(dfc, aes(x = to)) +
       geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
       geom_line(aes(y = hp, linetype = "Harmonic part")) +
       xlab("") +
       ylab("") +
-      xlim(df$date[1], last(df$date)) +
+      # xlim(df$date[1], last(df$date)) +
       theme(
-        # axis.text.y = element_blank(),
+        axis.text.x = element_text(size=rel(1.5), color = 'black'),
+        axis.text.y = element_text(size=rel(1.5), color = 'black'),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
@@ -216,15 +192,17 @@ dfc <- function(
         legend.justification = "left",
         legend.key.size = unit(7, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75))
+        legend.position = c(0.7,0.75),
+        plot.margin = margin(0, 0.5, 0, 0, "cm"))
   } else{
-    dfc_plot <- ggplot(dfc, aes(x = date)) +
+    dfc_plot <- ggplot(dfc, aes(x = to)) +
       geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
       xlab("") +
       ylab("") +
-      xlim(df$date[1], last(df$date)) +
+      # xlim(df$date[1], last(df$date)) +
       theme(
-        # axis.text.y = element_blank(),
+        axis.text.x = element_text(size=rel(1.5), color = 'black'),
+        axis.text.y = element_text(size=rel(1.5), color = 'black'),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
@@ -232,11 +210,12 @@ dfc <- function(
         legend.justification = "left",
         legend.key.size = unit(7, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75))
+        legend.position = c(0.7,0.75),
+        plot.margin = margin(0, 0.5, 0, 0, "cm"))
   }
 
   if(plot){
-    # print(dfc_plot)
+    print(dfc_plot)
   }
 
   dfc_plot$spec <- spec

@@ -100,14 +100,6 @@ if (length(days) < 7) {
   stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
 }
 
-##Change (removed)
-# if (length(which(diff(days) != 1)) > 0) {
-#   warning('There is an interruption in the days sequence, i.e., there are non consecutive
-#         days in the data')
-#   print('Interruption is at the following days:')
-#   cat(which(diff(days) != 1), '\n')
-# }
-
 dfc <- NULL
 spec <- NULL
 dfc <- data.frame(from = character(),
@@ -138,10 +130,6 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
 
 
-  # print(paste('Length Unique days', length(unique(as.Date(data_week[,1])))))
-  #data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= (days[i]+6))
-
-
   #Selecting the first column (datetime) and the activity column
   df_var <- data_week %>% select(1, `activity`)
 
@@ -169,19 +157,9 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
 
   sumall <- sum(lsp_data$power) #sum of all powers
-
-  #
-  # new_lsp_data <- lsp_data %>% filter(
-  #   power >= lsp$sig.level | p_values <= sig | harm_power == TRUE
-  # )
-
   ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
                             & lsp_data$status_harmonic == TRUE])
-
   sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
-
-  # sumsig <- sum(lsp_data$power[which(lsp_data$p_values <= sig)])
-
 
   # frequencies (each one has a power)
   # sumall: sum of powers for all frequencies (96) ==> 100: ALL
@@ -209,20 +187,22 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   }
 }
 
-# dfc$date <- date(dfc$date, format("%Y-%m-%d"))
-dfc$date <- as.Date(dfc$date)
+dfc$from <- as.Date(dfc$from, format("%Y-%m-%d"))
+dfc$to <- as.Date(dfc$to, format("%Y-%m-%d"))
 dfc$dfc <- as.numeric(dfc$dfc)
 dfc$hp <- as.numeric(dfc$hp)
 
+
 if(plot_harmonic_part){
-  dfc_plot <- ggplot(dfc, aes(x = date)) +
+  dfc_plot <- ggplot(dfc, aes(x = to)) +
     geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
     geom_line(aes(y = hp, linetype = "Harmonic part")) +
     xlab("") +
     ylab("") +
-    xlim(df$date[1], last(df$date)) +
+    # xlim(df$date[1], last(df$date)) +
     theme(
-      # axis.text.y = element_blank(),
+      axis.text.x = element_text(size=rel(1.5), color = 'black'),
+      axis.text.y = element_text(size=rel(1.5), color = 'black'),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5),
       legend.key = element_rect(fill = "white"),
@@ -230,15 +210,18 @@ if(plot_harmonic_part){
       legend.justification = "left",
       legend.key.size = unit(7, "pt"),
       legend.title = element_blank(),
-      legend.position = c(0.7,0.75))
+      legend.position = c(0.7,0.75),
+      plot.margin = margin(0, 0.5, 0, 0, "cm"))
+
 } else{
-  dfc_plot <- ggplot(dfc, aes(x = date)) +
+  dfc_plot <- ggplot(dfc, aes(x = to)) +
     geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
     xlab("") +
     ylab("") +
-    xlim(df$date[1], last(df$date)) +
+    # xlim(df$date[1], last(df$date)) +
     theme(
-      # axis.text.y = element_blank(),
+      axis.text.x = element_text(size=rel(1.5), color = 'black'),
+      axis.text.y = element_text(size=rel(1.5), color = 'black'),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5),
       legend.key = element_rect(fill = "white"),
@@ -246,7 +229,9 @@ if(plot_harmonic_part){
       legend.justification = "left",
       legend.key.size = unit(7, "pt"),
       legend.title = element_blank(),
-      legend.position = c(0.7,0.75))
+      legend.position = c(0.7,0.75),
+      plot.margin = margin(0, 0.5, 0, 0, "cm"))
+
 }
 
 if(plot){
@@ -254,5 +239,7 @@ if(plot){
 }
 
 dfc_plot$spec <- spec
+
+
 
 

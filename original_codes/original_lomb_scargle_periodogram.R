@@ -1,37 +1,10 @@
-#' Computes the Lomb Scargle Periodogram and returns the information needed for
-#' computing the DFC and HP. A plot visualizing the Harmonic Frequencies presence
-#' in the spectrum is possible. The function is inspired from the Lomb library in
-#' a great part, with modifications to fit the requirements of harmonic powers and
-#' computation of the DFC. This function is inspired by the lsp function from the
-#' lomb package and adapted to add different colors for harmonic and non harmonic
-#' frequencies in the signal. For more information about lomb::lsp, please refer
-#' to: https://cran.r-project.org/web/packages/lomb/
-#'
-#' @param data a digiRhythm friendly dataframe of only two columns
-#' @param sampling the sampling period in minutes. default = 15 min.
-#' @param alpha the statistical significance for the false alarm
-#' @param plot if TRUE, the LSP will be plotted
-#' @param extra_info_plot if True, extra information will be shown on the plot
-#'
-#' @return a list that contains a dataframe (detailed below), the significance
-#' level and alpha (for the record). The dataframe contains the power the frequency,
-#' the frequency in HZ, the p values according to Baluev 2008, the period that corresponds
-#' to the frequency in seconds and in hours and finally, a boolean to tell whether
-#' the frequency is harmonic or not.
-#'
-#' @import ggplot2
-#' @importFrom pracma fibsearch
-#'
-#' @export
-#'
-#' @examples
-#' data("df516b_2", package = "digiRhythm")
-#' data <- df516b_2[1:672, c(1,2)]
-#' sig <- 0.01
-#' lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
-
-
-lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE) {
+library(pracma)
+data("df516b_2", package = "digiRhythm")
+data <- df516b_2[1:672, c(1,2)]
+alpha = 0.01
+sampling = 15
+plot = TRUE
+extra_info_plot = TRUE
 
   if (!is_dgm_friendly(data, verbose = TRUE)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
@@ -197,7 +170,9 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
       p <- p + ggtitle(paste('LSP for ', datanames[2],from_to))
     }
     print(p)
-    }
+  }
 
-  return(output)
-}
+
+
+
+
