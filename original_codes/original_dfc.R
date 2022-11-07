@@ -153,12 +153,12 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
 
   lsp_data <- lsp$lsp_data[1:len,]
-  harm_power <- lsp_data$power[lsp_data$status_harmonic == TRUE] #The harmonic powers
+  harm_power <- lsp_data$power[lsp_data$status_harmonic == 'Harmonic'] #The harmonic powers
 
 
   sumall <- sum(lsp_data$power) #sum of all powers
   ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
-                            & lsp_data$status_harmonic == TRUE])
+                            & lsp_data$status_harmonic == 'Harmonic'])
   sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
 
   # frequencies (each one has a power)
@@ -222,7 +222,6 @@ if(plot_harmonic_part){
     theme(
       axis.text.x = element_text(size=rel(1.5), color = 'black'),
       axis.text.y = element_text(size=rel(1.5), color = 'black'),
-      panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5),
       legend.key = element_rect(fill = "white"),
       legend.key.width = unit(0.5, "cm"),

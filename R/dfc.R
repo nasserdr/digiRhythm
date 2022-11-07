@@ -136,12 +136,12 @@ dfc <- function(
 
 
     lsp_data <- lsp$lsp_data[1:len,]
-    harm_power <- lsp_data$power[lsp_data$status_harmonic == TRUE] #The harmonic powers
+    harm_power <- lsp_data$power[lsp_data$status_harmonic == 'Harmonic'] #The harmonic powers
 
 
     sumall <- sum(lsp_data$power) #sum of all powers
     ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
-                              & lsp_data$status_harmonic == TRUE])
+                              & lsp_data$status_harmonic == 'Harmonic'])
     sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
 
     # frequencies (each one has a power)

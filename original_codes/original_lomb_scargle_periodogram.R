@@ -149,8 +149,9 @@ extra_info_plot = TRUE
       #          x = max(lsp_data$frequency_hz),
       #          y = level*1.05,
       #          label = paste("P<", alpha), size = 6, vjust = 0) +
-      labs(fill = 'Status', y = 'Power', x = 'Frequency (Hz)') +
-      theme(
+      labs(fill = 'Status', y = 'Power', x = 'Frequency (Hz)')
+    if(extra_info_plot){
+      p <- p + theme(
         panel.background = element_rect(fill = "white"),
         axis.text = element_text(color = "#000000"),
         text = element_text(size = 15),
@@ -160,15 +161,28 @@ extra_info_plot = TRUE
         legend.justification ="right",
         legend.position = c(1,0.89),
         plot.margin = margin(t = 50)) +
-      geom_text(data = hdata, mapping = aes(
-        x = frequency_hz,
-        y = power,
-        label = new_h,
-        angle = 90,
-        hjust = -0.4))
-    if(extra_info_plot){
-      p <- p + ggtitle(paste('LSP for ', datanames[2],from_to))
+        geom_text(data = hdata, mapping = aes(
+          x = frequency_hz,
+          y = power,
+          label = new_h,
+          angle = 90,
+          hjust = -0.4)) + ggtitle(paste('LSP for ', datanames[2],from_to))
+    } else {
+      p <- p + theme(
+        panel.background = element_rect(fill = "white"),
+        axis.text = element_text(color = "#000000"),
+        text = element_text(size = 15),
+        axis.line = element_line(size = 0.5),
+        legend.position = 'none',
+        plot.margin = margin(t = 50)) +
+        geom_text(data = hdata, mapping = aes(
+          x = frequency_hz,
+          y = power,
+          label = new_h,
+          angle = 90,
+          hjust = -0.4))
     }
+
     print(p)
   }
 
