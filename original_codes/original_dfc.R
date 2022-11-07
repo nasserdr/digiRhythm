@@ -209,7 +209,6 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   }
 }
 
-
 # dfc$date <- date(dfc$date, format("%Y-%m-%d"))
 dfc$date <- as.Date(dfc$date)
 dfc$dfc <- as.numeric(dfc$dfc)
