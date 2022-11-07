@@ -6,12 +6,14 @@ library(digiRhythm)
 library(lomb)
 library(patchwork)
 
+###############################################################################
+####################### FIGURE: signalVslsp ###################################
 # LSP on purely synthetic data ----------------------------
 #Creating time grid
 sampling = 15*60 #15 minutes
 time = seq(
-  c(ISOdate(2022,3,20, 0,0,0)),
-  c(ISOdate(2022,3,26, 23, 59, 0)),
+  c(ISOdate(2022,3,1, 0,0,0)),
+  c(ISOdate(2022,3,7, 23, 59, 0)),
   by = 15*60) #a timedate sequence over 1 week
 
 w <- 10
@@ -32,10 +34,15 @@ for (period in c(24, 6)){
     activity = sig
   )
 
-  ggplot(data = df, aes(x = datetime, y = activity)) +
+
+  df$num <- as.numeric(df$datetime)
+  df$num <- df$num - min(df$num)
+  df$num <- df$num/24/3600
+
+    ggplot(data = df, aes(x = num , y = activity)) +
     geom_line() +
-    xlab('') +
-    ylab('') +
+    xlab('Day') +
+    ylab('Signal Intensity') +
     ggtitle('') +
     theme(
       panel.background = element_rect(fill = "white"),
@@ -45,9 +52,11 @@ for (period in c(24, 6)){
       legend.justification ="right",
       legend.key.size = unit(7, "pt"),
       legend.position = c(1,0.89),
-      plot.margin = margin(t = 50),
-      axis.text  = element_blank(),
-      axis.ticks  = element_blank())
+      plot.margin = margin(t = 50)) +
+      scale_x_continuous(n.breaks = 8)
+
+      # axis.text  = element_blank(),
+      # axis.ticks  = element_blank())
 
   name <- paste0('../jstatsoft/figures/sig', period, '.pdf')
   ggsave(
@@ -60,6 +69,7 @@ for (period in c(24, 6)){
     dpi = dp,
     limitsize = TRUE)
 
+  df$num <- NULL
   lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE )
 
   name <- paste0('../jstatsoft/figures/lsp', period, '.pdf')
@@ -98,10 +108,14 @@ df <- data.frame(
   activity = all_signals
 )
 
-ggplot(data = df, aes(x = datetime, y = activity)) +
+df$num <- as.numeric(df$datetime)
+df$num <- df$num - min(df$num)
+df$num <- df$num/24/3600
+
+ggplot(data = df, aes(x = num, y = activity)) +
   geom_line() +
-  xlab('') +
-  ylab('') +
+  xlab('Day') +
+  ylab('Signal Intensity') +
   ggtitle('') +
   theme(
     panel.background = element_rect(fill = "white"),
@@ -111,9 +125,8 @@ ggplot(data = df, aes(x = datetime, y = activity)) +
     legend.justification ="right",
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
-    plot.margin = margin(t = 50),
-    axis.text  = element_blank(),
-    axis.ticks  = element_blank())
+    plot.margin = margin(t = 50)) +
+  scale_x_continuous(n.breaks = 8)
 
 name <- paste0('../jstatsoft/figures/all_sig.pdf')
 ggsave(
@@ -125,7 +138,7 @@ ggsave(
   scale = 1,
   dpi = dp,
   limitsize = TRUE)
-
+df$num <- NULL
 lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
 
 name <- paste0('../jstatsoft/figures/all_lsp.pdf')
@@ -156,6 +169,8 @@ ggsave(
   dpi = 500,
   limitsize = TRUE)
 
+###############################################################################
+####################### FIGURE: alternative for real_lsp#######################
 
 #Real data
 #Example
@@ -246,12 +261,3 @@ ggplot(data = data, aes(x = datetime, y = Motion.Index)) +
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
     plot.margin = margin(t = 50))
-
-
-digiRhythm::df516b_2
-digiRhythm::df603
-digiRhythm::df625
-digiRhythm::df678_2
-digiRhythm::df689b_3
-digiRhythm::df691b_1
-digiRhythm::df759a_3
