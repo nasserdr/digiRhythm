@@ -183,7 +183,7 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   dfc[i+6,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
 
   if (verbose) {
-    print(dfc[i,])
+    print(dfc[i+6,])
   }
 }
 
