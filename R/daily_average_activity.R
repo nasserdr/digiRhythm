@@ -86,9 +86,8 @@ daily_average_activity <- function(
     theme_classic() +
     theme(plot.title = element_text(hjust = 0.5)) +
     theme(
-      axis.text.x = element_text(color="#000000"),
-      axis.text.y = element_text(color="#000000"),
-      text=element_text(size = 12),
+      axis.text = element_text(color = 'black'),
+      text=element_text(size = 15),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5))
 

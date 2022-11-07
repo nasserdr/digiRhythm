@@ -6,20 +6,6 @@ readme
 digiRhythm is an R library developed at Agroscope and provides a set of
 tools to analyze and visualize the rhythmic behavior of animals.
 
-**MOST URGENT TO DO:**
--   [ ] Revamp and reorganize this To-Do list.
--   [ ] Create a function that visualize the boxplot of activity per hour from
-    day to day.
--   [ ] Create duo, trio and quadro plots functionalities.
--   [ ] Add a dataset that has missing days then update the is_dgm_friendly
-    to detect these missing days.
--   [ ] Come up with another name for the function daily_average_activity and 
-    create another function for daily and hourly computed activities averaged.
--   [ ] Create a file that conducts a Meta Analysis (like the one of regio_beef)
-    code that takes an input file with data configuration, compute everything
-    and then save all results in an output file. That would hit.
--   [ ] Add out-of-the-shelf graphical control (width, height, device, line thickness ...)
-
 **TO DO CORE FUNCTIONALITIES:**
 
 -   [x] Create a function that read Icetag data stored in a CSV file.
@@ -33,13 +19,11 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [x] Add plotting funtionality to the diurnality index.
 -   [ ] Create a function that makes resampling aligned with several function
     like (sum, mean, max, median ... ).
--   [ ] Make the code un-sensible to column names in original data frame (call
+-   [x] Make the code un-sensible to column names in original data frame (call
     them by index rather than by name). For example, no need to call the datetime
     by its name because it's always the first column (by dgm definition) in the 
     dataset.
--   [ ] Add a function that fills NA values in the activity data set.
--   [ ] Add a function that creates a histogram for the significant and
-    harmonic frequencies within the DFC.
+-   [x] Add a function that fills NA values in the activity data set.
 
 
 **TO DO - VISUALIZATION FUNCTIONS:**
@@ -59,11 +43,26 @@ tools to analyze and visualize the rhythmic behavior of animals.
 -   [x] Create a proper documentation for the data set.
 -   [x] configure data sets with lazy loading
 -   [ ] Create test functions for all the functions.
--   [ ] Add a note about the fact that visualizations were created in a
+-   [x] Add a note about the fact that visualizations were created in a
     way they are aligned with the standards of common journals and give
     details about these settings + Add a note where the code can be
     customized to change these settings.
--   [ ] Make a series of videos about the digiRhythm library.
+
+**Misc TO DO:**
+-   [ ] Create a function that visualize the boxplot of activity per hour from
+    day to day.
+-   [ ] Create duo, trio and quadro plots functionalities.
+-   [ ] Add a dataset that has missing days then update the is_dgm_friendly
+    to detect these missing days.
+-   [ ] Come up with another name for the function daily_average_activity and 
+    create another function for daily and hourly computed activities averaged.
+-   [ ] Create a file that conducts a Meta Analysis (like the one of regio_beef)
+    code that takes an input file with data configuration, compute everything
+    and then save all results in an output file. That would hit.
+-   [ ] Add out-of-the-shelf graphical control (width, height, device, line thickness ...)
+-   [ ] Add a function that creates a histogram for the significant and
+    harmonic frequencies within the DFC.
+
 
 ## Installation
 

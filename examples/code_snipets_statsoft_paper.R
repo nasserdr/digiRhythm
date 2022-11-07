@@ -45,6 +45,8 @@ for (period in c(24, 6)){
     ylab('Signal Intensity') +
     ggtitle('') +
     theme(
+      axis.text = element_text(color = "#000000"),
+      text = element_text(size = 15),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5),
       legend.key = element_rect(fill = "white"),
@@ -58,7 +60,7 @@ for (period in c(24, 6)){
       # axis.text  = element_blank(),
       # axis.ticks  = element_blank())
 
-  name <- paste0('../jstatsoft/figures/sig', period, '.pdf')
+  name <- paste0('figures/sig', period, '.pdf')
   ggsave(
     name,
     plot = signal <- last_plot(),
@@ -70,9 +72,30 @@ for (period in c(24, 6)){
     limitsize = TRUE)
 
   df$num <- NULL
-  lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE )
+  lsp_plot <- lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE )
 
-  name <- paste0('../jstatsoft/figures/lsp', period, '.pdf')
+  lsp_df <- lsp_plot$lsp_data
+  ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
+    geom_line() +
+    xlab('Frequency') +
+    ylab('Power') +
+    ggtitle('') +
+    theme(
+      panel.background = element_rect(fill = "white"),
+      axis.text = element_text(color = "#000000"),
+      text = element_text(size = 15),
+      axis.line = element_line(size = 0.5),
+      legend.key = element_rect(fill = "white"),
+      legend.key.width = unit(0.5, "cm"),
+      legend.justification ="right",
+      legend.key.size = unit(7, "pt"),
+      legend.position = c(1,0.89),
+      plot.margin = margin(t = 50)) +
+    scale_x_continuous(n.breaks = 8)
+
+
+
+  name <- paste0('figures/lsp', period, '.pdf')
   ggsave(
     name,
     plot = lsp <- last_plot(),
@@ -118,6 +141,8 @@ ggplot(data = df, aes(x = num, y = activity)) +
   ylab('Signal Intensity') +
   ggtitle('') +
   theme(
+    axis.text = element_text(color = "#000000"),
+    text = element_text(size = 15),
     panel.background = element_rect(fill = "white"),
     axis.line = element_line(size = 0.5),
     legend.key = element_rect(fill = "white"),
@@ -128,7 +153,7 @@ ggplot(data = df, aes(x = num, y = activity)) +
     plot.margin = margin(t = 50)) +
   scale_x_continuous(n.breaks = 8)
 
-name <- paste0('../jstatsoft/figures/all_sig.pdf')
+name <- paste0('figures/all_sig.pdf')
 ggsave(
   name,
   plot = signal <- last_plot(),
@@ -139,9 +164,28 @@ ggsave(
   dpi = dp,
   limitsize = TRUE)
 df$num <- NULL
-lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
+lsp_plot <- lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
 
-name <- paste0('../jstatsoft/figures/all_lsp.pdf')
+lsp_df <- lsp_plot$lsp_data
+ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
+  geom_line() +
+  xlab('Frequency') +
+  ylab('Power') +
+  ggtitle('') +
+  theme(
+    panel.background = element_rect(fill = "white"),
+    axis.text = element_text(color = "#000000"),
+    text = element_text(size = 15),
+    axis.line = element_line(size = 0.5),
+    legend.key = element_rect(fill = "white"),
+    legend.key.width = unit(0.5, "cm"),
+    legend.justification ="right",
+    legend.key.size = unit(7, "pt"),
+    legend.position = c(1,0.89),
+    plot.margin = margin(t = 50)) +
+  scale_x_continuous(n.breaks = 8)
+
+name <- paste0('figures/all_lsp.pdf')
 ggsave(
   name,
   plot = lsp <- last_plot(),
@@ -157,7 +201,7 @@ all_plots[[6]] <- lsp
 
 wrap_plots(all_plots, ncol = 2)
 
-name <- paste0('../jstatsoft/figures/signalVslsp.pdf')
+name <- paste0('figures/signalVslsp.pdf')
 
 ggsave(
   name,
@@ -185,6 +229,8 @@ ggplot(data = df, aes(x = datetime, y = Motion.Index)) +
   ylab('Motion Index') +
   ggtitle('') +
   theme(
+    axis.text = element_text(color = "#000000"),
+    text = element_text(size = 15),
     panel.background = element_rect(fill = "white"),
     axis.line = element_line(size = 0.5),
     legend.key = element_rect(fill = "white"),
@@ -194,7 +240,7 @@ ggplot(data = df, aes(x = datetime, y = Motion.Index)) +
     legend.position = c(1,0.89),
     plot.margin = margin(t = 50))
 
-name <- paste0('../jstatsoft/figures/real_sig.pdf')
+name <- paste0('figures/real_sig.pdf')
 
 ggsave(
   name,
@@ -208,7 +254,7 @@ ggsave(
 
 lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = FALSE)
 
-name <- paste0('../jstatsoft/figures/real_lsp.pdf')
+name <- paste0('figures/real_lsp.pdf')
 ggsave(
   name,
   plot = lsp <- last_plot(),
@@ -220,7 +266,7 @@ ggsave(
   limitsize = TRUE)
 
 signal | lsp
-name <- paste0('../jstatsoft/figures/real_lsp_signal.pdf')
+name <- paste0('figures/real_lsp_signal.pdf')
 ggsave(
   name,
   plot = last_plot(),
@@ -235,7 +281,7 @@ ggsave(
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
 df <- resample_dgm(df, 15)
-activity = names(df)[2]
+activity = names(df)[3]
 
 my_dfc <- dfc(df, activity = activity,  sig = 0.05, plot = TRUE, verbose = FALSE)
 
@@ -261,3 +307,4 @@ ggplot(data = data, aes(x = datetime, y = Motion.Index)) +
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
     plot.margin = margin(t = 50))
+

@@ -67,9 +67,8 @@ actogram <- function(
     theme(plot.title = element_text(hjust = 0.5)) +
     scale_x_discrete(breaks = c("03:00", "09:00", "15:00", "21:00")) +
     theme(
-      axis.text.x = element_text(color = "#000000"),
-      axis.text.y = element_text(color = "#000000"),
-      text = element_text(size = 12),
+      text = element_text(size = 15, color = 'black'),
+      axis.text = element_text(color = 'black'),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(size = 0.5)
     )
