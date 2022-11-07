@@ -42,9 +42,9 @@ is_dgm_friendly <- function(data, verbose = FALSE){
       message <- paste0(green('v Number of days: '), 'Bigger or equal to 7')
       print_v(message, verbose)
     }else {
-      message <- paste0(red('x Number of days: '), 'Less than 7 (can\'t run the DFC algorithm later on')
+      message <- paste0(red('x Number of days: '), 'Less than 7 (minimum of 7 days is recommended')
       print_v(message, verbose)
-      is_dgm <- FALSE
+      #is_dgm <- FALSE
     }
 
     #Checking if we have more than one column
