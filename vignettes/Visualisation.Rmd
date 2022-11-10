@@ -25,7 +25,7 @@ First, we start by loading a dataset, removing the outliers, resample it to 15 m
 
 ```{r loading}
 library(digiRhythm)
-data <- digiRhythm::df516b_1
+data <- digiRhythm::df691b_1
 data <- remove_activity_outliers(data)
 data <- resample_dgm(data, 15)
 activity = names(data)[2]

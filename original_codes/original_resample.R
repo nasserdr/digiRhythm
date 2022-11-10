@@ -10,9 +10,10 @@ new_sampling <- 30
 #Ensuring that the dataframe has a dataframe class instead of tibble
 df <- as.data.frame(df)
 xts_data <- df
-rownames(xts_data) <- df[,1]
-xts_data[1] <- NULL
-xts_data <- as.xts(xts_data)
+xts_data <- xts(
+  x = df[,c(2:ncol(df))],
+  order.by = df[,1]
+)
 
 original_sampling <- xts::periodicity(xts_data)$frequency
 

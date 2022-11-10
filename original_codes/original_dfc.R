@@ -7,13 +7,13 @@ library(ggplot2)
 #Arguments configuration
 
 #Dataset without interruption
-# data("df516b_2", package = "digiRhythm")
-# df <- df516b_2
-# activity = names(df)[2]
-# sampling = 15
-# sig <- 0.05
-# plot <- TRUE
-# verbose = TRUE
+data("df516b_2", package = "digiRhythm")
+df <- df516b_2
+activity = names(df)[2]
+sampling = 15
+sig <- 0.05
+plot <- TRUE
+verbose = TRUE
 
 
 ##Dataset with interruption
@@ -51,7 +51,7 @@ library(ggplot2)
 # sampling = 15
 # plot <- TRUE
 # verbose = TRUE
-# plot_harmonic_part = TRUE
+plot_harmonic_part = TRUE
 
 #Example from Marie's dataset
 
@@ -59,29 +59,29 @@ library(ggplot2)
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
 
-target_tz <- 'GMT'
-data <- import_raw_activity_data("team/marie/12112.csv",
-                               skipLines = 7,
-                               act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
-                               date_format = "%d.%m.%Y",
-                               time_format = "%H:%M:%S",
-                               sep = ",",
-                               original_tz = "CET",
-                               target_tz = target_tz,
-                               sampling = 15,
-                               trim_first_day = TRUE,
-                               trim_middle_days = TRUE,
-                               trim_last_day = TRUE,
-                               verbose = FALSE)
+# target_tz <- 'GMT'
+# data <- import_raw_activity_data("team/marie/12112.csv",
+#                                skipLines = 7,
+#                                act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+#                                date_format = "%d.%m.%Y",
+#                                time_format = "%H:%M:%S",
+#                                sep = ",",
+#                                original_tz = "CET",
+#                                target_tz = target_tz,
+#                                sampling = 15,
+#                                trim_first_day = TRUE,
+#                                trim_middle_days = TRUE,
+#                                trim_last_day = TRUE,
+#                                verbose = FALSE)
+#
+# sig = 0.05
+# activity = names(data)[2]
+# sampling = 15
+# plot <- TRUE
+# verbose = TRUE
+# plot_harmonic_part = TRUE
 
-sig = 0.05
-activity = names(data)[2]
-sampling = 15
-plot <- TRUE
-verbose = TRUE
-plot_harmonic_part = TRUE
-
-df <- as.data.frame(data, row.names = NULL)
+df <- as.data.frame(df, row.names = NULL)
 
 if (!is_dgm_friendly(df)) {
   stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')

@@ -47,7 +47,7 @@ for(t in unique(data_to_plot$time)){
 s <- sum_of_activity_over_all_days_per_sample
 
 s$datetime <- paste(data_to_plot$date[1], s$time)
-s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"))
+s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"), tz = tz(df$datetime))
 s <- s %>% select(datetime, average)
 
 avg_act_plot <- ggplot(s,
