@@ -14,3 +14,5 @@ jstatsoft/
 ^.csv
 old_codes/
 .git/
+^doc$
+^Meta$

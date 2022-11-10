@@ -17,7 +17,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom stats time
 #' @import ggplot2
-#' @importFrom lubridate date
+#' @importFrom lubridate date tz
 #' @import dplyr
 #'
 #' @export

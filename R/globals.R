@@ -13,5 +13,7 @@ utils::globalVariables(
     'power',
     'period_hours',
     'new_h',
-    'to')
+    'to',
+    'tz',
+    'df')
   )

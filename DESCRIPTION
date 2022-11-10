@@ -1,7 +1,7 @@
 Package: digiRhythm
 Type: Package
 Title: Analyzing Animal's Rhythmicity
-Version: 1.0
+Version: 1.1
 Authors@R: c(person("Hassan Roland", "Nasser", role = c("aut", "cre"),
                      email = "hassan.nasser@me.com"),
               person("Marie", "Schneider", role = c("aut", "ctb"),

@@ -23,7 +23,7 @@
 resample_dgm <- function(data, new_sampling){
 
   xts_data <- xts(
-    x = data[,c(2:ncol(df))],
+    x = data[,c(2:ncol(data))],
     order.by = data[,1]
   )
 
@@ -60,4 +60,5 @@ resample_dgm <- function(data, new_sampling){
     coredata(sampled_xts)
   )
 
+  return(new_data)
 }
