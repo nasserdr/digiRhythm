@@ -22,10 +22,11 @@
 
 resample_dgm <- function(data, new_sampling){
 
-  xts_data <- data
-  rownames(xts_data) <- data[,1]
-  xts_data[1] <- NULL
-  xts_data <- as.xts(xts_data)
+  xts_data <- xts(
+    x = data[,c(2:ncol(data))],
+    order.by = data[,1]
+  )
+
 
   original_sampling <- xts::periodicity(xts_data)$frequency
 
@@ -59,4 +60,5 @@ resample_dgm <- function(data, new_sampling){
     coredata(sampled_xts)
   )
 
+  return(new_data)
 }
