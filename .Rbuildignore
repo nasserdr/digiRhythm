@@ -14,3 +14,7 @@ jstatsoft/
 ^.csv
 old_codes/
 .git/
+build_cran_package.sh
+^doc$
+^Meta$
+^\.Rbuildignore$
