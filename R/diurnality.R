@@ -148,6 +148,7 @@ diurnality <- function(data,
     geom_line() +
     ylab("Diurnality Index") +
     xlab("Date") +
+    ylim(-1,1) +
     theme(
       axis.text = element_text(color = "#000000"),
       text = element_text(size = 15),

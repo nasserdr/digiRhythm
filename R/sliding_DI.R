@@ -1,8 +1,29 @@
-#have to include   @params... and descriptions
-
-
-
-
+#' Computes the diurnality index, using different start and end definitions for 
+#' each day and night, based on an activity dataframe 
+#'
+#' @param data a digiRhythm-friendly dataset
+#' @param activity The number of non-useful lines to skip (lines to header)
+#' @param timedata a dataset, including 5 columns "date", "day_start", "day_end",
+#' "night_start", "night_end"
+#' @param save if NULL, the image is not saved. Otherwise, this parameter will
+#' be the name of the saved image. it should contain the path and name without
+#' the extension.
+#'
+#' @return A dataframe with 2 col: date and diurnality index
+#'
+#' @importFrom lubridate date hms hour minute
+#' @importFrom xts xts period.apply merge.xts
+#'
+#' @examples
+#' data("df516b_2", package = "digiRhythm")
+#' data <- df516b_2
+#' data <- remove_activity_outliers(data)
+#' activity = names(data)[2]
+#' timedata("timedata", package = "digiRhythm")
+#' timedata <- timedata 
+#' d_index <- sliding_DI(data, activity, timedata)
+#'
+#' @export
 
 sliding_DI <- function(data,
                         activity,
