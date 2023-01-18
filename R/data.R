@@ -106,3 +106,20 @@
 #'
 #' @source Agroscope Posieux
 "df625"
+
+
+#' timedata Dataset of start and end of day and night
+#'
+#' A dataset of start and endtime of the morning- and eveningmilking in a dairy farm.
+#'
+#' @format A data frame of 4 columns
+#' \describe {
+#'  \item{date}{a POSIX formatted datetime}
+#'  \item{day_start}{a POSIX formatted datetime}
+#'  \item{day_end}{a POSIX formatted datetime}
+#'  \item{night_start}{a POSIX formatted datetime}
+#'  \item{night_end}{a POSIX formatted datetime}
+#' }
+#'
+#' @source Johann Heinrich von Thünen- Institute of Organic Farming
+"timedata"
