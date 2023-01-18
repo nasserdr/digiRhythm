@@ -3,8 +3,8 @@
 #'
 #' @param data a digiRhythm-friendly dataset
 #' @param activity The number of non-useful lines to skip (lines to header)
-#' @param timedata a dataset, including 5 columns "date", "day_start", "day_end",
-#' "night_start", "night_end"
+#' @param timedata a dataset, including 4 columns of POSIXct format, including 
+#' date and time "day_start", "day_end", "night_start", "night_end"
 #' @param save if NULL, the image is not saved. Otherwise, this parameter will
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
