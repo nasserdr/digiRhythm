@@ -19,7 +19,7 @@
 #' data <- df516b_2
 #' data <- remove_activity_outliers(data)
 #' activity = names(data)[2]
-#' timedata("timedata", package = "digiRhythm")
+#' data("timedata", package = "digiRhythm")
 #' timedata <- timedata 
 #' d_index <- sliding_DI(data, activity, timedata)
 #'
