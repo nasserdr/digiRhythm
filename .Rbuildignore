@@ -14,13 +14,9 @@ jstatsoft/
 ^.csv
 old_codes/
 .git/
-<<<<<<< HEAD
 build_cran_package.sh
 ^doc$
 ^Meta$
 ^\.Rbuildignore$
-||||||| 5f7f6d6
-=======
 ^doc$
 ^Meta$
->>>>>>> da7a527e9d39f5608bc58c7b2da2d69012908d19
