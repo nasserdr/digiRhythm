@@ -180,10 +180,10 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
     lsp_data$power,
     lsp_data$p_values))
 
-  dfc[i+6,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
+  dfc[i,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
 
   if (verbose) {
-    print(dfc[i+6,])
+    print(dfc[i,])
   }
 }
 
