@@ -154,6 +154,16 @@ df625 <- import_raw_activity_data(filename,
 
  usethis::use_data(df625, overwrite = TRUE)
 
+# Timedata
+url <- 'https://github.com/nasserdr/digiRhythm_sample_datasets/blob/main/timedata.csv'
+download.file (url, destfile = 'timedata.csv')
+
+filename <- file.path(getwd(), 'timedata.csv')
+
+timedata <- read.csv(filename)
+
+usethis::use_data(timedata, overwrite = TRUE)
+
 
 file.remove(file.path(getwd(), '516b_2.csv'))
 file.remove(file.path(getwd(), '678_2.csv'))
@@ -162,3 +172,4 @@ file.remove(file.path(getwd(), '691b_1.csv'))
 file.remove(file.path(getwd(), '759a_3.csv'))
 file.remove(file.path(getwd(), '603.csv'))
 file.remove(file.path(getwd(), '625.csv'))
+file.remove(file.path(getwd(), 'timedata.csv'))
