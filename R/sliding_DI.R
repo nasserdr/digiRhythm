@@ -82,7 +82,8 @@ Cn <- period.apply(X_night, endpoints(X_night, "days"),
 #Computing night value
 night_val <- Cn/Tn
 
-#Putting indices in date format to account for missing dayszoo::index(day_val) = base::as.Date(zoo::index(day_val))
+#Putting indices in date format to account for missing days
+zoo::index(day_val) = base::as.Date(zoo::index(day_val))
 zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
 common_dates_series <- xts::merge.xts(day_val, night_val, join = "inner")
