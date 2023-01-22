@@ -110,7 +110,7 @@
 
 #' timedata Dataset of start and end of day and night
 #'
-#' A dataset of start and endtime of the morning- and eveningmilking in a dairy farm.
+#' A dataset of start and endtime of the morningmilking and eveningmilking on a dairy farm.
 #'
 #' @format A data frame of 4 columns
 #' \describe {
