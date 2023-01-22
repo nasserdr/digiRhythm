@@ -86,7 +86,7 @@ night_val <- Cn/Tn
 zoo::index(day_val) = base::as.Date(zoo::index(day_val))
 zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
-common_dates_series <- xts::merge.xts(day_val, night_val, join = "inner")
+common_dates_series <- xts::merge.xts(day_val, night_val, join = 'inner')
 
 dates_series = seq(from = zoo::index(common_dates_series)[1], 
                      to = last(zoo::index(common_dates_series)), by = 1)
