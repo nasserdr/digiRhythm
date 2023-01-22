@@ -7,7 +7,6 @@
 \format{
 A data frame of 4 columns
 \describe {
-\item{date}{a POSIX formatted datetime}
 \item{day_start}{a POSIX formatted datetime}
 \item{day_end}{a POSIX formatted datetime}
 \item{night_start}{a POSIX formatted datetime}
