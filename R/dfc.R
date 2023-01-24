@@ -90,11 +90,14 @@ dfc <- function(
                     dfc = numeric(),
                     hp = numeric()) #The data frame for DFC
 
-  spec <- data.frame(fromtodate = character(),
-                     sample = numeric(),
-                     freq = numeric(),
+  spec <- data.frame(from = character(),
+                     to = character(),
+                     sample = numeric(), 
+                     freq = numeric(), 
                      power = numeric(),
-                     pvalue = numeric()) #The data frame for SPEC
+                     frequency = numeric(),
+                     pvalue = numeric(),
+                     harmonic_status = character()) #The data frame for SPEC
 
   n_days_scanned <- length(days) - 6
 
@@ -156,12 +159,14 @@ dfc <- function(
 
 
 
-    spec <- rbind(spec, data.frame(
-      rep(paste0(format(days[i]), "_to_", format(days[i + 6])), len),
-      1:len,
-      (1:len)/7,
-      lsp_data$power,
-      lsp_data$p_values))
+    spec <- rbind(spec, data.frame(from = rep(days[i], len),
+                                   to = rep(days[i + 6], len),
+                                   sample = 1:len, 
+                                   freq = (1:len)/7, 
+                                   power = lsp_data$power,
+                                   frequency_hz = lsp_data$frequency_hz,
+                                   p_values = lsp_data$p_values,
+                                   harmonic_status = lsp_data$status_harmonic))
 
     dfc[i,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
 
