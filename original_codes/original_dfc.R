@@ -194,7 +194,7 @@ dfc$hp <- as.numeric(dfc$hp)
 
 
 if(plot_harmonic_part){
-  dfc_plot <- ggplot(dfc, aes(x = to)) +
+  dfc_plot <- ggplot(dfc, aes(x = from)) +
     geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
     geom_line(aes(y = hp, linetype = "Harmonic part")) +
     xlab("") +
@@ -214,7 +214,7 @@ if(plot_harmonic_part){
       plot.margin = margin(0, 0.5, 0, 0, "cm"))
 
 } else{
-  dfc_plot <- ggplot(dfc, aes(x = to)) +
+  dfc_plot <- ggplot(dfc, aes(x = from)) +
     geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
     xlab("") +
     ylab("") +
