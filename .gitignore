@@ -8,6 +8,12 @@ README_files/
 digiRhythm package - Pres 19 Oct 2021.pptx
 team
 jstatsoft/
+!jstatsoft/*.sty
+!jstatsoft/*.bib
+!jstatsoft/*.Rnw
+!jstatsoft/*.R
+!jstatsoft/*.bst
+!jstatsoft/*.cls
 inst/doc
 docs/
 /doc/
