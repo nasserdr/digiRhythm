@@ -14,6 +14,10 @@ jstatsoft/
 !jstatsoft/*.R
 !jstatsoft/*.bst
 !jstatsoft/*.cls
+!jstatsoft/jsslogo.jpg
+!jstatsoft/sum_dfc.png
+!jstatsoft/figures
+
 inst/doc
 docs/
 /doc/
