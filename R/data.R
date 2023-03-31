@@ -113,7 +113,7 @@
 #' A dataset of start and endtime of the morningmilking and eveningmilking on a dairy farm.
 #'
 #' @format A data frame of 4 columns
-#' \describe {
+#' \describe{
 #'  \item{day_start}{a POSIX formatted datetime}
 #'  \item{day_end}{a POSIX formatted datetime}
 #'  \item{night_start}{a POSIX formatted datetime}
