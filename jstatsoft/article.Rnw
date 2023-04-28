@@ -45,15 +45,15 @@ library("digiRhythm")
 \Plaintitle{digiRhythm: an R package for rhythmic behavior assessment in livestock}
 \Shorttitle{digiRhythm: an R package for rhythmic behavior assessment in livestock}
 
-%% - \Abstract{} almost as usual
+%% - \Abstract{} almost as usual # comr: changed abstract throughout.
 \Abstract{
-Animals' welfare is becoming increasingly attractive, especially in livestock farming. One method to quantify an animal's welfare is measuring its rhythmicity from activities acquired with sensors (e.g., accelerometers) mounted on the animal. The Degree of functional coupling (DFC) is one of these rhythmicity indicators. Computing the DFC involves several computational steps, such as computing a frequency spectrum and determining the statistical significance of its peaks. Despite the importance of this indicator and its use in the literature, no open source library is available for computing it. In this paper, we present the \proglang{R} package \pkg{digiRhythm}, which provides off-the-shelves functionalities for measuring animal's rhythmicity, and other valuable add-ons such as creating actrograms, computing and visualizing average activities, and the calculation of the diurnality index. We gave special attention to integrating the package in the research workflow, from raw data to creating publication-ready content.
+The welfare of farm animals is a growing concern to the public, yet indicators that allow to reliably quantify the welfare of these animals are scarce. One method that has been proposed to serve this purpose is measuring the organisms rhythmicity from activities acquired with sensors (e.g., accelerometers). The Degree of Functional Coupling (DFC) is one of these rhythmicity indicators. Computing the DFC involves several computational steps, such as computing a frequency spectrum and determining the statistical significance of its peaks. In this paper, we present the \proglang{R} package \pkg{digiRhythm}, which provides functions that allow calculating rhythmicity from activity data. Further, additional functions, such as creating actograms, computing and visualizing average activities, and the calculation of a diurnality index are also integrated in this package. The package is customized for integration in the research workflow, from raw data to creating publication-ready content and therefore allows the simple application of these sophisticated methods.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
 %% - \Plainkeywords{} without LaTeX markup (if necessary)
 %% - Should be comma-separated and in sentence case.
-\Keywords{Lomb-Scargle periodogram, Degree of functional coupling, periodicity, circadian rhythm, harmonic frequencies, actogram, diurnality index, harmonic power}
+\Keywords{Lomb-Scargle periodogram, Degree of Functional Coupling, periodicity, circadian rhythm, harmonic frequencies, actogram, diurnality index, harmonic power}
 \Plainkeywords{Lomb-Scargle periodogram, Degree of functional coupling, periodicity, circadian rhythm, harmonic frequencies, actogram, diurnality index, harmonic power}
 
 %% - \Address{} of at least one author
@@ -85,21 +85,23 @@ Animals' welfare is becoming increasingly attractive, especially in livestock fa
   E-mail: \email{marie.schneider@thuenen.de}\\
   \newline
 
-  Christina Umst\"atter\\
-  Johann Heinrich von Th\"unen Institut f\"ur Agrartechnologie \\
-  Bundesallee 47 \\
-  38116 Braunschweig\\
-  Deutschland\\
-  E-mail: \email{christina.umstaetter@thuenen.de}\\
-  URL: \url{https://www.thuenen.de/de/fachinstitute/agrartechnologie/personal/leitung/prof-dr-christina-umstaetter}\\
-
+ Marianne Cockburn\\
+  Agroscope, Equines \\
+  Swiss National Stud \\
+  Les Longs-Prés\\
+  1580, Avenches \\
+  Switzerland\\
+  E-mail: \email{marianne.cockburn@agroscope.admin.ch}\\
+  URL: \url{}\\
+  \newline
 
 }
 
 
 \begin{document}
 
-\section[Introduction: Degree of functional coupling and animal welfare ]{Introduction: Degree of functional coupling and animal welfare} \label{sec:intro}
+\section[Introduction: The Degree of Functional Coupling as a welfare indicator]{Introduction: Degree of functional coupling and animal welfare} \label{sec:intro}
+
 
 The Degree of functional coupling (DFC) is a metric used to describe the extent to which a measured activity is significantly cyclic to 24 hours and thus harmonically synchronized with the periodicity of the environment. The activity can be, e.g., the number of steps during a time interval or an acceleration measured with an accelerometer mounted on the animal. The DFC was first introduced by \cite{sinz1976systemanalyse} to gain insight into the circadian rhythm of sheep and used by \cite{scheibe1999comparative} to zoo animals and wildlife by applying a sequence of mathematical operations on continuous signals collected via animal-borne sensors. With the increasing availability of sensor systems to collect behavioral data continuously, more studies using the DFC were undertaken \citep{sarout2018assessment, fuchs2022detecting}. Throughout multiple studies (some refs), it has been proven that the DFC can be used as a meaningful indicator to assess an animal's welfare, thus the importance of having an open source package specifically for this type of computation. Therefore, an \proglang{R} package was developed and published with name \pkg{digiRhythm} \citep{dgm}.
 
@@ -131,7 +133,7 @@ Both DFC and HP are used to study the rhythmic behaviors of animals. Both indica
 \subsection{The Lomb-Scargle Periodogram (LSP)}{\label{sub:lsp}}
 The Lomb-Scargle Periodogram is the first step in computing the DFC and HP. The Lomb–Scargle periodogram (LSP) is widely used within the astronomy community and is well-known for detecting and characterizing periodicity in unevenly sampled time-series \citep{vanderplas2018understanding}.
 
-The activityis in the time domain (Figure \ref{fig:signalVslsp}, left) and can be transformed to the frequency domain (Figure \ref{fig:signalVslsp}, right) using the LSP. In the time domain, we can see the magnitude of the activity at a particular time stamp. In the frequency domain we can see the magnitude (power) of oscillations of specific frequencies present in the activity. For example, a  sine wave of 24 hours (Figure \ref{fig:signalVslsp}, left, first row) period could be represented with a one-peak periodogram (Figure \ref{fig:signalVslsp}, right, first row); this peak represents the frequency of a sine wave of 24 hours period. The same idea could be illustrated for a sine wave of 6 hours period (Figure \ref{fig:signalVslsp}, second row), and so on. Moreover, an activitycomposed of the addition of 24 hours and 6 hours sine waves (Figure \ref{fig:signalVslsp}, left, third row) will result in having two peaks for the periodogram (Figure \ref{fig:signalVslsp}, right, third row). Consequently, a periodogram is a tool that allows us to infer the power of each possible sine wave present in the activity.
+The activity is in the time domain (Figure \ref{fig:signalVslsp}, left) and can be transformed to the frequency domain (Figure \ref{fig:signalVslsp}, right) using the LSP. In the time domain, we can see the magnitude of the activity at a particular time stamp. In the frequency domain we can see the magnitude (power) of oscillations of specific frequencies present in the activity. For example, a  sine wave of 24 hours (Figure \ref{fig:signalVslsp}, left, first row) period could be represented with a one-peak periodogram (Figure \ref{fig:signalVslsp}, right, first row); this peak represents the frequency of a sine wave of 24 hours period. The same idea could be illustrated for a sine wave of 6 hours period (Figure \ref{fig:signalVslsp}, second row), and so on. Moreover, an activitycomposed of the addition of 24 hours and 6 hours sine waves (Figure \ref{fig:signalVslsp}, left, third row) will result in having two peaks for the periodogram (Figure \ref{fig:signalVslsp}, right, third row). Consequently, a periodogram is a tool that allows us to infer the power of each possible sine wave present in the activity.
 
 \begin{figure}
   \includegraphics[width=1\columnwidth]{signalVslsp}
@@ -190,6 +192,8 @@ head(lsp$lsp_data)
 
 \subsection{Harmonic frequencies and the intuition behind}{\label{sub:harmonic}}
 Animal species exhibit a circadian rhythm reflected in behavioral changes following a 24 hours cycle. Therefore, rhythmic behavioral events are reflected in the power of harmonic frequencies of the primary cycle (24 hours). These harmonics are the frequencies that correspond to 24 hours period divided by any integer smaller than 24 (24/1, 24/2, …). At this point, it is important to recall the subset of frequency powers previously described. These subsets are illustrated in Figure \ref{dfc_sum} for clarification.
+
+
 
 \begin{figure}[t]
   \includegraphics[width=1\columnwidth]{sum_dfc}
