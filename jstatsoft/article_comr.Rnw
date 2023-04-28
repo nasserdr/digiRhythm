@@ -33,10 +33,9 @@ library("digiRhythm")
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
 \author{Hassan-Roland Nasser~\orcidlink{0000-0003-1821-3234}\\Agroscope - Digital Production
-   \And Joanna Stachowicz~\orcidlink{0000-0003-4921-8353}\\Agroscope - Digital Production
    \AND Marie Schneider~\orcidlink{0000-0003-4921-8353}\\Johann Heinrich von Th\"unen\\ Institut für \"Okologischen Landbau
-   \And Christina Umst\"atter~\orcidlink{0000-0002-7638-3867}\\Johann Heinrich von Th\"unen\\ Institut für Agrartechnologie}
-\Plainauthor{Hassan-Roland Nasser, Joanna Stachowicz, Marie Schneider, Christina Umst\"atter}
+   \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope}
+\Plainauthor{Hassan-Roland Nasser, Marie Schneider, Marianne Cockburn}
 
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
@@ -100,19 +99,19 @@ The welfare of farm animals is a growing concern to the public, yet indicators t
 
 \begin{document}
 
-\section[Introduction: The Degree of Functional Coupling as a welfare indicator]{Introduction: Degree of functional coupling and animal welfare} \label{sec:intro}
+\section[Introduction: The Degree of Functional Coupling as a welfare indicator]{Introduction: The Degree of Functional Coupling as a welfare indicator} \label{sec:intro}
 
 
-The Degree of functional coupling (DFC) is a metric used to describe the extent to which a measured activity is significantly cyclic to 24 hours and thus harmonically synchronized with the periodicity of the environment. The activity can be, e.g., the number of steps during a time interval or an acceleration measured with an accelerometer mounted on the animal. The DFC was first introduced by \cite{sinz1976systemanalyse} to gain insight into the circadian rhythm of sheep and used by \cite{scheibe1999comparative} to zoo animals and wildlife by applying a sequence of mathematical operations on continuous signals collected via animal-borne sensors. With the increasing availability of sensor systems to collect behavioral data continuously, more studies using the DFC were undertaken \citep{sarout2018assessment, fuchs2022detecting}. Throughout multiple studies (some refs), it has been proven that the DFC can be used as a meaningful indicator to assess an animal's welfare, thus the importance of having an open source package specifically for this type of computation. Therefore, an \proglang{R} package was developed and published with name \pkg{digiRhythm} \citep{dgm}.
+Digitalisation has reached livestock farming and sensors are now regularly mounted on animals with the intention of improving management through early detection of physiological abnormalities. To date, the reliability of sensor based abnormality detection still proves potential for optimization. The Degree of functional coupling (DFC) presents a unique approach to activity evaluation. The DFC is a metric used to describe the extent to which a measured activity is significantly cyclic to 24 hours and thus harmonically synchronized with the periodicity of the environment. Such activity can be, e.g., the number of steps during a time interval or an acceleration measured with an accelerometer mounted on the animal, but could also be the visiting times of feeding troughs or watering stations. The DFC was first introduced by \cite{sinz1976systemanalyse} to gain insight into the circadian rhythm of sheep and used by \cite{scheibe1999comparative} to evaluate the welfare of zoo animals and wildlife by applying a sequence of mathematical operations on continuous signals collected via animal-borne sensors. With the increasing availability of sensor systems to collect behavioral data continuously, more studies applying the DFC were performed \citep{sarout2018assessment, fuchs2022detecting}. These studies were able to demonstrate that the rhythm of animals is linked to their state of physical well being. However, the application of the DFC was always limited to those with extensive knowledge of statistical programming. An open source package specifically for this type of computation opens up the opportunities for livestock research to easily apply these algorithms. Therefore, we developed the \proglang{R} package \pkg{digiRhythm} \citep{dgm}.
 
 
-Two design considerations were followed while developing the package to avoid errors and make the library's outputs easily integrated with third-party \proglang{R} packages and other analysis workflows. The first consideration concerns the input data, whereas a specific tabular data structure is required to avoid function misuse and error propagation. The second consideration deals with the user-friendliness of the data interoperability, where the functions returns are designed to be easily exploited and integrated with other analysis workflows.
+% Two design considerations were followed while developing the package to avoid errors and make the library's outputs easily integrated with third-party \proglang{R} packages and other analysis workflows. The first consideration concerns the input data, whereas a specific tabular data structure is required to avoid function misuse and error propagation. The second consideration deals with the user-friendliness of the data interoperability, where the functions returns are designed to be easily exploited and integrated with other analysis workflows.
 
-This paper is organized as follows. In section \ref{sec:dfc}, the mathematical details of computing the DFC are explained. A deep dive into the statistical significance of frequency peaks needed for the DFC computation is also highlighted. In section \ref{sec:usage}, a detailed overview on all the \pkg{digiRhythm} package functionalities is provided. Finally, conclusions are drawn in section \ref{sec:summary}.
+This paper describes the functions of the package and is organized as follows. In section \ref{sec:dfc}, the mathematical details of computing the DFC are explained. Further, the statistical significance of frequency peaks needed for the DFC computation is explained. In section \ref{sec:usage}, a detailed overview of the \pkg{digiRhythm} package functions is provided. Finally, we indicate how this package can be useful for researchers in section \ref{sec:summary}.
 
 \section{Understanding the degree of functional coupling}{\label{sec:dfc}}
 
-Computing the DFC involves several steps. First, the Lomb-Scargle Periodogram \citep{lomb1976least, scargle1982studies, vanderplas2018understanding} of the activityis computed. The second step investigates the spectrum by looking at specific frequencies (harmonics and non-harmonics, further details in Figure \ref{fig:reallsp}). Afterward, the statistical significance of frequency peaks is computed. Finally, a ratio of the sum of frequency powers is calculated (a detailed breakdown of the calculation is given in Figure \ref{dfc_sum}). It was decided to follow a top down approach and start with the  explaining the the ratio of frequency powers. Afterwards, we deep dive into how these frequency powers and their statistical significance can be computed in details.
+Computing the DFC involves several steps. First, the Lomb-Scargle Periodogram \citep{lomb1976least, scargle1982studies, vanderplas2018understanding} of the activity is computed. The second step investigates the spectrum by looking at specific frequencies (harmonics and non-harmonics, further details in Figure \ref{fig:reallsp}). In a a next step, the statistical significance of frequency peaks is computed. Finally, a ratio of the sum of frequency powers is calculated (a detailed breakdown of the calculation is given in Figure \ref{dfc_sum}). We started by explaining the the ratio of frequency powers. Ultimately, we describe in detail how these frequency powers and their statistical significance can be computed.
 
 According to  \cite{scheibe1999comparative}, the DFC can be computed as follows:
 %
@@ -133,15 +132,15 @@ Both DFC and HP are used to study the rhythmic behaviors of animals. Both indica
 \subsection{The Lomb-Scargle Periodogram (LSP)}{\label{sub:lsp}}
 The Lomb-Scargle Periodogram is the first step in computing the DFC and HP. The Lomb–Scargle periodogram (LSP) is widely used within the astronomy community and is well-known for detecting and characterizing periodicity in unevenly sampled time-series \citep{vanderplas2018understanding}.
 
-The activity is in the time domain (Figure \ref{fig:signalVslsp}, left) and can be transformed to the frequency domain (Figure \ref{fig:signalVslsp}, right) using the LSP. In the time domain, we can see the magnitude of the activity at a particular time stamp. In the frequency domain we can see the magnitude (power) of oscillations of specific frequencies present in the activity. For example, a  sine wave of 24 hours (Figure \ref{fig:signalVslsp}, left, first row) period could be represented with a one-peak periodogram (Figure \ref{fig:signalVslsp}, right, first row); this peak represents the frequency of a sine wave of 24 hours period. The same idea could be illustrated for a sine wave of 6 hours period (Figure \ref{fig:signalVslsp}, second row), and so on. Moreover, an activitycomposed of the addition of 24 hours and 6 hours sine waves (Figure \ref{fig:signalVslsp}, left, third row) will result in having two peaks for the periodogram (Figure \ref{fig:signalVslsp}, right, third row). Consequently, a periodogram is a tool that allows us to infer the power of each possible sine wave present in the activity.
+Activity is in the time domain (Figure \ref{fig:signalVslsp}, left) and can be transformed to the frequency domain (Figure \ref{fig:signalVslsp}, right) by applying the LSP. In the time domain, we can see the magnitude of the activity at a particular time stamp. In the frequency domain we can see the magnitude (power) of oscillations of specific frequencies present in the activity. For example, a  sine wave of 24 hours (Figure \ref{fig:signalVslsp}, left, first row) period could be represented with a one-peak periodogram (Figure \ref{fig:signalVslsp}, right, first row); this peak represents the frequency of a sine wave of 24 hours period. The same idea could be illustrated for a sine wave of 6 hours period (Figure \ref{fig:signalVslsp}, second row), and so on. Moreover, an activity composed of the addition of 24 hours and 6 hour sine waves (Figure \ref{fig:signalVslsp}, left, third row) will result in having two peaks for the periodogram (Figure \ref{fig:signalVslsp}, right, third row). Consequently, a periodogram is a tool that allows us to infer the power of each possible sine wave present in the activity.
 
 \begin{figure}
   \includegraphics[width=1\columnwidth]{signalVslsp}
-  \caption{Examplary harmonics (left) and their corresponding LSP (right). The first two rows show pefect sine waves acivity signals with 24 hours and 6 hours periods, respectively, and their corresponding LSP. The bottom row shows the LSP (right) of two sine waves (of 24 hours period and 6 hours period) added (left) together.}
+  \caption{Examplary harmonics (left) and their corresponding Lomb-Scargle Periodogram (LSP) (right). The first two rows show regular sine waves activity signals with 24 hours and 6 hours periods, respectively, and their corresponding LSP. The bottom row shows the LSP (right) of two sine waves (of 24 hours period and 6 hours period) added (left) together.}
   \label{fig:signalVslsp}
 \end{figure}
 
-Activity signals acquired from sensors on animals are far from perfect sine waves. Therefore, investigating periodic events inside these signals needs a conversion through LSP. Figure \ref{fig:realsignal} shows an example of a real activity example - the motion index (which is a proprietary metric of the
+Activity signals acquired from sensors on animals are irregular. Therefore, investigating periodic events inside these signals requires a conversion through LSP. Figure \ref{fig:realsignal} shows an example of activity data - the motion index (which is a proprietary metric of the
 overall animal activity measured in three dimensions (\cite{icetagiowa})) of a cow. The corresponding LSP is shown in Figure \ref{fig:reallsp}.
 
 \begin{figure}
@@ -175,9 +174,9 @@ Where $g_n$ is the $n_{th}$ sample in the activity, $t_n$ the $n_{th}$ time inde
 \tau = \frac{1}{4\pi f} \tan^{-1} \frac{\sum_n \sin{(4\pi ft_n)}}{\sum_n \cos{(4\pi ft_n)}}
 \end{equation}
 
-Before computing the LSP, we have to determine the frequency grid on which we will apply the formula \ref{eq:lsp}. The frequency grid goes from 0 to $f_{max}$ which is the maximum frequency whom power can be computed from the activity $g_n$. $f_{max}$ is determined according to the Shanon-Nyquist theorem (\cite{shannon1928certain, shannon1949mathematical}).
+Before computing the LSP, we have to determine the frequency grid on which we will apply the formula \ref{eq:lsp}. The frequency grid goes from 0 to $f_{max}$ which is the maximum frequency power that be computed from the activity $g_n$. $f_{max}$ is determined according to the Shanon-Nyquist theorem (\cite{shannon1928certain, shannon1949mathematical}).
 
-Figure \ref{fig:reallsp} represent the Lomb-Scargle periodogram computed from the activitypresent in Figure \ref{fig:realsignal}.
+Figure \ref{fig:reallsp} represent the Lomb-Scargle periodogram computed from the activity present in Figure \ref{fig:realsignal}.
 
 \begin{figure}
 \centering
@@ -186,34 +185,34 @@ lsp <- lomb_scargle_periodogram(df[1:672 , c(1,2)],
                          alpha = 0.01, sampling = 15, plot = TRUE)
 head(lsp$lsp_data)
 @
-\caption{The Lomb-Scargle Periodogram of the activity data show in Figure \ref{fig:realsignal}. Red bars show the amplitude of harmonic frequencies (with the corresponding harmonic period), while green bars represent non-harmonic frequencies. The dashed line represents the threshold of significance (frequencies with power less than this threshold are considered non-significant). In this particular example, there are only two frequencies with significant power; one of them - which corresponds to a 12-hours period - is harmonic.}
+\caption{The Lomb-Scargle Periodogram of the activity data shown in Figure \ref{fig:realsignal}. Red bars show the amplitude of harmonic frequencies (with the corresponding harmonic period), while green bars represent non-harmonic frequencies. The dashed line represents the threshold of significance (frequencies with power less than this threshold are considered non-significant). In this particular example, there are only two frequencies with significant power; one of them - which corresponds to a 12-hours period - is harmonic.}
 \label{fig:reallsp}
 \end{figure}
 
 \subsection{Harmonic frequencies and the intuition behind}{\label{sub:harmonic}}
-Animal species exhibit a circadian rhythm reflected in behavioral changes following a 24 hours cycle. Therefore, rhythmic behavioral events are reflected in the power of harmonic frequencies of the primary cycle (24 hours). These harmonics are the frequencies that correspond to 24 hours period divided by any integer smaller than 24 (24/1, 24/2, …). At this point, it is important to recall the subset of frequency powers previously described. These subsets are illustrated in Figure \ref{dfc_sum} for clarification.
+Animal species exhibit a circadian rhythm reflected in behavioral changes following a 24 hours cycle. Therefore, rhythmic behavioral events are reflected in the power of harmonic frequencies of the primary cycle (24 hours). These harmonics are the frequencies that correspond to 24 hour periods divided by any integer smaller than 24 (24/1, 24/2, …). At this point, it is important to recall the subset of frequency powers previously described. These subsets are illustrated in Figure \ref{dfc_sum}.
 
 
 
 \begin{figure}[t]
   \includegraphics[width=1\columnwidth]{sum_dfc}
-  \caption{An illustration shows the frequency peaks found in a Lomb Scargle Periodogram in the context of animals' rhythmicity. The whole frequency space consists of frequencies with significant and non-significant peaks, whose powers sum up to $sumall$. The powers of the frequencies with significant peaks sum up to $sumsig$. A subset of the significant peaks represents harmonic frequencies (24h, 24h/2, 24h/3, \dots) whose powers sum up to $ssh$.}
+  \caption{Frequency peaks found in a Lomb Scargle Periodogram in the context of animals' rhythmicity. The whole frequency space consists of frequencies with significant and non-significant peaks, whose powers sum up to $sumall$. The powers of the frequencies with significant peaks sum up to $sumsig$. A subset of the significant peaks represents harmonic frequencies (24h, 24h/2, 24h/3, \dots) whose powers sum up to $ssh$.}
   \label{dfc_sum}
 \end{figure}
 
-The relationship between rhythmicity and frequencies would now be clear for the reader. If the significant frequencies are only the harmonic ones (i.e., ssh = sumsig), then the DFC = 1, and therefore the animal exhibits a highly rhythmic behavior. On the counterpart, if the significant frequencies are not harmonic, then the DFC < 1; therefore, the animal exhibits a low rhythmic behavior.
+The relationship between rhythmicity and frequencies would now be clear for the reader. If the significant frequencies are only the harmonic ones (i.e., ssh = sumsig), then the DFC = 1, and therefore the animal exhibits a highly rhythmic behavior. On the counterpart, if the significant frequencies are not harmonic, then the DFC < 1; therefore, the animal exhibits a low rhythmic behavior., which in turn would indicate a poor physiological state.
 
 \subsection{Measuring the statistical significance of a frequency peak}{\label{sub:significance}}
-After computing the periodogram, measuring the statistical significance of  frequency peaks is the second step in the DFC process. The latter would show a peak per frequency. Determining whether a certain peak reflects a activitycomponent or a noise component is a crucial step. In fact, for a small number of samples and a low signal-to-noise ratio, the noise peaks become comparable to the activity peaks. Hence, the importance of having a tool that measures the statistical significance of a peak.
-In this regard, the False Alarm Probability (FAP) is the measure that is typically used. The FAP reflects the probability that data with no activitywould lead to a peak of similar magnitude.
+After computing the periodogram, measuring the statistical significance of  frequency peaks is the second step in the DFC computation. The latter would show a peak per frequency. Determining whether a certain peak reflects a valid activity component or a noise component is a crucial step. In fact, for a small number of samples and a low signal-to-noise ratio, the noise peaks become comparable to the activity peaks. Hence, it is important to verify the data by applying a tool that measures the statistical significance of a peak.
+In this regard, the False Alarm Probability (FAP) is the measure that is typically used. The FAP reflects the probability that data with no activity would lead to a peak of similar magnitude.
 
-According to \cite{scargle1982studies}, the values of the un-normalized periodogram follow a $\chi^2$ distribution with two degrees of freedom. This implies that the probability of observing periodogram values less than a given $Z=P(f_0)$ in an activityformed by only Gaussian noise is:
+According to \cite{scargle1982studies}, the values of the un-normalized periodogram follow a $\chi^2$ distribution with two degrees of freedom. This implies that the probability of observing periodogram values less than a given $Z=P(f_0)$ in an activity formed by only Gaussian noise is:
 %
 \begin{equation}
   P_{single} = 1 - \exp{Z}
 \end{equation}
 %
-To compute the FAP, there are multiple approaches. According to \citep{suveges2015comparative}, the Baluev method \citep{baluev2008assessing} is one of the top performing ones. This method was chosen to be implemented in \pkg{digiRhythm}.
+To compute the FAP, multiple approaches are available. According to \citep{suveges2015comparative}, the Baluev method \citep{baluev2008assessing} is one of the top performing ones. This method was chosen to be implemented in \pkg{digiRhythm}.
 
 According to Baluev \citep{baluev2008assessing}, the FAP could be written as:
 
@@ -228,20 +227,20 @@ Where:
 and $W = f_{max}\sqrt{4\pi var(t)}$
 
 \section{digiRhythm functionalities and usage}\label{sec:usage}
-In addition to the ability to compute the DFC and HP, \pkg{digiRhythm} contains much more functionalities. These functionalities were complied with animal behavior scientists to provide the commonly needed tools for a rhythmicity analysis topic. Currently, the library offer the following tools:
+In addition to the ability to compute the DFC and HP, \pkg{digiRhythm} contains much more functions. These functions were complied with animal behavior scientists to provide the commonly needed tools for rhythmicity analysis. Currently, the library offers the following tools:
 
 \begin{itemize}
   \item \fct{lomb\_scargle\_periodogram}: Computing and plotting the Lomb Scargle Periodogram. This function also offers comprehensive visualization of the LSP.
-  \item \fct{dfc}: Computing and plotting the Degree of functional coupling and the harmonic part.
+  \item \fct{dfc}: Computing and plotting the Degree of Functional Coupling and the harmonic part.
   \item \fct{daily\_average\_activity}: Computing and plotting the daily average activity.
   \item \fct{diurnality}: Computing and plotting the diurnality index.
   \item \fct{actogram}: Actogram Visualization.
 
 \end{itemize}
 
-The \fct{dfc} function is a wrapper of the  that users could also use should they wish to investigate more about
+The \fct{dfc} function is a wrapper of the !MISSING WORD! that users could also use should they wish to investigate more about!MISSING WORD!
 \subsection{The input data format}
-As mentioned in section \ref{sec:intro}, the library accepts input Data frame s with a specific structure. A typical data frame sampled at 15 min intervals is shown below. This data frame is provided with the \pkg{digiRhythm} package and could be fetched using:
+As mentioned in section \ref{sec:intro}, the library accepts input Data frames with a specific structure. A typical data frame sampled at 15 min intervals is shown below. This data frame is provided with the \pkg{digiRhythm} package and could be fetched using:
 
 <<input_data>>==
 data("df516b_2", package = 'digiRhythm')
@@ -270,10 +269,10 @@ This function takes a data frame as an argument and checks whether the data is d
 \end{itemize}
 
 The verbose argument helps understand why (or why not) the data is considered (or not) to be digiRhythm friendly. Verbose = TRUE will output information about each condition checked.
-A warning message will appear if the data contains less than seven days because at least seven days are needed to compute the DFC and HP, yet other functionalities could be performed.
+A warning message will appear if the data contains less than seven days because at least seven days are required to compute the DFC and HP, yet other functionalities could be performed.
 
 \subsection[The dfc function]{The \fct{dfc} function}{\label{sub:dgm_fct}}
-The DFC and HP are both implemented (\ref{alg:dfc}) in the \fct{dfc} function. The function takes a \pkg{digiRhythm} friendly data frame, a start, an end date, and the variable for which the user wants to run the analysis. It then applies a Lomb Scargle Periodogram over a sliding window of seven days at a time. For instance, the DFC and HP are computed for the days one to seven, then for the days two to eight, and so on. The last six days of the data set would not be considered because it is not recommended to use the LSP (in the context of computing the DFC) for less than seven days. Figure \ref{fig:dfc} shows a typical DFC/HP output.
+The DFC and HP are both implemented (\ref{alg:dfc}) in the \fct{dfc} function. The function evaluates a \pkg{digiRhythm} friendly data frame, by analyzing the start, and end date, and the variable for which the user wants to run the analysis. It then applies a Lomb Scargle Periodogram over a sliding window of seven days at a time. For instance, the DFC and HP are computed for the days one to seven, then for the days two to eight, and so on. The last six days of the data set would not be considered because it is not recommended to use the LSP (in the context of computing the DFC) for less than seven days. Figure \ref{fig:dfc} shows a typical DFC/HP output.
 
 \begin{algorithm}
 \caption{The Degree of Functional Coupling algorithm}\label{alg:dfc}
@@ -298,7 +297,7 @@ The DFC and HP are both implemented (\ref{alg:dfc}) in the \fct{dfc} function. T
 
 \subsection[Using digiRhythm to compute DFC and HP]{Using \pkg{digiRhythm} to compute DFC and HP}{\label{sub:dgm_dfc_hp}}
 
-The DFC and HP can be computed using the \fct{dfc} function. A recommended workflow is shown below. After reading the data and verfying its compatibility with the library, the data (originally sampled with 1 min) is resampled to 15 minutes. In this context, resamplings mean simple summation. For instance, if the dataset contains the number of steps with 1 minute sampling period, resampling to 15 minutes means adding the steps during each 15 minutes interval. Further, an activity is chosen (in this example, we choose the activity from the second column (motion index)), then the DFC is computed using the \fct{dfc} function as shown below:
+The DFC and HP can be computed using the \fct{dfc} function. A recommended workflow is shown below. After reading the data and verfying its compatibility with the library, the data (originally sampled with 1 min) is resampled to 15 minutes. In this context, resampling means simple summation. For instance, if the dataset contains the number of steps with 1 minute sampling period, resampling to 15 minutes means adding the steps during each 15 minutes interval. Further, an activity is chosen (in this example, we choose the activity from the second column (motion index)), then the DFC is computed using the \fct{dfc} function as shown below:
 
 <<dfc>>==
 <<dfc_snippet, results=hide>>=
@@ -319,17 +318,17 @@ The returned variable \code{my_dfc} contains both the data and the plot as it is
 
 \begin{figure}[t!]
 \centering
-<<print_dfc, fig=TRUE, cache = TRUE, width=9>>==
+<<plot_dfc, fig=TRUE, cache = TRUE, width=9>>==
 library("ggplot2")
 plot(my_dfc)
 @
 \caption{\label{fig:dfc} The DFC and HP of the dataset \fct{df516b\_2}.}
 \end{figure}
 
-It is possible to access the computed data and how the user can change the plot based on the returned plot.
+It is possible to access the computed data and the user can adjust the plot features.
 Calling the data field from the variable \code{my_dfc} will allow accessing the computed DFC and HP as shown below:
 
-It is, therefore, easy to access the resulting DFC and HP and therefore use them in further analysis like statistical modeling or more customized workflows. Because the returned object has the \pkg{ggplot2} type \citep{wickham2010layered}, it is also possible to change the plot directly by adding a layer on the aesthetics of the \code{my_dfc} object as shown below:
+It is, therefore, easy to access the resulting DFC and HP and use them in further analysis like statistical modeling or more customized workflows. Because the returned object is a \pkg{ggplot2} \citep{wickham2010layered}, it is also possible to change the plot directly by adding a layer on the aesthetics of the \code{my_dfc} object as shown below:
 
 \begin{figure}[h!]
 \centering
@@ -340,12 +339,13 @@ new_plot <- my_dfc +
      axis.text.y = element_text(size = 15, colour = "red"))
 print(new_plot)
 @
-%
-\caption{\label{fig:dfc_modified} The output plot from Figure \ref{fig:dfc} modified by adding a layer of aesthetics causing some modifications to the \fct{ggplot} output returned by the \fct{dfc}. In particular, the font family was changed to \emph{Times}, the font size to 8 points, and the y-axis text was changed to a bigger size (15) and colored red.}
+
+
+\caption{\label{fig:dfc_modified} Output plot from Figure \ref{fig:dfc} modified by adding a layer of aesthetics causing some modifications to the \fct{ggplot} output returned by the \fct{dfc}. In particular, the font family was changed to \emph{Times}, the font size to 8 points, and the y-axis text was changed to a bigger size (15) and colored red.}
 \end{figure}
 
 
-This is an illustrative yet straightforward example to sketch the feature of resuing the graphical outputs of the library, but the application comes in handy when users need to produce publication-quality pictures where they should abide by a specific format. It is important to mention that this feature is possible because the functions were designed in a way they return \fct{ggplot} objects rather than base \proglang{R} objects.
+This is an illustrative yet straightforward example to sketch the feature of reusing the graphical outputs of the library, but the application is useful when users need to produce publication-quality pictures in a specific format. It is important to mention that this feature is possible because the functions were designed in a way they return \fct{ggplot} objects rather than base \proglang{R} objects.
 
 
 \subsection[Recommendations to use the dfc function]{Recommendations to use the dfc function}{\label{sub:recom_dfc}}
@@ -381,7 +381,7 @@ The average activity is an indicator of how active an animal is on average durin
 
 Where $T_i$ is a specific time of the day, $d$ is the number of days, and $A(T_{id})$ is the activity value at the time $T_i$ during the day $d$.
 
-The function \fct{daily\_average\_activity} compute and plot this indicator as shown in the Figure \ref{fig:avg_act}.
+The function \fct{daily\_average\_activity} computes and plots this indicator as shown in Figure \ref{fig:avg_act}.
 
 \begin{figure}[h!]
 \centering
@@ -394,7 +394,7 @@ daily_average_activity(df, activity, activity_alias,
 
 \subsection[Diurnality Index (DI)]{Diurnality Index (DI)}{\label{sub:di}}
 
-The Diurnality index is also an important measure when it comes to assessing animals' rhythmicity. This measure indicates whether the animal exercises its activity more during the daytime or the nighttime. Using the Diurnality function, the user has the liberty to choose the day and light time. The user can also omit some periods during the day, such as milking time, where the milking process controls the animal's activity rather than its behavior. The Diurnality index is computed according to \cite{hoogenboom1984seasonal}:
+The Diurnality Index is also an important measure when it comes to assessing animals' rhythmicity. This measure indicates whether the animal exercises its activity more during diurnal (daytime) or nocturnal (nighttime) periods. Using the Diurnality function, the user can specify day and night time. The user can also omit some periods during the day, such as milking time, where the milking process controls the animal's activity rather than its behavior. The Diurnality index is computed according to \cite{hoogenboom1984seasonal}:
 
 \begin{equation}
   DI = \frac{\frac{C_d}{Td} - \frac{C_n}{Tn}}{\frac{C_d}{Td} + \frac{C_n}{Tn}}
@@ -424,7 +424,7 @@ my_di <- diurnality(df, activity, day_time, night_time)
 %% -- Summary/conclusions/discussion -------------------------------------------
 
 \section{Discussion} \label{sec:summary}
-The \pkg{digiRhythm} package can make a significant contribution to the animal welfare assessment as it makes the analysis of animal rhythmicity more accessible. The tools is easy to uses and comes in handy especially it is delivered as an \proglang{R} package. The theoretical details and intuition behind the DFC were explained in section \ref{sec:dfc}. The usage of the package was explained in the section \ref{sec:usage}. Further usage examples could be found in the library's vignettes.
+The \pkg{digiRhythm} package can make a significant contribution to the animal welfare assessment as it makes the analysis of animal rhythmicity more accessible to researchers. The tool is easy to use, especially it is delivered as an \proglang{R} package. The theoretical details and intuition behind the DFC is explained in section \ref{sec:dfc}. The usage of the package is explained in the section \ref{sec:usage}. Further usage examples can be found in the library's vignettes.
 
 At the date of writing this paper, the current version (v1.1) of the library does not offer the possibility to compute rhythmicity with other techniques such as cosinor analysis (\cite{refinetti2016}). Therefore, there is potential to expand the library's functionality in the future to include other techniques.
 
