@@ -33,21 +33,20 @@ library("digiRhythm")
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
 \author{Hassan-Roland Nasser~\orcidlink{0000-0003-1821-3234}\\Agroscope - Digital Production
-   \And Joanna Stachowicz~\orcidlink{0000-0003-4921-8353}\\Agroscope - Digital Production
    \AND Marie Schneider~\orcidlink{0000-0003-4921-8353}\\Johann Heinrich von Th\"unen\\ Institut für \"Okologischen Landbau
-   \And Christina Umst\"atter~\orcidlink{0000-0002-7638-3867}\\Johann Heinrich von Th\"unen\\ Institut für Agrartechnologie}
-\Plainauthor{Hassan-Roland Nasser, Joanna Stachowicz, Marie Schneider, Christina Umst\"atter}
+   \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope - Equine Research Group}
+\Plainauthor{Hassan-Roland Nasser, Marie Schneider, Marianne Cockburn}
 
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
 %% - \Shorttitle{} with LaTeX markup (if any), used as running title
-\title{\pkg{digiRhythm}: an \proglang{R} package for rhythmic behavior assessment in livestock}
-\Plaintitle{digiRhythm: an R package for rhythmic behavior assessment in livestock}
-\Shorttitle{digiRhythm: an R package for rhythmic behavior assessment in livestock}
+\title{\pkg{digiRhythm}: an \proglang{R} package for rhythmicity assessment using the degree of functional coupling}
+\Plaintitle{digiRhythm: an R package for rhythmicity assessment using the degree of functional coupling}
+\Shorttitle{digiRhythm: an R package for rhythmicity assessment using the degree of functional coupling}
 
 %% - \Abstract{} almost as usual # comr: changed abstract throughout.
 \Abstract{
-The welfare of farm animals is a growing concern to the public, yet indicators that allow to reliably quantify the welfare of these animals are scarce. One method that has been proposed to serve this purpose is measuring the organisms rhythmicity from activities acquired with sensors (e.g., accelerometers). The Degree of Functional Coupling (DFC) is one of these rhythmicity indicators. Computing the DFC involves several computational steps, such as computing a frequency spectrum and determining the statistical significance of its peaks. In this paper, we present the \proglang{R} package \pkg{digiRhythm}, which provides functions that allow calculating rhythmicity from activity data. Further, additional functions, such as creating actograms, computing and visualizing average activities, and the calculation of a diurnality index are also integrated in this package. The package is customized for integration in the research workflow, from raw data to creating publication-ready content and therefore allows the simple application of these sophisticated methods.
+Indicators that allow to reliably quantify the welfare of animals are scarce. One method that has been proposed to serve this purpose is measuring the organisms rhythmicity from activities acquired with sensors (e.g., accelerometers). The Degree of Functional Coupling (DFC) is one of these rhythmicity indicators. Computing the DFC involves several computational steps, such as computing a frequency spectrum and determining the statistical significance of its peaks. In this paper, we present the \proglang{R} package \pkg{digiRhythm}, which provides functions that allow calculating rhythmicity from activity data. Further, additional functions, such as creating actograms, computing and visualizing average activities, and the calculation of a diurnality index are also integrated in this package. The package is customized for integration in the research workflow, from raw data to creating publication-ready content and allows the simple application of these sophisticated methods.
 }
 
 %% - \Keywords{} with LaTeX markup, at least one required
