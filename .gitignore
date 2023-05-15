@@ -19,6 +19,7 @@ team
 !jstatsoft/figures
 jstatsoft/original
 jstatsoft/trashcode
+jstatsoft/*.pdf
 
 inst/doc
 docs/
