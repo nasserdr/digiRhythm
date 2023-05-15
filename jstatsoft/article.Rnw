@@ -424,6 +424,11 @@ my_di <- diurnality(df, activity, day_time, night_time)
 \caption{\label{fig:di} The Diurnality index of the dataset \fct{df516b\_2}.}
 \end{figure}
 
+\subsection[sliding Diurnality Index (DI)]{sliding Diurnality Index (DI)}{\label{sub:sliding_di}}
+
+The function sliding_DI also computes the diurnality index as described above. The difference is that no single definition of day and night was used for the complete calculation period. It is possible to include a data frame with different definitions of day_start and day_end, as well as night_start and night_end for each day.  The data frame should include five columns, one date column, and four columns of timestamps for night_end, day_start, day_end, and night_start. All of these columns should be in the POSIXct format.
+This method, which includes different definitions, could be helpful in various experiments. For example, in Europe, it could be used to reduce the bias emerging by converting summertime and wintertime to a time zone, such as GMT. An additional use could be includig sunset and sundown by using the same definition for night_end and day_start and for day_end and night_start.
+
 
 %% -- Summary/conclusions/discussion -------------------------------------------
 
@@ -436,7 +441,7 @@ The required frequency of data collection is of utmost importance in animal-born
 
 Include 7 days aspect.
 
-Additionally, it would be interesting to investigate the correlation between the DFC and rhythmicity computed on data from various computation techniques. For instance, \cite{moller2022diurnal} utilized a range of techniques, including set logic, circular cross-correlation, circular clustering, functional enrichment analyses, and least squares regression, on transcriptomic time series data from humans and baboons. Additionally, \cite{plaza2022gps} used GPS data to estimate rhythmicity. Comparing the correlations between rhythmicity measures derived from different types of data and between various techniques could be a useful research area.
+Other metrics for calculating circadian rhythms have been previously published. For example, Interdaily Stability (IS) is mainly used in human research \cite{witting1990}. The Furier-Based Approximation with Threasholding (FBAT) was designed to calculate the circadian rhythms of dairy cows \cite{wagner2021}. Their database depends on the 24h day, but none of them uses the 24h within the calculation. The calculation of harmonic frequencies, which sets the activity signal in relation to the external 24h day is unique. Therefore, it would be interesting to investigate the correlation between the DFC and rhythmicity computed on data from various computation techniques. For instance, \cite{moller2022diurnal} utilized a range of techniques, including set logic, circular cross-correlation, circular clustering, functional enrichment analyses, and least squares regression, on transcriptomic time series data from humans and baboons. Additionally, GPS data of free ranging animals \cite{plaza2022gps} or data of real time positioning systems in a barn \cite{wagner2021} could be used to estimate rhythmicity. Comparing the correlations between rhythmicity measures derived from different types of data and between various techniques could be a useful research area. In addition, further studies will be conducted, to validate the DFC calculation, by using simulated data.
 
 The current package has been developed for farm animals, but the principles of rhythmicity apply for any organism, including humans. Therefore we highly recommend future research to evaluate the \pkg{digiRhythm} package in other species. Many humans nowadays continuously collect activity data with their smart-watches or the phones. Thus, it would be interesting to evaluate the application of the \pkg{digiRhythm} package in humans, offering an objective indicator of human welfare. A previous review highlights the potential of such rhythmicity computations in humans (https://journals.sagepub.com/doi/pdf/10.1177/0748730420940483).
 
