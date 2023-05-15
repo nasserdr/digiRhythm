@@ -1,0 +1,35 @@
+Goal:
+- Less on welfare / More Rhytmicity and Methodology ==> Intro and Discussion.
+- Highlight transferability of the package to humans (ref to phsychology patterns).
+- Check Marie's git.
+- Who does what.
+- Timeline:
+  - Final Version tentative: 26 May.
+  - Submission tentative: 15 June.
+
+Action:
+- @Marianne: Format references with \cite{} or \citep{} if needed.
+- @Marianne: Highlight welfare/rhythmicity in the Introduction.
+- @Marie: Ideas to add to discussion:
+- @Hassan: Fix the Github issue.
+- @All: Think about another title (remove livestock).
+Current version: digiRhythm: an R package for rhythmic behavior assessment in livestock.
+- @Marie: Add the sliding DI paragraph to the paper.
+
+Discussion:
+- @Marianne: Highlight psyhch and transferability ot humans.
+- @Marie: Further studies: run DFC against simulated data.
+- @Marie: Highlight what makes DFC unique (compare with Wagner paper).
+- @Hassan: Fix open source idea at the end.
+
+Ideas:
+- digiRhythm: an R package for rhythmicity computation.
+- digiRhythm: an R package for circadian rhythms computation.
+- digiRhythm: an R package for rhythmicity assessment using the degree of functional coupling.
+
+@Hassan:
+- Fix percentages.
+- Commit.
+- Fix the intro.
+- Folder for amendements.
+
