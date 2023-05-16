@@ -7,20 +7,6 @@ sample_results/
 README_files/
 digiRhythm package - Pres 19 Oct 2021.pptx
 team
-!jstatsoft
-!jstatsoft/*.sty
-!jstatsoft/*.bib
-!jstatsoft/*.Rnw
-!jstatsoft/*.R
-!jstatsoft/*.bst
-!jstatsoft/*.cls
-!jstatsoft/jsslogo.jpg
-!jstatsoft/sum_dfc.png
-!jstatsoft/figures
-jstatsoft/original
-jstatsoft/trashcode
-jstatsoft/*.pdf
-
 inst/doc
 docs/
 /doc/
