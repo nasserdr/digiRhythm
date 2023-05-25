@@ -276,33 +276,32 @@ The verbose argument aids in understanding why the data is or isn't considered \
 
 A warning message will be generated if the data encompasses less than seven days, since at least a week's worth of data is needed to compute the DFC and HP. However, other functionalities may still be executable.
 
-\subsection[The dfc function]{The \fct{dfc} function}{\label{sub:dgm_fct}}
-The DFC and HP are both implemented (\ref{alg:dfc}) in the \fct{dfc} function. The function evaluates a \pkg{digiRhythm} friendly data frame, by analyzing the start, and end date, and the variable for which the user wants to run the analysis. It then applies a Lomb Scargle Periodogram over a sliding window of seven days at a time. For instance, the DFC and HP are computed for the days one to seven, then for the days two to eight, and so on. The last six days of the data set would not be considered because it is not recommended to use the LSP (in the context of computing the DFC) for less than seven days. Figure \ref{fig:dfc} shows a typical DFC/HP output.
+\subsection[The dfc Function]{The \fct{dfc} Function}\label{sub:dgm_fct}
+
+The Degree of Functional Coupling (DFC) and Harmonic Part (HP) are both implemented in the \fct{dfc} function, as per Algorithm \ref{alg:dfc}. This function processes a \pkg{digiRhythm}-compatible data frame by calculating the DFC for the chosen variable targeted for analysis. Initially, it evaluates the start and end dates to ensure a sufficient number of days (a minimum of seven by default) are available for the computation. The function then applies a Lomb Scargle Periodogram to a seven-day sliding window. For instance, the DFC and HP are computed for the first seven days, then for days two to eight, and so on. The final six days of the dataset are excluded, as applying the LSP to periods shorter than seven days is not recommended when computing the DFC. A typical DFC/HP output is illustrated in Figure \ref{fig:dfc}.
 
 \begin{algorithm}
-\caption{The Degree of Functional Coupling algorithm}\label{alg:dfc}
+\caption{The Degree of Functional Coupling Algorithm}\label{alg:dfc}
 \begin{algorithmic}
 \Require {data}
 \Ensure {data is compatible with the library}
 \State $days \gets Total\ Number\ of\ Unique\ Days$
 \State $output \gets NULL$
 \For{\texttt{day in 7:days}}
-        \State \texttt{Select data from the day ($day-7$) to day ($day$)}
+        \State \texttt{Select data from day ($day-7$) to day ($day$)}
         \State \texttt{Compute the Lomb Scargle Periodogram of the selected data}
         \State \texttt{Compute the sum of power for all frequencies $sumall$}
         \State \texttt{Select Harmonic frequencies and compute $ssh$}
         \State \texttt{Select Harmonic frequencies and compute $sumsig$}
         \State {dfc $\gets$ ssh/sumsig}
         \State {hp $\gets$ ssh/sumall}
-        \State {Output[day] $\gets$ \{day, dfc, hp\}} \Comment{Append the data frame  with a new line}
+        \State {Output[day] $\gets$ \{day, dfc, hp\}} \Comment{Append the data frame with a new line}
       \EndFor
 \end{algorithmic}
 \end{algorithm}
+\subsection[Utilizing digiRhythm for DFC and HP Computation]{Utilizing \pkg{digiRhythm} for DFC and HP Computation}\label{sub:dgm_dfc_hp}
 
-
-\subsection[Using digiRhythm to compute DFC and HP]{Using \pkg{digiRhythm} to compute DFC and HP}{\label{sub:dgm_dfc_hp}}
-
-The DFC and HP can be computed using the \fct{dfc} function. A recommended workflow is shown below. After reading the data and verfying its compatibility with the library, the data (originally sampled with 1 min) is resampled to 15 minutes. In this context, resampling means simple summation. For instance, if the dataset contains the number of steps with 1 minute sampling period, resampling to 15 minutes means adding the steps during each 15 minutes interval. Further, an activity is chosen (in this example, we choose the activity from the second column (motion index)), then the DFC is computed using the \fct{dfc} function as shown below:
+The DFC and HP can be calculated employing the \fct{dfc} function. A suggested workflow is outlined below. Once the data is loaded and its compatibility with the library is verified, the data—originally sampled at 1-minute intervals—is resampled to 15-minute intervals. In this context, 'resampling' refers to a simple summation process. For instance, if the dataset includes the number of steps recorded at 1-minute intervals, resampling to 15 minutes entails summing the steps taken during each 15-minute interval. Afterward, an activity is selected (in this example, we select the activity from the second column, i.e., motion index), and the DFC is calculated using the \fct{dfc} function as illustrated below:
 
 <<dfc, cache=TRUE>>==
 <<dfc_snippet, results=hide>>=
@@ -312,14 +311,14 @@ my_dfc <- dfc(df_resampled, activity = activity,
               plot = TRUE, verbose = FALSE)
 @
 
-The returned data frame  contains the DFC and HP measured along a sliding window of seven days as follows:
+The returned data frame, \code{my_dfc}, contains the DFC and HP measured within a sliding window of seven days as follows:
 
 <<print_dfc, cache=TRUE>>==
 head(my_dfc$data)
 print(class(my_dfc))
 @
 
-The returned variable \code{my_dfc} contains both the data and the plot as it is a \code{ggplot2} object.
+The returned variable \code{my_dfc} is a \code{ggplot2} object, comprising both the data and the plot.
 
 \begin{figure}[t!]
 \centering
@@ -330,10 +329,9 @@ plot(my_dfc)
 \caption{\label{fig:dfc} The DFC and HP of the dataset \fct{df516b\_2}.}
 \end{figure}
 
-It is possible to access the computed data and the user can adjust the plot features.
-Calling the data field from the variable \code{my_dfc} will allow accessing the computed DFC and HP as shown below:
+You can access the computed data directly and modify the plot features according to your preference. Accessing the data field from the \code{my_dfc} variable provides the computed DFC and HP as shown below:
 
-It is, therefore, easy to access the resulting DFC and HP and use them in further analysis like statistical modeling or more customized workflows. Because the returned object is a \pkg{ggplot2} \citep{wickham2010layered}, it is also possible to change the plot directly by adding a layer on the aesthetics of the \code{my_dfc} object as shown below:
+Thus, it's straightforward to access the resulting DFC and HP for further analysis such as statistical modeling or other tailored workflows. As the returned object is a \pkg{ggplot2} \citep{wickham2010layered}, you can directly modify the plot by adding a layer to the aesthetics of the \code{my_dfc} object as demonstrated below:
 
 \begin{figure}[h!]
 \centering
@@ -346,22 +344,16 @@ print(new_plot)
 @
 
 
-\caption{\label{fig:dfc_modified} Output plot from Figure \ref{fig:dfc} modified by adding a layer of aesthetics causing some modifications to the \fct{ggplot} output returned by the \fct{dfc}. In particular, the font family was changed to \emph{Times}, the font size to 8 points, and the y-axis text was changed to a bigger size (15) and colored red.}
+\caption{\label{fig:dfc_modified} Output plot from Figure \ref{fig:dfc} modified by augmenting a layer of aesthetics to the \fct{ggplot} output returned by the \fct{dfc} function. Specifically, the font family was updated to \emph{Times}, the font size adjusted to 8 points, and the y-axis text was enlarged (15 points) and colorized in red.}
 \end{figure}
 
+This serves as a simple, yet illustrative example of how the graphical outputs of the library can be repurposed. Such a feature becomes especially beneficial when users need to generate publication-quality figures adhering to specific formats. Importantly, this capability is made possible because the functions in the \pkg{digiRhythm} library are designed to return \fct{ggplot} objects instead of standard \proglang{R} objects.
 
-This is an illustrative yet straightforward example to sketch the feature of reusing the graphical outputs of the library, but the application is useful when users need to produce publication-quality pictures in a specific format. It is important to mention that this feature is possible because the functions were designed in a way they return \fct{ggplot} objects rather than base \proglang{R} objects.
+Although the \fct{dfc} function can accommodate data with any sampling frequency, several authors \citep{sinz1976systemanalyse, sarout2018assessment, fuchs2022detecting, scheibe1999comparative} have suggested that optimal insights can be achieved using a seven-day sliding window with a 15-minute sampling period. To maintain simplicity, the current version does not offer an option to alter the length of the sliding window (e.g., to 6, 8, or more days). However, this could potentially be implemented in future versions, if found to be useful.
 
+The actogram is typically the first tool used when working with animal activity. It is a 2D tiled representation where the x-axis represents the time of the day, the y-axis represents the number of days (or date), and the tiles are color-coded according to the activity intensity at each sample.
 
-\subsection[Recommendations to use the dfc function]{Recommendations to use the dfc function}{\label{sub:recom_dfc}}
-
-Although the \fct{dfc} function can accept data with any sampling frequency, it is suggested by several authors \citep{sinz1976systemanalyse, sarout2018assessment, fuchs2022detecting, scheibe1999comparative} that optimal insights could be obtained using seven days sliding window with 15 minutes sampling period. For the sake of simplicity, an option for changing the sliding window length (for example, 6 or 8, or more days) was not implemented. However, this could be done in future versions if proven useful.
-
-\subsection[Actogram visualization]{Actogram visualization}{\label{sub:acto}}
-
-The actogram is often the first-to-go tool when working with animal activity. It is a tiled 2D representation where the x-axis represents the time of the day, the y-axis represents the number of days (or date), and the tiles are color-coded according to the activity intensity at each sample.
-
-Figure \ref{fig:actogram} shows a code snippet for visualizing the actogram of the dataset \fct{df516b\_2} and its corresponding actogram.
+The code snippet in Figure \ref{fig:actogram} illustrates how to visualize the actogram of the dataset \fct{df516b\_2}, and the corresponding actogram is displayed alongside.
 
 \begin{figure}[h!]
 \centering
@@ -378,15 +370,15 @@ actogram(df, activity, activity_alias , start, end, save = NULL)
 
 \subsection[Average activity]{Average activity}{\label{sub:avg}}
 
-The average activity is an indicator of how active an animal is on average during times of the day. The average activity is computed using the following formula:
+The average activity provides an indication of how active an animal is on average at different times of the day. This average activity is calculated using the formula:
 
 \begin{equation}
   activity_{average}(T_i) = \frac{1}{d} \sum_d {A(T_{id})}
 \end{equation}
 
-Where $T_i$ is a specific time of the day, $d$ is the number of days, and $A(T_{id})$ is the activity value at the time $T_i$ during the day $d$.
+In this formula, $T_i$ represents a specific time of day, $d$ stands for the total number of days, and $A(T_{id})$ denotes the activity level at time $T_i$ on day $d$.
 
-The function \fct{daily\_average\_activity} computes and plots this indicator as shown in Figure \ref{fig:avg_act}.
+The function \fct{daily\_average\_activity} is used to calculate and plot this average activity indicator, as shown in Figure \ref{fig:avg_act}.
 
 \begin{figure}[h!]
 \centering
@@ -399,22 +391,26 @@ daily_average_activity(df, activity, activity_alias,
 
 \subsection[Diurnality Index (DI)]{Diurnality Index (DI)}{\label{sub:di}}
 
-The Diurnality Index is also an important measure when it comes to assessing animals' rhythmicity. This measure indicates whether the animal exercises its activity more during diurnal (daytime) or nocturnal (nighttime) periods. Using the Diurnality function, the user can specify day and night time. The user can also omit some periods during the day, such as milking time, where the milking process controls the animal's activity rather than its behavior. The Diurnality index is computed according to \cite{hoogenboom1984seasonal}:
+The Diurnality Index (DI) is another crucial measure used to assess animal rhythmicity. This index provides insights into whether an animal tends to be more active during the day (diurnal) or at night (nocturnal). When using the Diurnality function, users can define specific daytime and nighttime periods. Additionally, certain periods during the day can be excluded from the computation, such as milking time for dairy animals, during which the animal's activity is controlled more by the milking process than by its natural behaviors.
+
+The Diurnality Index is computed according to the formula proposed by \cite{hoogenboom1984seasonal}:
 
 \begin{equation}
   DI = \frac{\frac{C_d}{Td} - \frac{C_n}{Tn}}{\frac{C_d}{Td} + \frac{C_n}{Tn}}
 \end{equation}
 
-Where $C_d$ and $C_n$ are the summations of activity during the daytime and nighttime, respectively. $T_d$ and $T_n$ are the numbers of activity samples during the daytime and nighttime. The number of samples is usually measured from the sampling time. For instance, if the activity is measured with 15 min time sample, and the daytime is considered to be between 06h00 AM and 04h00 PM, then $T_d$ is considered equal to 4 samples per hour × 10 hours = 40 samples.
-The Diurnality function takes the daytime and nighttime as arguments, with default daytime as 06h30 AM till 04h30 PM and default nighttime as 18h00 pm till 05 AM the next day. To change these times, the configuration should follow an HH:MM:SS format as shown below:
+In this formula, $C_d$ and $C_n$ represent the sum of activity during the daytime and nighttime, respectively. $T_d$ and $T_n$ are the number of activity samples recorded during the daytime and nighttime. The number of samples is typically dependent on the sampling frequency. For instance, if activity is measured at 15-minute intervals, and daytime is defined as the period between 06:00 AM and 04:00 PM, then $T_d$ would be calculated as 4 samples per hour × 10 hours = 40 samples.
 
+By default, the Diurnality function defines daytime as the period from 06:30 AM to 04:30 PM (local time) and nighttime as the period from 06:00 PM to 05:00 AM (local time) the next day. To adjust these periods, users need to input their desired times in the format HH:MM:SS, as demonstrated below:
 
 <<setting_times, cache=TRUE>>==
 day_time <- c("06:30:00", "16:30:00")
 night_time <- c("18:00:00", "05:00:00")
 @
 
-Figure \ref{fig:di} shows how to compute and visualize the diurnality index for an example dataset.
+The \fct{diurnality} function computes the Diurnality Index (DI) for the given dataset, and the resultant plot provides a visual representation of the computed DI. As shown in Figure \ref{fig:di}, the plot allows users to assess the temporal activity distribution of the dataset, providing a valuable overview of the dataset's diurnal and nocturnal activity patterns.
+
+The computation process and the graphical representation of the Diurnality Index for a sample dataset are demonstrated below:
 
 \begin{figure}[h!]
 \centering
@@ -424,13 +420,19 @@ my_di <- diurnality(df, activity, day_time, night_time)
 %
 \caption{\label{fig:di} The Diurnality index of the dataset \fct{df516b\_2}.}
 \end{figure}
+As seen in the output figure, the calculated Diurnality Index is displayed along with the daytime and nighttime activity distributions. This output can provide valuable insights into the temporal behavioral patterns of the animal or group of animals under study.
 
 \subsection[sliding Diurnality Index (DI)]{sliding Diurnality Index (DI)}{\label{sub:sliding_di}}
 
-The function \fct{sliding\_DI} computes the diurnality index as described above. However, instead of using a single definition of day and night for the complete computation period, a data frame defining different definitions of the start/end of day/night is included. The data frame must include five columns, one date column, and four columns of timestamps for start/end of day/night. All of these columns must be formatted as POSIXct.
+The \fct{sliding\_DI} function provides a more nuanced approach to calculating the Diurnality Index (DI). It allows for dynamic definitions of day and night time periods across the dataset, rather than using a static, single definition. This is particularly useful when dealing with data that spans across different seasons, daylight saving time changes, or different geographical locations where the length of the day varies significantly.
 
-This function, which includes different definitions, is useful in various settings, as it allows to improve the computation accuracy. For example, in Europe, it could be used to reduce the bias emerging by converting summertime and wintertime to a time zone, such as GMT, or by defining sunrise and sunset.
+As mentioned, the \fct{sliding\_DI} function requires a data frame that includes a date column and four timestamp columns, indicating the start and end times of the day and night. These timestamps must be in POSIXct format.
 
+An example of using the \fct{sliding\_DI} function might look like this:
+
+**MARIE: ADD CODE HERE**
+
+In the above example, the day starts at 6 AM and ends at 6 PM, while the night starts at 6 PM and ends at 6 AM. Note that the \fct{sliding\_DI} function would then compute the DI for each day in the dataset based on the specified day/night periods. This could provide a more accurate reflection of the animal's behavior, as it accounts for changes in daylight hours throughout the year.
 
 %% -- Summary/conclusions/discussion -------------------------------------------
 
@@ -448,6 +450,18 @@ Other metrics for calculating circadian rhythms have been previously published. 
 The current package has been developed for farm animals, but the principles of rhythmicity apply for any organism, including humans. Therefore we highly recommend future research to evaluate the \pkg{digiRhythm} package in other species. Many humans nowadays continuously collect activity data with their smart-watches or the phones. Thus, it would be interesting to evaluate the application of the \pkg{digiRhythm} package in humans, offering an objective indicator of human welfare. A previous review highlights the potential of such rhythmicity computations in humans (https://journals.sagepub.com/doi/pdf/10.1177/0748730420940483).
 
 At the time of writing this paper, the current version (v1.1) of the library does not provide the capability to compute rhythmicity using techniques such as cosinor analysis (\cite{refinetti2016}). However, there is potential for future expansion of the library's functionality to incorporate additional techniques. Researchers are encouraged to actively contribute by submitting new data, codes, or methods to the GitHub repository. These contributions will be reviewed by the package maintainers and, if approved, integrated into the \pkg{digiRhythm} package.
+
+
+\section{Discussion (New proposal Hassan)}
+
+The \pkg{digiRhythm} package presents a novel, user-friendly, and accessible tool for researchers in the field of Rhythmicity, animal behavior, and beyond. The package offers a versatile approach to assessing rhythmicity based on digital activity records. By leveraging the power of \proglang{R}, it brings robust statistical capabilities and intuitive visualization features into the hands of researchers.
+
+While the current implementation of the \pkg{digiRhythm} package focuses on rhythmicity in farm animals, the underlying principles and methodology can be extended to other organisms, including humans. This opens up exciting avenues for future research in various domains. The unique utilization of harmonic frequencies related to the 24-hour day in the package provides a novel approach for rhythmicity analysis.
+
+The package is designed with flexibility and expansion in mind. The current version allows for the computation of different metrics like DFC, Diurnality Index, and visualization tools such as actograms. Still, the modular structure of the package enables the incorporation of additional techniques and tools in the future. As the \pkg{digiRhythm} package continues to develop and evolve, we expect it to become a an off-the-shelf tool for researchers interested in studying rhythmicity patterns and their implications.
+
+Lastly, we welcome contributions to the \pkg{digiRhythm} package. The open-source nature of the package fosters collaboration and continuous improvement. Researchers and developers are encouraged to contribute their codes, methodologies, and data to the project, thereby supporting the scientific community's collaborative spirit. By doing so, we hope to further our understanding of rhythmicity, its implications, and how we can leverage this knowledge for the welfare of animals and humans alike.
+
 
 \bibliography{refs}
 \newpage
