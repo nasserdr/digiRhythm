@@ -434,12 +434,24 @@ An example of using the \fct{sliding\_DI} function might look like this:
 
 In the above example, the day starts at 6 AM and ends at 6 PM, while the night starts at 6 PM and ends at 6 AM. Note that the \fct{sliding\_DI} function would then compute the DI for each day in the dataset based on the specified day/night periods. This could provide a more accurate reflection of the animal's behavior, as it accounts for changes in daylight hours throughout the year.
 
-%% -- Summary/conclusions/discussion -------------------------------------------
+% Summary/conclusions/discussion
 
 \section{Discussion} \label{sec:summary}
 The \pkg{digiRhythm} package can make a significant contribution to the assessment of rhythmicity, as it makes the analysis of rhythmicity more accessible to researchers. The tool is easy to use, especially because it is delivered as an \proglang{R} package. The theoretical details and intuition behind the DFC is explained in section \ref{sec:dfc}. The usage of the package is explained in the section \ref{sec:usage}. Further examples can be found in the library's vignettes.
 
-The package enables the calculation of rhythmicity from activity data. To date, this is purely a computation of activity patterns that have been correlated with physiological factors in previous studies. This indicator can be calculated from any type of regularly measured time series data, if they are brought in a suitable format, which can be assessed with the  \fct{is\_dgm\_friendly} function. However, we have no evidence if these activity patterns are intrinsically (such as going to sleep) or extrinsically (such as waking up to an alarm) motivated. Such extrinsic factors could affect rhythmic activity patterns and blur physiological rhythmicity patterns. To date, the package provides the option to exclude extrinsically structured time spans from the analysis. However, in order to increase the understanding of rhythmicity  future studies should investigate how these extrinsic factors affect rhythmicity calculations.
+%pacckage enables computation of any activity data
+The \pkg{digiRhythm} package enables the calculation of rhythmicity from any activity data. This indicator can be calculated from any type of regularly measured time series data, if the data are prepared in a suitable format. The suitability of the format can be assessed with the  \fct{is\_dgm\_friendly} function. To date, this is purely a computation of activity patterns, resulting the in the DFC. This measure has been correlated with physiological functions in previous studies.
+
+
+% Scope of DFC application
+The computation of rhythmicity allows to gain further insight into an organisms harmonic patterns. Organisms in a good physiological state will present harmonic locomotory patterns, whereas this rhythmicity desynchronizes as a result of physiological events. Simply spoken, an organism will follow the same patterns of locomotion as long as they are in a good physiological and psychological state, whereas these patterns will deviate in the face of dysfunctions. In the past these rhythmic patterns have been discussed with regard to the psychological state of a humans, where psychological challenges, such as bipolar disorders or depression have been associated with the desynchronization of rhythmic patterns (\cite{sabet2021the}).
+%Limitation of DFC computation
+
+However, we have no evidence if these activity patterns are intrinsically (such as going to sleep) or extrinsically (such as waking up to an alarm) motivated. Such extrinsic factors could affect rhythmic activity patterns and blur physiological rhythmicity patterns. To date, the package provides the option to exclude extrinsically structured time spans from the analysis. However, in order to increase the understanding of rhythmicity  future studies should investigate how these extrinsic factors affect rhythmicity calculations.
+
+
+
+
 
 The required frequency of data collection is of utmost importance in sensor technologies. Sensors are required to be small and further expected to run without any sensor based maintenance, such as data reading or charging of the device. This in turn means that data collection frequency should be low. In the current study an extremely low data collection frequency is suggested (15 minutes) future studies should evaluate how low collection frequency can be set to create reliable rhythmicity calculations. Further it would be interesting to evaluate if activity data collected from different sources, such as  access of feeding stations or coffee maschines, compute similar rhythmicity outputs in the same organism.
 
@@ -455,6 +467,12 @@ At the time of writing this paper, the current version (v1.1) of the library doe
 \section{Discussion (New proposal Hassan)}
 
 The \pkg{digiRhythm} package presents a novel, user-friendly, and accessible tool for researchers in the field of Rhythmicity, animal behavior, and beyond. The package offers a versatile approach to assessing rhythmicity based on digital activity records. By leveraging the power of \proglang{R}, it brings robust statistical capabilities and intuitive visualization features into the hands of researchers.
+
+
+<<>>=
+
+@
+
 
 While the current implementation of the \pkg{digiRhythm} package focuses on rhythmicity in farm animals, the underlying principles and methodology can be extended to other organisms, including humans. This opens up exciting avenues for future research in various domains. The unique utilization of harmonic frequencies related to the 24-hour day in the package provides a novel approach for rhythmicity analysis.
 
