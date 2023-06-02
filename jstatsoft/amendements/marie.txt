@@ -1,0 +1,15 @@
+<<timedata>>==
+head(timedata)
+str(timedata)
+@
+
+Figure \ref{fig:sdi} shows how to compute and visualize the sliding\_DI for an example dataset, using excample timedata.
+
+\begin{figure}[h!]
+\centering
+<<sliding_diurnality, fig=TRUE>>==
+sliding_di <- sliding_DI(df, activity, timedata)
+@
+%
+\caption{\label{fig:di} The Diurnality index of the dataset \fct{df516b\_2}.}
+\end{figure}
