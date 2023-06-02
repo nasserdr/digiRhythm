@@ -98,7 +98,7 @@ Investigating an organism's rhythmicity yields valuable insights into its physio
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE} %For some reason, this gives an error!
 
 \section[Introduction]{Introduction} \label{sec:intro}
@@ -434,7 +434,7 @@ As mentioned, the \fct{sliding\_DI} function requires a data frame that includes
 
 <<input_data, cache=TRUE>>==
 data("timedata", package = 'digiRhythm')
-td <- timedata
+td <- as.data.frame(timedata)
 head(td)
 str(td)
 @
@@ -443,7 +443,7 @@ An example of using the \fct{sliding\_DI} function with the example activity dat
 
 \begin{figure}[h!]
 \centering
-<<sliding\_DI, fig=TRUE, cache=TRUE>>==
+<<sliding_DI, fig=TRUE, cache=TRUE>>==
 my_sliding_di <- sliding_DI(df, activity, td)
 @
 %
@@ -457,7 +457,7 @@ In the above example for the \fct{diurnality} function, the day starts at 6:30 A
 \section{Discussion} \label{sec:summary}
 The \pkg{digiRhythm} package can make a significant contribution to the assessment of rhythmicity, as it makes the analysis of rhythmicity more accessible to researchers. The tool is easy to use, especially because it is delivered as an \proglang{R} package. The theoretical details and intuition behind the DFC is explained in section \ref{sec:dfc}. The usage of the package is explained in the section \ref{sec:usage}. Further examples can be found in the library's vignettes.
 
-%pacckage enables computation of any activity data
+%package enables computation of any activity data
 The \pkg{digiRhythm} package enables the calculation of rhythmicity from any activity data. This indicator can be calculated from any type of regularly measured time series data, if the data are prepared in a suitable format. The suitability of the format can be assessed with the  \fct{is\_dgm\_friendly} function. To date, this is purely a computation of activity patterns, resulting in the DFC. This measure has been correlated with physiological functions in previous studies.
 
 
@@ -471,19 +471,14 @@ The required frequency of data collection is of utmost importance in sensor tech
 
 In addition to the open questions about the data collection frequency and intervals, a comparison to other metrics will be needed in further studies. In the past, other metrics for calculating circadian rhythms have been published. For example, Interdaily Stability (IS), which is mainly used in human research \cite{witting1990alterations}. And the Fourier-Based Approximation with Thresholding (FBAT) was designed to calculate the circadian rhythms of dairy cows \cite{wagner2021detection}. Their database depends on the 24 h day, but none of them uses the 24 h within the calculation. The calculation of harmonic frequencies within the DFC calculation, which sets the activity signal in relation to the external 24h day is unique. Therefore, it would be interesting to investigate the correlation between the DFC and rhythmicity computed on data from various computation techniques. In addition to the mentioned metrics (IS and FBAT), \cite{moller2022diurnal} utilized a range of techniques, including set logic, circular cross-correlation, circular clustering, functional enrichment analyses, and least squares regression, on transcriptomic time series data from humans and baboons. Additionally, GPS data of free ranging animals \cite{plaza2022gps} or data of real time positioning systems in a barn \cite{wagner2021detection} could be used to estimate rhythmicity. Comparing the correlations between rhythmicity measures derived from different types of data and between various techniques could be a useful research area. In addition, further studies will be conducted, to validate the DFC calculation, by using simulated data.
 
-The current package has been developed for farm animals, but the principles of rhythmicity apply for any organism, including humans. Therefore we highly recommend future research to evaluate the \pkg{digiRhythm} package in other species. Many humans nowadays continuously collect activity data with their smart-watches or their phones. Thus, it would be interesting to evaluate the application of the \pkg{digiRhythm} package in humans, offering an objective indicator of human welfare. A previous review highlights the potential of such rhythmicity computations in humans (https://journals.sagepub.com/doi/pdf/10.1177/0748730420940483).
+The current package has been developed for farm animals, but the principles of rhythmicity apply for any organism, including humans. Therefore we highly recommend future research to evaluate the \pkg{digiRhythm} package in other species. Many humans nowadays continuously collect activity data with their smart-watches or their phones. Thus, it would be interesting to evaluate the application of the \pkg{digiRhythm} package in humans, offering an objective indicator of human welfare. A previous review highlights the potential of such rhythmicity computations in humans \citep{dijk2020novel}.
 
-At the time of writing this paper, the current version (v1.1) of the library does not provide the capability to compute rhythmicity using techniques such as cosinor analysis (\cite{refinetti2016}). However, there is potential for future expansion of the library's functionality to incorporate additional techniques. Researchers are encouraged to actively contribute by submitting new data, codes, or methods to the GitHub repository. These contributions will be reviewed by the package maintainers and, if approved, integrated into the \pkg{digiRhythm} package.
+At the time of writing this paper, the current version (v1.2) of the library does not provide the capability to compute rhythmicity using techniques such as cosinor analysis (\cite{refinetti2016}). However, there is potential for future expansion of the library's functionality to incorporate additional techniques. Researchers are encouraged to actively contribute by submitting new data, codes, or methods to the GitHub repository. These contributions will be reviewed by the package maintainers and, if approved, integrated into the \pkg{digiRhythm} package.
 
 
 \section{Discussion (New proposal Hassan)}
 
 The \pkg{digiRhythm} package presents a novel, user-friendly, and accessible tool for researchers in the field of Rhythmicity, animal behavior, and beyond. The package offers a versatile approach to assessing rhythmicity based on digital activity records. By leveraging the power of \proglang{R}, it brings robust statistical capabilities and intuitive visualization features into the hands of researchers.
-
-
-<<>>=
-
-@
 
 
 While the current implementation of the \pkg{digiRhythm} package focuses on rhythmicity in farm animals, the underlying principles and methodology can be extended to other organisms, including humans. This opens up exciting avenues for future research in various domains. The unique utilization of harmonic frequencies related to the 24-hour day in the package provides a novel approach for rhythmicity analysis.

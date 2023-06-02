@@ -2,8 +2,8 @@
 library("devtools")
 library("tools")
 
-#install_github('https://github.com/nasserdr/digiRhythm')
 setwd("~/projects/digiRhythm/jstatsoft")
+#install_github('https://github.com/nasserdr/digiRhythm')
 Sweave('article.Rnw')
 texi2pdf("article.tex")
 
