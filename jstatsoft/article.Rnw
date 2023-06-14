@@ -33,7 +33,7 @@ library("digiRhythm")
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
 \author{Hassan-Roland Nasser~\orcidlink{0000-0003-1821-3234}\\Agroscope - Digital Production
-   \AND Marie Schneider~\orcidlink{0000-0003-4921-8353}\\Johann Heinrich von Th\"unen\\ Institute of Organic Farming
+   \AND Marie Schneider~\orcidlink{0000-0003-1073-7754}\\Johann Heinrich von Th\"unen\\ Institute of Organic Farming
    \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope - Equine Research Group}
 \Plainauthor{Hassan-Roland Nasser, Marie Schneider, Marianne Cockburn}
 
@@ -67,8 +67,8 @@ Investigating an organism's rhythmicity yields valuable insights into its physio
   Tanikon 1\\
   8352, Ettenhaussen \\
   Switzerland\\
-  E-mail: \email{roland.nasser@agroscope.admin.ch, joa.stachowi@gmail.com}\\
-  URL: \url{https://ch.linkedin.com/in/nasserha/, https://orcid.org/0000-0003-4921-8353}\\
+  E-mail: \email{roland.nasser@agroscope.admin.ch}\\
+  URL: \url{https://ch.linkedin.com/in/nasserha/, https://orcid.org/0000-0003-1821-3234}\\
   \newline
 
   Marie Schneider\\
@@ -82,6 +82,7 @@ Investigating an organism's rhythmicity yields valuable insights into its physio
   70599 Stuttgart\\
   Germany\\
   E-mail: \email{marie.schneider@thuenen.de}\\
+  URL: \url{https://orcid.org/0000-0003-1073-7754}
   \newline
 
  Marianne Cockburn\\
@@ -98,6 +99,7 @@ Investigating an organism's rhythmicity yields valuable insights into its physio
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE} %For some reason, this gives an error!
 
 \section[Introduction]{Introduction} \label{sec:intro}
@@ -239,7 +241,7 @@ The \pkg{digiRhythm} package offers a range of functionalities beyond merely cal
 
 \item \fct{diurnality}: With this function, users can compute and graphically present the diurnality index.
 
-\item \fct{sliding\_DI}: With this function, users can compute and graphically present the diurnality index, using a specific definitions of day/night per day.
+\item \fct{sliding\_DI}: With this function, users can compute and graphically present the diurnality index, using specific definitions of day/night per day.
 
 \item \fct{actogram}: This tool is designed for actogram visualization.
 \end{itemize}
@@ -304,7 +306,7 @@ The DFC and HP are both implemented in the \fct{dfc} function, as per Algorithm 
 \end{algorithm}
 \subsection[Utilizing digiRhythm for DFC and HP Computation]{Utilizing \pkg{digiRhythm} for DFC and HP Computation}\label{sub:dgm_dfc_hp}
 
-The DFC and HP can be calculated employing the \fct{dfc} function. A suggested workflow is outlined below. Once the data is loaded and its compatibility with the library is verified, the data—originally sampled at 1-minute intervals—is resampled to 15-minute intervals. In this context, 'resampling' refers to a simple summation process. For instance, if the dataset includes the number of steps recorded at 1-minute intervals, resampling to 15 minutes entails summing the steps taken during each 15-minute interval. Afterward, an activity is selected (in this example, we select the activity from the second column, i.e., motion index), and the DFC is calculated using the \fct{dfc} function as illustrated below:
+The DFC and HP can be calculated employing the \fct{dfc} function. A suggested workflow is outlined below. Once the data is loaded and its compatibility with the library is verified, the data—originally sampled at 1-minute intervals—is resampled to 15-minute intervals. In this context, 'resampling' refers to a simple summation process. For instance, if the dataset includes the number of steps recorded at 1-minute intervals, resampling to 15 minutes entails summing the steps taken during each 15-minute interval. It is additionally possible to convert the timezone, if needed (not in this excample). Afterwards, an activity is selected (in this example, we select the activity from the second column, i.e., motion index), and the DFC is calculated using the \fct{dfc} function as illustrated below:
 
 <<dfc, cache=TRUE>>==
 <<dfc_snippet, results=hide>>=
@@ -352,7 +354,7 @@ print(new_plot)
 
 This serves as a simple, yet illustrative example of how the graphical outputs of the library can be repurposed. Such a feature becomes especially beneficial when users need to generate publication-quality figures adhering to specific formats. Importantly, this capability is made possible because the functions in the \pkg{digiRhythm} library are designed to return \fct{ggplot} objects instead of standard \proglang{R} objects.
 
-Although the \fct{dfc} function can accommodate data with any sampling frequency, several authors \citep{sinz1976systemanalyse, sarout2018assessment, fuchs2022detecting, scheibe1999comparative} have suggested that optimal insights can be achieved using a seven-day sliding window with a 15-minute sampling period. To maintain simplicity, the current version does not offer an option to alter the length of the sliding window (e.g., to 6, 8, or more days). However, this could potentially be implemented in future versions, if found to be useful.
+Although the \fct{dfc} function can accommodate data with any sampling frequency, several authors \citep{sinz1976systemanalyse, sarout2018assessment, fuchs2022detecting} have suggested that optimal insights can be achieved using a seven-day sliding window with a 15-minute sampling period. To maintain simplicity, the current version does not offer an option to alter the length of the sliding window (e.g., to 6, 8, or more days). However, this could potentially be implemented in future versions, if found to be useful.
 
 The actogram is typically the first tool used when working with activity data. It is a 2D tiled representation where the x-axis represents the time of the day, the y-axis represents the number of days (or date), and the tiles are color-coded according to the activity intensity at each sample.
 
@@ -402,7 +404,7 @@ The DI is computed according to the formula proposed by \cite{hoogenboom1984seas
   DI = \frac{\frac{C_d}{Td} - \frac{C_n}{Tn}}{\frac{C_d}{Td} + \frac{C_n}{Tn}}
 \end{equation}
 
-In this formula, $C_d$ and $C_n$ represent the sum of activity during the daytime and nighttime, respectively. $T_d$ and $T_n$ are the number of activity samples recorded during the daytime and nighttime. The number of samples is typically dependent on the sampling frequency. For instance, if activity is measured at 15-minute intervals, and daytime is defined as the period between 06:00 AM and 04:00 PM, then $T_d$ would be calculated as 4 samples per hour × 10 hours = 40 samples.
+In this formula, $C_d$ and $C_n$ represent the sum of activity during the daytime and nighttime, respectively. $T_d$ and $T_n$ are the number of activity samples recorded during the daytime and nighttime. The number of samples is typically dependent on the sampling frequency. For instance, if activity is measured at 15-minute intervals, and daytime is defined as the period between 06:30 AM and 04:30 PM, then $T_d$ would be calculated as 4 samples per hour × 10 hours = 40 samples.
 
 By default, the \fct{diurnality} function defines daytime as the period from 06:30 AM to 04:30 PM (local time) and nighttime as the period from 06:00 PM to 05:00 AM (local time) the next day. To adjust these periods, users need to input their desired times in the format HH:MM:SS, as demonstrated below:
 
@@ -449,7 +451,7 @@ my_sliding_di <- sliding_DI(df, activity, td)
 \caption{\label{fig:di} The Diurnality Index of the dataset \fct{df516b\_2}, calculated using the \fct{sliding\_DI} function.}
 \end{figure}
 
-In the above example for the \fct{diurnality} function, the day starts at 6:30 AM and ends at 4:30 PM, while the night starts at 6 PM and ends at 5 AM. Note that the \fct{sliding\_DI} function would compute the DI for each day in the dataset based on the specified day/night periods, of that day. This could provide a more accurate reflection of the individual's behavior, as it accounts for changes in daylight hours throughout the year.
+In the above example for the \fct{diurnality} function, the day starts at 6:30 AM and ends at 4:30 PM, while the night starts at 6 PM and ends at 5 AM. Note that the \fct{sliding\_DI} function would compute the DI for each day in the dataset based on the specified day/night periods, of that day. This could provide a more accurate reflection of the individual's behavior, as it accounts for changes daily routines, that externally control the organisms activity or changes in daylight hours throughout the year.
 
 % Summary/conclusions/discussion
 
@@ -457,7 +459,7 @@ In the above example for the \fct{diurnality} function, the day starts at 6:30 A
 % Scope of DFC application
 The \pkg{digiRhythm} package presents a novel, user-friendly, and accessible tool for researchers in the field of rhythmicity, animal behavior, and beyond. The package offers a versatile approach to assessing rhythmicity based on digital activity records. By leveraging the power of \proglang{R}, it brings robust statistical capabilities and intuitive visualization features into the hands of researchers. While the current implementation of the \pkg{digiRhythm} package focuses on rhythmicity in farm animals, the underlying principles and methodology can be extended to other organisms, including humans. This opens up new opportunities for future research in various domains. The unique utilization of harmonic frequencies related to the 24-hour day in the package provides a novel approach for rhythmicity analysis. The package is designed with flexibility and expansion in mind. The current version allows for the computation of different metrics, such as DFC, DI, and visualization tools such as actograms. Still, the modular structure of the package enables the incorporation of additional techniques and tools in the future. As the \pkg{digiRhythm} package continues to develop and evolve, we expect it to become an off-the-shelf tool for researchers interested in studying rhythmicity patterns and their implications. Rhythmicity can be calculated in the \pkg{digiRhythm} package from any type of regularly measured time series data, if the data are prepared in a suitable format. The suitability of the format can be assessed with the  \fct{is\_dgm\_friendly} function. At the time of writing this paper, the current version (v1.2) of the library does not provide the capability to compute rhythmicity using techniques such as cosinor analysis (\cite{refinetti2016}). However, there is potential for future expansion of the library's functionality to incorporate additional techniques.
 
-The package calculates the DFC, by computing harmonic frequencies of activity patterns. This measure has been correlated with physiological functions in previous studies (\cite{Berger2003, sarout2018assessment}). The computation of rhythmicity allows to gain further insight into an individual's harmonic patterns (\cite{trigonum1993circadian}). Organisms in a good physiological state will present harmonic locomotion patterns, whereas this rhythmicity desynchronizes as a result of physiological events. \cite{rufener2018finding} found that individual laying hens followed a consistent individual pattern, but this pattern would differ between individuals within the flock. (\cite{opperhuizen2016feeding} further showed that altered feeding schedules during resting phases cause changes in physiology, as well as desynchronization of liver and muscle rhythms in rats. In the past, these rhythmic patterns have been discussed with regard to the psychological state of humans, where  bipolar disorders or depression, as well as delirium development have been associated with the desynchronization of rhythmic patterns (\cite{sabet2021the, ANGELESCASTELLANOS2016285}). However, the effect of intrinsic or extrinsic motivation of these activity patterns is not yet fully understood. Such extrinsic factors could affect rhythmic activity patterns and blur the organisms intrinsic rhythmicity. To date, the package provides the option to exclude extrinsically structured time spans from the analysis. However, in order to increase the understanding of rhythmicity  future studies should investigate how these extrinsic factors affect rhythmicity calculations.
+The package calculates the DFC, by computing harmonic frequencies of activity patterns. This measure has been correlated with physiological functions in previous studies (\cite{Berger2003, sarout2018assessment}). The computation of rhythmicity allows to gain further insight into an individual's harmonic patterns (\cite{trigonum1993circadian}). Organisms in a good physiological state will present harmonic locomotion patterns, whereas this rhythmicity desynchronizes as a result of physiological events. \cite{rufener2018finding} found that individual laying hens followed a consistent individual pattern, but this pattern would differ between individuals within the flock. (\cite{opperhuizen2016feeding} further showed that altered feeding schedules during resting phases cause changes in physiology, as well as desynchronization of liver and muscle rhythms in rats. In the past, these rhythmic patterns have been discussed with regard to the psychological state of humans, where  bipolar disorders or depression, as well as delirium development have been associated with the desynchronization of rhythmic patterns (\cite{sabet2021the, ANGELESCASTELLANOS2016285}). However, the effect of intrinsic or extrinsic motivation of these activity patterns is not yet fully understood. Such extrinsic factors could affect rhythmic activity patterns and blur the organisms intrinsic rhythmicity. To date, the package provides the option to exclude extrinsically structured time spans from the analysis. However, in order to increase the understanding of rhythmicity future studies should investigate how these extrinsic factors affect rhythmicity calculations.
 
 The DFC calculation within the package includes a unique utilization of harmonic frequencies related to the 24-hour day, which provides a novel approach for rhythmicity analysis. However, further research is needed, to completely validate the value. These studies should evaluate how low collection frequency (currently 15 minutes) can be set to create reliable rhythmicity calculations. Additionally, the sliding seven day period, the DFC calculation depends on, and its reduction should be investigated further. In addition to the open questions about the data collection frequency and intervals, a comparison to other metrics will be needed in further studies. In the past, other metrics for calculating circadian rhythms have been published. For example, Interdaily Stability (IS), which is mainly used in human research \cite{witting1990alterations}. And the Fourier-Based Approximation with Thresholding (FBAT) was designed to calculate the circadian rhythms of dairy cows \cite{wagner2021detection}. Their database depends on the 24 h day, but none of them use the 24 h within the calculation. The calculation of harmonic frequencies within the DFC calculation, which sets the activity signal in relation to the external 24h day is unique. Therefore, it would be interesting to investigate the correlation between the DFC and rhythmicity computed on data from various computation techniques. In addition to the mentioned metrics (IS and FBAT), \cite{moller2022diurnal} utilized a range of techniques, including set logic, circular cross-correlation, circular clustering, functional enrichment analyses, and least squares regression, on transcriptomic time series data from humans and baboons. Additionally, GPS data of free ranging animals \cite{plaza2022gps} or data of real time positioning systems in a barn \cite{wagner2021detection} could be used to estimate rhythmicity. Comparing the correlations between rhythmicity measures derived from different types of data and between various techniques could be a useful research area. Further, research should evaluate if activity data collected from different sources, such as tri-axial activity data, access of feeding stations or coffee machines, compute similar rhythmicity outputs in the same organism. In addition, further studies using simulated data should be conducted, to validate the DFC calculation.
 
