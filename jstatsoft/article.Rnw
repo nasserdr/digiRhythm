@@ -99,7 +99,6 @@ Investigating an organism's rhythmicity yields valuable insights into its physio
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 %\SweaveOpts{concordance=TRUE} %For some reason, this gives an error!
 
 \section[Introduction]{Introduction} \label{sec:intro}
