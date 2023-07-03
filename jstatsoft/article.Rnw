@@ -36,7 +36,6 @@ library("digiRhythm")
    \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope\\Equine Research Group
    \AND Marie Schneider~\orcidlink{0000-0003-1073-7754}\\Johann Heinrich von Th\"unen\\ Institute of Organic Farming
 }
-\Plainauthor{Hassan-Roland Nasser, Marie Schneider, Marianne Cockburn}
 
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
