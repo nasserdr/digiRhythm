@@ -32,10 +32,12 @@ library("digiRhythm")
 %% - \Plainauthor{} without affiliations
 %% - Separate authors by \And or \AND (in \author) or by comma (in \Plainauthor).
 %% - \AND starts a new line, \And does not.
-\author{Hassan-Roland Nasser~\orcidlink{0000-0003-1821-3234}\\Agroscope\\Digital Production Group
-   \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope\\Equine Research Group
-   \AND Marie Schneider~\orcidlink{0000-0003-1073-7754}\\Johann Heinrich von Th\"unen\\ Institute of Organic Farming
+
+\author{Hassan-Roland Nasser~\orcidlink{0000-0003-1821-3234}\\Agroscope - Digital Production
+   \And Marianne Cockburn~\orcidlink{0000-0003-3193-0641}\\Agroscope - Equine Research Group
+      \AND Marie Schneider~\orcidlink{0000-0003-1073-7754}\\Johann Heinrich von Th\"unen\\ Institute of Organic Farming
 }
+\Plainauthor{Hassan-Roland Nasser, Marianne Cockburn, Marie Schneider}
 
 %% - \title{} in title case
 %% - \Plaintitle{} without LaTeX markup (if any)
