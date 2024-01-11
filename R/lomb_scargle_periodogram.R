@@ -160,7 +160,7 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
 
   output <- list(lsp_data = lsp_data, sig.level = level, alpha = alpha)
 
-  len <- 24*60/sampling
+  len <- 24*60/sampling # The number of 15 'minutes' day
   lsp_data <- lsp_data[1:len,]
   if(plot){
     hdata <- lsp_data %>% filter(status_harmonic == 'Harmonic') %>%

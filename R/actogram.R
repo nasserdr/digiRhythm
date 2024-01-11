@@ -47,8 +47,8 @@ actogram <- function(
   names(df)[1] <- 'datetime'
   df$date <- lubridate::date(df$datetime)
   data_to_plot <- df %>%
-    filter(lubridate::date(df$datetime) >= start) %>%
-    filter(lubridate::date(df$datetime) <= end)
+    filter(lubridate::date(datetime) >= start) %>%
+    filter(lubridate::date(datetime) <= end)
   data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
 
   act_plot <- ggplot(data_to_plot,
