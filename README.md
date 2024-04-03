@@ -28,7 +28,7 @@ You can install the development version from
 #devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 ```
 
-## Example
+## Example of a typical workflow with DigiRhythm
 
 This is a basic example which shows you how to solve a common problem:
 
@@ -146,6 +146,9 @@ df <- remove_activity_outliers(df)
 new_sampling <- 30
 new_dgm <- resample_dgm(df, new_sampling)
 ```
+
+##Breakdown structure of what needs to be added
+Anyone can contribute to the un-checked items. If you want to contribute to the library, please feel free to make a pull request and add your code. We will be happy to review it and add it to the library.
 
 **TO DO CORE FUNCTIONALITIES:**
 
