@@ -147,7 +147,7 @@ new_sampling <- 30
 new_dgm <- resample_dgm(df, new_sampling)
 ```
 
-##Breakdown structure of what needs to be added
+## Breakdown structure of what needs to be added:
 Anyone can contribute to the un-checked items. If you want to contribute to the library, please feel free to make a pull request and add your code. We will be happy to review it and add it to the library.
 
 **TO DO CORE FUNCTIONALITIES:**
