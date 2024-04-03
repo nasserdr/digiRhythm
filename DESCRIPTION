@@ -1,8 +1,8 @@
 Package: digiRhythm
 Type: Package
 Title: Analyzing Animal's Rhythmicity
-Version: 1.1
-Authors@R: c(person("Hassan Roland", "Nasser", role = c("aut", "cre"),
+Version: 1.2
+Authors@R: c(person("Hassan-Roland", "Nasser", role = c("aut", "cre"),
                      email = "hassan.nasser@me.com"),
               person("Marie", "Schneider", role = c("aut", "ctb"),
               email = "marieschnellbaecher@outlook.de"),
@@ -10,7 +10,7 @@ Authors@R: c(person("Hassan Roland", "Nasser", role = c("aut", "cre"),
                      email = "joa.stachowi@gmail.com"),
               person("Christina", "Umstaetter ", role = c("aut", "ths"),
                      email = "christina.umstaetter@thuenen.de"))
-Author: Hassan Roland Nasser [aut, cre],
+Author: Hassan-Roland Nasser [aut, cre],
         Marie Schneider [aut, ctb],
         Joanna Stachowicz [aut, rev],
         Christina Umstaetter [aut, ths]

@@ -79,12 +79,13 @@ dfc <- function(
 
   df$date <- date(df$datetime)
 
-  days <- seq(from = df$date[1],
-              to = last(df$date),
-              by = 1)
+  days <- seq(df$date[1],
+              last(df$date),
+              1)
 
   dfc <- NULL
   spec <- NULL
+  from <- NULL
   dfc <- data.frame(from = character(),
                     to = character(),
                     dfc = numeric(),
@@ -92,8 +93,8 @@ dfc <- function(
 
   spec <- data.frame(from = character(),
                      to = character(),
-                     sample = numeric(), 
-                     freq = numeric(), 
+                     sample = numeric(),
+                     freq = numeric(),
                      power = numeric(),
                      frequency = numeric(),
                      pvalue = numeric(),
@@ -161,8 +162,8 @@ dfc <- function(
 
     spec <- rbind(spec, data.frame(from = rep(days[i], len),
                                    to = rep(days[i + 6], len),
-                                   sample = 1:len, 
-                                   freq = (1:len)/7, 
+                                   sample = 1:len,
+                                   freq = (1:len)/7,
                                    power = lsp_data$power,
                                    frequency_hz = lsp_data$frequency_hz,
                                    p_values = lsp_data$p_values,
