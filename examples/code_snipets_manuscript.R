@@ -6,8 +6,16 @@ library(digiRhythm)
 library(lomb)
 library(patchwork)
 
+
 ###############################################################################
-####################### FIGURE: signalVslsp ###################################
+####################### Installing DigiRhythm ##################################
+
+# Install the devtools package if you haven't already
+#install.packages("devtools")
+devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
+
+###############################################################################
+####################### FIGURE: 2 ###################################
 # LSP on purely synthetic data ----------------------------
 #Creating time grid
 sampling = 15*60 #15 minutes
@@ -201,12 +209,12 @@ all_plots[[6]] <- lsp
 
 wrap_plots(all_plots, ncol = 2)
 
-name <- paste0('figures/signalVslsp.pdf')
+name <- paste0('figures/Figure 1.png')
 
 ggsave(
   name,
   plot = last_plot(),
-  device = 'pdf',
+  device = 'png',
   width = 10,
   height = 6,
   scale = 1.5,
@@ -217,8 +225,7 @@ ggsave(
 ####################### FIGURE: alternative for real_lsp#######################
 
 #Real data
-#Example
-library(digiRhythm)
+
 data("df691b_1", package = 'digiRhythm')
 df <- df691b_1
 df <- df[1:672,c(1,2)]
