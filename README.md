@@ -4,65 +4,17 @@ readme
 ## digiRhythm
 
 digiRhythm is an R library developed at Agroscope and provides a set of
-tools to analyze and visualize the rhythmic behavior of animals.
+tools to analyze and visualize the rhythmic behavior of animals. It mainly focuses
+on the Degree of Functional Coupling (0 < DFC < 1), a measure used by several scientists
+to assess the welfare of animals. The library also provides tools to compute the diurnality
+index, to visualize the actogram and the average activity.
 
-**TO DO CORE FUNCTIONALITIES:**
+This repository contains the most updated version of the library, while the CRAN package could
+be found at [CRAN](https://cran.r-project.org/web/packages/digiRhythm/index.html). Some helpful
+vignettes can be also found at [CRAN](https://cran.r-project.org/web/packages/digiRhythm/vignettes/).
 
--   [x] Create a function that read Icetag data stored in a CSV file.
--   [x] Add the import\_raw\_icetage\_data as an example to the README
-    file.
--   [x] Create a function that computes the degree of functional
-    coupling.
--   [x] Add the the dfc as an example to the README file.
--   [x] Create a function that computes the diurnality index.
--   [x] Add the the dfc as an example to the README file.
--   [x] Add plotting funtionality to the diurnality index.
--   [ ] Create a function that makes resampling aligned with several function
-    like (sum, mean, max, median ... ).
--   [x] Make the code un-sensible to column names in original data frame (call
-    them by index rather than by name). For example, no need to call the datetime
-    by its name because it's always the first column (by dgm definition) in the 
-    dataset.
--   [x] Add a function that fills NA values in the activity data set.
-
-
-**TO DO - VISUALIZATION FUNCTIONS:**
-
--   [x] Create a function that visualize the actogram.
--   [x] Create a function that visualize the average activity.
--   [x] Create a function that visualize the DFC/HP.
--   [x] Create a function that visualizes all daily activities with
-    control over the number of columns.
-
-**TO DO - UTILITIES AND DOCUMENTATIONS:**
-
--   [x] Define data inside the library
--   [x] Add and example about the import\_raw\_icetag\_data to the
-    README.
--   [x] Create a function to test if a data set is digiRhythm friendly.
--   [x] Create a proper documentation for the data set.
--   [x] configure data sets with lazy loading
--   [ ] Create test functions for all the functions.
--   [x] Add a note about the fact that visualizations were created in a
-    way they are aligned with the standards of common journals and give
-    details about these settings + Add a note where the code can be
-    customized to change these settings.
-
-**Misc TO DO:**
--   [ ] Create a function that visualize the boxplot of activity per hour from
-    day to day.
--   [ ] Create duo, trio and quadro plots functionalities.
--   [ ] Add a dataset that has missing days then update the is_dgm_friendly
-    to detect these missing days.
--   [ ] Come up with another name for the function daily_average_activity and 
-    create another function for daily and hourly computed activities averaged.
--   [ ] Create a file that conducts a Meta Analysis (like the one of regio_beef)
-    code that takes an input file with data configuration, compute everything
-    and then save all results in an output file. That would hit.
--   [ ] Add out-of-the-shelf graphical control (width, height, device, line thickness ...)
--   [ ] Add a function that creates a histogram for the significant and
-    harmonic frequencies within the DFC.
-
+The library is still under development and we are working on adding more functionalities to it. If you have any suggestions or you want to contribute to the library, please feel free to contact us.
+Email: roland.nasser@agroscope.admin.ch or hassan.nasser@me.com
 
 ## Installation
 
@@ -194,3 +146,61 @@ df <- remove_activity_outliers(df)
 new_sampling <- 30
 new_dgm <- resample_dgm(df, new_sampling)
 ```
+
+**TO DO CORE FUNCTIONALITIES:**
+
+-   [x] Create a function that read Icetag data stored in a CSV file.
+-   [x] Add the import\_raw\_icetage\_data as an example to the README
+    file.
+-   [x] Create a function that computes the degree of functional
+    coupling.
+-   [x] Add the the dfc as an example to the README file.
+-   [x] Create a function that computes the diurnality index.
+-   [x] Add the the dfc as an example to the README file.
+-   [x] Add plotting funtionality to the diurnality index.
+-   [ ] Create a function that makes resampling aligned with several function
+    like (sum, mean, max, median ... ).
+-   [x] Make the code un-sensible to column names in original data frame (call
+    them by index rather than by name). For example, no need to call the datetime
+    by its name because it's always the first column (by dgm definition) in the 
+    dataset.
+-   [x] Add a function that fills NA values in the activity data set.
+
+
+**TO DO - VISUALIZATION FUNCTIONS:**
+
+-   [x] Create a function that visualize the actogram.
+-   [x] Create a function that visualize the average activity.
+-   [x] Create a function that visualize the DFC/HP.
+-   [x] Create a function that visualizes all daily activities with
+    control over the number of columns.
+
+**TO DO - UTILITIES AND DOCUMENTATIONS:**
+
+-   [x] Define data inside the library
+-   [x] Add and example about the import\_raw\_icetag\_data to the
+    README.
+-   [x] Create a function to test if a data set is digiRhythm friendly.
+-   [x] Create a proper documentation for the data set.
+-   [x] configure data sets with lazy loading
+-   [ ] Create test functions for all the functions.
+-   [x] Add a note about the fact that visualizations were created in a
+    way they are aligned with the standards of common journals and give
+    details about these settings + Add a note where the code can be
+    customized to change these settings.
+
+**Misc TO DO:**
+-   [ ] Create a function that visualize the boxplot of activity per hour from
+    day to day.
+-   [ ] Create duo, trio and quadro plots functionalities.
+-   [ ] Add a dataset that has missing days then update the is_dgm_friendly
+    to detect these missing days.
+-   [ ] Come up with another name for the function daily_average_activity and 
+    create another function for daily and hourly computed activities averaged.
+-   [ ] Create a file that conducts a Meta Analysis (like the one of regio_beef)
+    code that takes an input file with data configuration, compute everything
+    and then save all results in an output file. That would hit.
+-   [ ] Add out-of-the-shelf graphical control (width, height, device, line thickness ...)
+-   [ ] Add a function that creates a histogram for the significant and
+    harmonic frequencies within the DFC.
+
