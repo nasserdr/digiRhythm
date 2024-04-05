@@ -51,5 +51,3 @@ ncols <- 3 #number of columns
 my_daily_wrap_plot <- daily_activity_wrap_plot(data, activity, activity_alias, start, end, sampling_rate, ncols, save = Null)
 ```
 
-# Plot combination
-
