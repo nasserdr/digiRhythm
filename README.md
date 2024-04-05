@@ -9,9 +9,7 @@ on the Degree of Functional Coupling (0 < DFC < 1), a measure used by several sc
 to assess the welfare of animals. The library also provides tools to compute the diurnality
 index, to visualize the actogram and the average activity.
 
-This repository contains the most updated version of the library, while the CRAN package could
-be found at [CRAN](https://cran.r-project.org/web/packages/digiRhythm/index.html). Some helpful
-vignettes can be also found at [CRAN](https://cran.r-project.org/web/packages/digiRhythm/vignettes/).
+This repository contains the most updated version of the library, while the CRAN package and its vignettes could be found at [CRAN](https://cran.r-project.org/package=digiRhythm).
 
 The library is still under development and we are working on adding more functionalities to it. If you have any suggestions or you want to contribute to the library, please feel free to contact us.
 Email: roland.nasser@agroscope.admin.ch or hassan.nasser@me.com
