@@ -23,7 +23,7 @@ be the name of the saved image. it should contain the path and name without
 the extension.}
 }
 \value{
-None
+A ggplot2 object that contains the actogram plot
 }
 \description{
 Takes an activity dataset as input and plot and save an actogram of the

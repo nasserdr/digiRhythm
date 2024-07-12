@@ -12,7 +12,8 @@ is_dgm_friendly(data, verbose = FALSE)
 \item{verbose}{if TRUE, prints info about the dataset}
 }
 \value{
-None
+Boolean. If True, the dataframe is digirhythm friendly. If False, the
+dataframe is not digirhythm friendly.
 }
 \description{
 Takes an activity dataset as input and gives information about 1) If a dataset

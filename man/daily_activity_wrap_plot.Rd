@@ -36,7 +36,7 @@ the extension.}
 \item{save}{if NULL, the image is not saved. Otherwise, this parameter will}
 }
 \value{
-None
+A ggplot2 object that contains the daily average activity plot
 }
 \description{
 Takes an activity dataset as input and plot and save the daily average of the

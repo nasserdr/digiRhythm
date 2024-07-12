@@ -20,7 +20,7 @@ be the name of the saved image. it should contain the path and name without
 the extension.}
 }
 \value{
-A dataframe with 2 col: date and diurnality index
+A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
 }
 \description{
 Computes the diurnality index, using different start and end definitions for
@@ -32,7 +32,7 @@ data <- df516b_2
 data <- remove_activity_outliers(data)
 activity = names(data)[2]
 data("timedata", package = "digiRhythm")
-timedata <- timedata 
+timedata <- timedata
 d_index <- sliding_DI(data, activity, timedata)
 
 }
