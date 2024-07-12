@@ -1,15 +1,15 @@
-#' Computes the diurnality index, using different start and end definitions for 
-#' each day and night, based on an activity dataframe 
+#' Computes the diurnality index, using different start and end definitions for
+#' each day and night, based on an activity dataframe
 #'
 #' @param data a digiRhythm-friendly dataset
 #' @param activity The number of non-useful lines to skip (lines to header)
-#' @param timedata a dataset, including 4 columns of POSIXct format, including 
+#' @param timedata a dataset, including 4 columns of POSIXct format, including
 #' date and time "day_start", "day_end", "night_start", "night_end"
 #' @param save if NULL, the image is not saved. Otherwise, this parameter will
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
-#' @return A dataframe with 2 col: date and diurnality index
+#' @return A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
 #'
 #' @importFrom lubridate date hms hour minute
 #' @importFrom xts xts period.apply merge.xts
@@ -20,7 +20,7 @@
 #' data <- remove_activity_outliers(data)
 #' activity = names(data)[2]
 #' data("timedata", package = "digiRhythm")
-#' timedata <- timedata 
+#' timedata <- timedata
 #' d_index <- sliding_DI(data, activity, timedata)
 #'
 #' @export
@@ -32,7 +32,7 @@ sliding_DI <- function(data,
 
 start_date <- lubridate::date(data[, 1])[1]
 end_date <- last(lubridate::date(data[, 1]))
-  
+
 dates <- unique(lubridate::date(data[, 1]))
 X <- xts(x = data[[activity]], order.by = data[, 1])
 sampling <- dgm_periodicity(data)[["frequency"]]
@@ -41,7 +41,7 @@ sampling <- dgm_periodicity(data)[["frequency"]]
 timedata <- subset(timedata, lubridate::date(timedata$night_end) >= start_date & lubridate::date(timedata$night_end) <= end_date)
 day_range = paste0(timedata$day_start, "/", timedata$day_end)
 night_range = paste0(timedata$night_start, "/", timedata$night_end[2:nrow(timedata)])
- 
+
 #Compute the range of samples for the day and the night (Td & Tn)
 hms_day_start <- hms(substr(timedata$day_start, 12, 19))
 hms_day_end <- hms(substr(timedata$day_end, 12, 19))
@@ -75,8 +75,8 @@ day_val <- Cd/Td
 #Computing Cn
 X_night <- X[night_range]
 offset <- 3600 * hour(hms("12:00:00"))
-zoo::index(X_night) <- zoo::index(X_night) - offset  
-Cn <- period.apply(X_night, endpoints(X_night, "days"), 
+zoo::index(X_night) <- zoo::index(X_night) - offset
+Cn <- period.apply(X_night, endpoints(X_night, "days"),
                      sum)
 
 #Computing night value
@@ -88,7 +88,7 @@ zoo::index(night_val) = base::as.Date(zoo::index(night_val))
 
 common_dates_series <- xts::merge.xts(day_val, night_val, join = 'inner')
 
-dates_series = seq(from = zoo::index(common_dates_series)[1], 
+dates_series = seq(from = zoo::index(common_dates_series)[1],
                      to = last(zoo::index(common_dates_series)), by = 1)
 
 all_dates_series = xts::merge.xts(common_dates_series, dates_series)
@@ -96,7 +96,7 @@ d <- all_dates_series
 
 #Computing the diurnality index
 df <- data.frame(
-    date = zoo::index(d), 
+    date = zoo::index(d),
     diurnality = (coredata(d[, "day_val"]) - coredata(d[, "night_val"]))/(coredata(d[, "day_val"]) + coredata(d[, "night_val"]))
 )
 
@@ -104,16 +104,16 @@ names(df) = c("date", "diurnality")
 df <- na.omit(df)
 
 #Visualization
-diurnality <- ggplot(data = df, aes(x = date, y = diurnality)) + 
+diurnality <- ggplot(data = df, aes(x = date, y = diurnality)) +
     geom_line() + ylab("Diurnality Index") + xlab("Date") + ylim(-1,1) +
-    theme(axis.text = element_text(color = "#000000"), text = element_text(size = 15), 
-          panel.background = element_rect(fill = "white"), 
-          axis.line = element_line(linewidth = 0.5), ) + 
+    theme(axis.text = element_text(color = "#000000"), text = element_text(size = 15),
+          panel.background = element_rect(fill = "white"),
+          axis.line = element_line(linewidth = 0.5), ) +
     geom_hline(yintercept = 0, linetype = "dotted", col = "black")
 
 if (!is.null(save)) {
     cat("Saving image in :", save, "\n")
-    ggsave(paste0(save, ".tiff"), diurnality, device = "tiff", 
+    ggsave(paste0(save, ".tiff"), diurnality, device = "tiff",
            width = 15, height = 6, units = "cm", dpi = 600)
 }
 

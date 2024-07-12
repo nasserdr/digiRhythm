@@ -15,5 +15,6 @@ utils::globalVariables(
     'new_h',
     'to',
     'tz',
-    'df')
+    'df',
+    'date_numeric')
   )

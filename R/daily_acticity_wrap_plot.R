@@ -14,7 +14,7 @@
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
-#' @return None
+#' @return A ggplot2 object that contains the daily average activity plot
 #'
 #' @importFrom magrittr %>%
 #' @importFrom stats time

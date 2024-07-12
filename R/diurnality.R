@@ -10,7 +10,7 @@
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
-#' @return A dataframe with 2 col: date and diurnality index
+#' @return A ggplot2 object that contains the diurnality plot in addition to a dataframe with 2 col: date and diurnality index
 #'
 #' @importFrom lubridate date hms hour minute
 #' @importFrom xts xts period.apply merge.xts

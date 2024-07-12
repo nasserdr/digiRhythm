@@ -7,7 +7,8 @@
 #' @param data The dataframe containing the activity data
 #' @param verbose if TRUE, prints info about the dataset
 #'
-#' @return None
+#' @return Boolean. If True, the dataframe is digirhythm friendly. If False, the
+#' dataframe is not digirhythm friendly.
 #' @importFrom crayon green blue red
 #' @export
 #'
