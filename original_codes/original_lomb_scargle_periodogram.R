@@ -1,19 +1,24 @@
 library(pracma)
+library(digiRhythm)
 data("df516b_2", package = "digiRhythm")
-data <- df516b_2[1:672, c(1,2)]
-alpha = 0.01
-sampling = 15
-plot = TRUE
-extra_info_plot = TRUE
+
+for(days in c(1:15)){
+  sampling = 15
+  useful_len = (60/sampling)*24*days
+  data <- df516b_2[1:useful_len, c(1,2)]
+
+  alpha = 0.01
+  plot = TRUE
+  extra_info_plot = TRUE
 
   if (!is_dgm_friendly(data, verbose = TRUE)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
 
-  if (length(unique(as.Date(data[,1]))) != 7 ) {
-    warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
-         A dynamic number of days will be introduced in a later version.')
-  }
+  # if (length(unique(as.Date(data[,1]))) != 7 ) {
+  #   warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
+  #        A dynamic number of days will be introduced in a later version.')
+  # }
 
   x <- data
   start <- as.Date(x[1,1])
@@ -166,7 +171,7 @@ extra_info_plot = TRUE
           y = power,
           label = new_h,
           angle = 90,
-          hjust = -0.4)) + ggtitle(paste('LSP for ', datanames[2],from_to))
+          hjust = -0.4)) + ggtitle(paste(days, ' day - LSP for ', datanames[2],from_to))
     } else {
       p <- p + theme(
         panel.background = element_rect(fill = "white"),
@@ -190,3 +195,5 @@ extra_info_plot = TRUE
 
 
 
+
+}

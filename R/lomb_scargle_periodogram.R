@@ -37,10 +37,10 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
 
-  if (length(unique(as.Date(data[,1]))) != 7 ) {
-    warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
-         A dynamic number of days will be introduced in a later version.')
-  }
+  # if (length(unique(as.Date(data[,1]))) != 7 ) {
+  #   warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
+  #        A dynamic number of days will be introduced in a later version.')
+  # }
 
   x <- data
   start <- as.Date(x[1,1])
