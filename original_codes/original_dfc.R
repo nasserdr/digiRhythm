@@ -59,27 +59,28 @@ plot_harmonic_part = TRUE
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
 
-# target_tz <- 'GMT'
-# data <- import_raw_activity_data("team/marie/12112.csv",
-#                                skipLines = 7,
-#                                act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
-#                                date_format = "%d.%m.%Y",
-#                                time_format = "%H:%M:%S",
-#                                sep = ",",
-#                                original_tz = "CET",
-#                                target_tz = target_tz,
-#                                sampling = 15,
-#                                trim_first_day = TRUE,
-#                                trim_middle_days = TRUE,
-#                                trim_last_day = TRUE,
-#                                verbose = FALSE)
-#
-# sig = 0.05
-# activity = names(data)[2]
-# sampling = 15
-# plot <- TRUE
-# verbose = TRUE
-# plot_harmonic_part = TRUE
+target_tz <- 'GMT'
+data <- import_raw_activity_data("team/marie/12112.csv",
+                               skipLines = 7,
+                               act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+                               date_format = "%d.%m.%Y",
+                               time_format = "%H:%M:%S",
+                               sep = ",",
+                               original_tz = "CET",
+                               target_tz = target_tz,
+                               sampling = 15,
+                               trim_first_day = TRUE,
+                               trim_middle_days = TRUE,
+                               trim_last_day = TRUE,
+                               verbose = FALSE)
+
+sig = 0.05
+activity = names(data)[2]
+sampling = 15
+plot <- TRUE
+verbose = TRUE
+rolling_window = 7
+plot_harmonic_part = TRUE
 
 df <- as.data.frame(df, row.names = NULL)
 
@@ -96,8 +97,8 @@ tz(df$date) <- target_tz
 tz(days) <- target_tz
 print(days)
 
-if (length(days) < 7) {
-  stop('You need at least 7 days of data to run the Degree of Functional Coupling algorithm')
+if (length(days) < 2) {
+  warning('You need at least 2 days of data to run the Degree of Functional Coupling algorithm')
 }
 
 dfc <- NULL
@@ -113,21 +114,21 @@ spec <- data.frame(fromtodate = character(),
                    power = numeric(),
                    pvalue = numeric()) #The data frame for SPEC
 
-n_days_scanned <- length(days) - 6
+n_days_scanned <- length(days) - rolling_window - 1
 
 i = 1
 
 for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
   if (verbose) {
-    cat("Processing dates ", format(days[i]), " until ", format(days[(i + 6)]), "\n")
+    cat("Processing dates ", format(days[i]), " until ", format(days[(i + rolling_window - 1)]), "\n")
 
   }
 
   samples_per_day = 24*60/sampling #The number of data points per day
 
   #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
-  data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + 6])
+  data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + rolling_window - 1])
 
 
   #Selecting the first column (datetime) and the activity column
@@ -174,13 +175,13 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 
 
   spec <- rbind(spec, data.frame(
-    rep(paste0(format(days[i]), "_to_", format(days[i + 6])), len),
+    rep(paste0(format(days[i]), "_to_", format(days[i + rolling_window - 1])), len),
     1:len,
     (1:len)/7,
     lsp_data$power,
     lsp_data$p_values))
 
-  dfc[i,] <-  c(format(days[i]), format(days[i+6]), DFC, HP)
+  dfc[i,] <-  c(format(days[i]), format(days[i+rolling_window - 1]), DFC, HP)
 
   if (verbose) {
     print(dfc[i,])

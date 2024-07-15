@@ -11,6 +11,7 @@ dfc(
   activity,
   sampling = 15,
   sig = 0.05,
+  rolling_window = 7,
   plot = TRUE,
   plot_harmonic_part = TRUE,
   verbose = TRUE,
@@ -28,6 +29,8 @@ the Lomb Scargle Periodogram is computed.}
 \item{sig}{The significance level that should be used to determine the
 significant frequency component.}
 
+\item{rolling_window}{The rolling window used to compute the LSP. Default is 7 days.}
+
 \item{plot}{if TRUE, the DFC/HP plot will be shown.}
 
 \item{plot_harmonic_part}{if TRUE, it shows the harmonic part in the DFC plot}
@@ -41,9 +44,9 @@ A list containing 2 dataframe. DFC dataframe that contain the
 results of a DFC computation and SPEC Dataframe that contains the result of
 spectrum computation.
 The DFC contains 3 columns:
-** The date
-** The DFC computed over 7 days (but we only extract the first 24 hours = 96 values)
-** The Harmonic Part
+** The date in format YYYY-MM-DD.
+** The DFC computed using a @rolling_window days.
+** The Harmonic Part (ratio).
 Data are supposed to sampled with a specific smpling rate. It should be the same sampling rate
 as in the given argument @sampling
 Missing days are not permitted. If you have data with half day, it should be
@@ -70,9 +73,10 @@ HP <- SSH / SUMALL
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
-df <- df516b_2[1:672, c(1,2)]
+df <- df516b_2[, c(1,2)]
 df <- remove_activity_outliers(df)
 df_act_info(df)
 activity = names(df)[2]
-my_dfc <- dfc(df, activity, sampling = 15)
+my_dfc_1 <- dfc(df, activity, sampling = 15)
+my_dfc_2 <- dfc(df, activity, sampling = 15, rolling_window = 4)
 }

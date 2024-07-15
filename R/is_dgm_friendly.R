@@ -39,13 +39,13 @@ is_dgm_friendly <- function(data, verbose = FALSE){
 
 
     #Checking if data contains at least 7 days of data
-    if(length(unique(as.Date(data[,1]))) >= 7){
-      message <- paste0(green('v Number of days: '), 'Bigger or equal to 7')
+    if(length(unique(as.Date(data[,1]))) >= 2){
+      message <- paste0(green('v Number of days: '), 'Bigger or equal to 2')
       print_v(message, verbose)
     }else {
-      message <- paste0(red('x Number of days: '), 'Less than 7 (minimum of 7 days is recommended')
+      message <- paste0(red('x Number of days: '), 'Less than 2 (minimum of 2 days is recommended)')
       print_v(message, verbose)
-      #is_dgm <- FALSE
+      is_dgm <- FALSE
     }
 
     #Checking if we have more than one column
