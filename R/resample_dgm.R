@@ -8,8 +8,6 @@
 #'
 #' @return A digiRhythm friendly dataset with the new sampling
 #'
-#' @importFrom xts xts period.apply
-#' @importFrom zoo index coredata
 #' @export
 #'
 #' @examples
@@ -19,7 +17,7 @@
 #' new_sampling <- 30
 #' new_dgm <- resample_dgm(df, new_sampling)
 resample_dgm <- function(data, new_sampling) {
-  xts_data <- xts(
+  xts_data <- xts::xts(
     x = data[, c(2:ncol(data))],
     order.by = data[, 1]
   )
@@ -45,7 +43,7 @@ resample_dgm <- function(data, new_sampling) {
 
   sampled_xts <- NULL
   for (var in names(xts_data)) {
-    xts_var <- period.apply(
+    xts_var <- xts::period.apply(
       xts_data[, var],
       endpoints(xts_data, on = "minutes", k = new_sampling),
       FUN = sum
@@ -54,7 +52,7 @@ resample_dgm <- function(data, new_sampling) {
   }
 
   new_data <- data.frame(
-    datetime = index(sampled_xts),
+    datetime = zoo::index(sampled_xts),
     coredata(sampled_xts)
   )
 
