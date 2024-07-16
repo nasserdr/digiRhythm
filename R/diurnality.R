@@ -42,17 +42,17 @@ diurnality <- function(data,
   # Formatting the time range of the day
   start_day <- paste0(
     "T",
-    sprintf("%02d", attr(hms(day_time[1]), "hour")),
+    sprintf("%02d", attr(lubridate::hms(day_time[1]), "hour")),
     ":",
-    sprintf("%02d", attr(hms(day_time[1]), "minute")),
+    sprintf("%02d", attr(lubridate::hms(day_time[1]), "minute")),
     ":00"
   )
 
   end_day <- paste0(
     "T",
-    sprintf("%02d", attr(hms(day_time[2]), "hour")),
+    sprintf("%02d", attr(lubridate::hms(day_time[2]), "hour")),
     ":",
-    sprintf("%02d", attr(hms(day_time[2]), "minute")),
+    sprintf("%02d", attr(lubridate::hms(day_time[2]), "minute")),
     ":00"
   )
 
@@ -61,31 +61,31 @@ diurnality <- function(data,
   # Formatting the time range of the night
   start_night <- paste0(
     "T",
-    sprintf("%02d", attr(hms(night_time[1]), "hour")),
+    sprintf("%02d", attr(lubridate::hms(night_time[1]), "hour")),
     ":",
-    sprintf("%02d", attr(hms(night_time[1]), "minute")),
+    sprintf("%02d", attr(lubridate::hms(night_time[1]), "minute")),
     ":00"
   )
 
   end_night <- paste0(
     "T",
-    sprintf("%02d", attr(hms(night_time[2]), "hour")),
+    sprintf("%02d", attr(lubridate::hms(night_time[2]), "hour")),
     ":",
-    sprintf("%02d", attr(hms(night_time[2]), "minute")),
+    sprintf("%02d", attr(lubridate::hms(night_time[2]), "minute")),
     ":00"
   )
 
   night_range <- paste0(start_night, "/", end_night)
 
   # Compute the range of samples for the day and the night
-  hms_day_start <- hms(day_time[1])
-  hms_day_end <- hms(day_time[2])
-  sample_size <- hms(paste0("00:", sampling, ":00"))
+  hms_day_start <- lubridate::hms(day_time[1])
+  hms_day_end <- lubridate::hms(day_time[2])
+  sample_size <- lubridate::hms(paste0("00:", sampling, ":00"))
   Td <- abs((hms_day_end - hms_day_start) / sample_size)
 
-  hms_night_start <- hms(night_time[1])
-  hms_midnight <- hms("00:00:00")
-  hms_24t <- hms("24:00:00")
+  hms_night_start <- lubridate::hms(night_time[1])
+  hms_midnight <- lubridate::hms("00:00:00")
+  hms_24t <- lubridate::hms("24:00:00")
   hms_night_end <- lubridate::hms(night_time[2])
   Tn <- (hms_24t - hms_night_start + hms_night_end - hms_midnight) / sample_size
 
@@ -103,7 +103,7 @@ diurnality <- function(data,
   }
 
   X_day <- X[day_range]
-  Cd <- xts::period.apply(X_day, endpoints(X_day, "days"), sum)
+  Cd <- xts::period.apply(X_day, xts::endpoints(X_day, "days"), sum)
 
   # Computing Td for the motion index
   # Td <- 40 # 40 samples * 15 minutes = 10 hours
@@ -114,12 +114,12 @@ diurnality <- function(data,
   X_night <- X_night[night_range]
   X_night <- X[night_range]
 
-  offset <- 3600 * hour(hms_night_start)
+  offset <- 3600 * lubridate::hour(hms_night_start)
   zoo::index(X_night) <- zoo::index(X_night) - offset
-  shift <- hour(hms_24t - hms_night_start + hms_night_end - hms_midnight)
+  shift <- lubridate::hour(hms_24t - hms_night_start + hms_night_end - hms_midnight)
   shifted_night_range <- paste0("T00:00:00/T", shift, ":00:00")
   X_night <- X_night[shifted_night_range]
-  Cn <- xts::period.apply(X_night, endpoints(X_night, "days"), sum)
+  Cn <- xts::period.apply(X_night, xts::endpoints(X_night, "days"), sum)
 
   # Computing Tn for the motion index
   # Tn <- 44 #44 samples * 15 minutes = 11 hours
@@ -143,7 +143,7 @@ diurnality <- function(data,
   # computing the dirunality index
   df <- data.frame(
     date = zoo::index(d),
-    diurnality = (coredata(d[, "day_val"]) - coredata(d[, "night_val"])) / (coredata(d[, "day_val"]) + coredata(d[, "night_val"]))
+    diurnality = (zoo::coredata(d[, "day_val"]) - zoo::coredata(d[, "night_val"])) / (zoo::coredata(d[, "day_val"]) + zoo::coredata(d[, "night_val"]))
   )
   names(df) <- c("date", "diurnality")
   df <- na.omit(df)

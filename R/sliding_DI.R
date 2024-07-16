@@ -48,7 +48,7 @@ sliding_DI <- function(data,
 
   hms_night_start <- lubridate::hms(substr(timedata$night_start[1:nrow(timedata) - 1], 12, 19))
   hms_midnight <- lubridate::hms("00:00:00")
-  hms_24t <- hms("24:00:00")
+  hms_24t <- lubridate::hms("24:00:00")
   hms_night_end <- lubridate::hms(substr(timedata$night_end[2:nrow(timedata)], 12, 19))
   Tn <- (hms_24t - hms_night_start + hms_night_end - hms_midnight) / sample_size
 
@@ -56,10 +56,10 @@ sliding_DI <- function(data,
   # if (hms_day_end > hms_night_start) {
   # stop("The end of the day_time period should proceed the beginning of the night_time period")
   # }
-  # if (hour(hms_night_end) < 1) {
+  # if (lubridate::hour(hms_night_end) < 1) {
   # stop("The of the nightly period should be after midnight")
   # }
-  # if (hour(hms_night_end) > 11) {
+  # if (lubridate::hour(hms_night_end) > 11) {
   # stop("The end of the nightly period cannot be after mid-day! Come on!")
   # }
 
@@ -72,7 +72,7 @@ sliding_DI <- function(data,
 
   # Computing Cn
   X_night <- X[night_range]
-  offset <- 3600 * hour(lubridate::hms("12:00:00"))
+  offset <- 3600 * lubridate::hour(lubridate::hms("12:00:00"))
   zoo::index(X_night) <- zoo::index(X_night) - offset
   Cn <- xts::period.apply(
     X_night, xts::endpoints(X_night, "days"),
@@ -99,7 +99,7 @@ sliding_DI <- function(data,
   # Computing the diurnality index
   df <- data.frame(
     date = zoo::index(d),
-    diurnality = (coredata(d[, "day_val"]) - coredata(d[, "night_val"])) / (coredata(d[, "day_val"]) + coredata(d[, "night_val"]))
+    diurnality = (zoo::coredata(d[, "day_val"]) - zoo::coredata(d[, "night_val"])) / (zoo::coredata(d[, "day_val"]) + zoo::coredata(d[, "night_val"]))
   )
 
   names(df) <- c("date", "diurnality")

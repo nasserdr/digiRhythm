@@ -169,7 +169,7 @@ import_raw_activity_data <- function(filename,
 
   if (trim_first_day) {
     n_samples_day1 <- df %>%
-      filter(lubridate::date == unique(df$date)[1]) %>%
+      filter(date == unique(df$date)[1]) %>%
       dplyr::tally()
     if (n_samples_day1 < smallest_mandatory_daily_samples) {
       df <- df %>% filter(date != unique(df$date)[1])

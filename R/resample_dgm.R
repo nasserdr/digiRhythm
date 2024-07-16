@@ -53,7 +53,7 @@ resample_dgm <- function(data, new_sampling) {
 
   new_data <- data.frame(
     datetime = zoo::index(sampled_xts),
-    coredata(sampled_xts)
+    zoo::coredata(sampled_xts)
   )
 
   return(new_data)

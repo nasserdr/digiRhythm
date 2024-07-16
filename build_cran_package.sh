@@ -4,6 +4,8 @@
 
 #Moving the files
 rm -rf ../dgm/*
+rm -rf ../dgm.Rcheck/*
+rm -rf ../digiRhythm*.tar.gz
 
 #Data files
 cp -R data ../dgm

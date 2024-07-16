@@ -87,8 +87,8 @@ dgm_periodicity <- function(data) {
 }
 
 
-#' Returns p-value of a frequency peack according to pbaluev (2008) given Z,
-#' fmax and tm. Copied from the LOMB library.
+#' Returns p-value of a frequency peak according to pbaluev (2008) given Z,
+#' fmax and tm. Reused from the LOMB library (https://rdrr.io/cran/lomb/)
 #'
 #' @param Z the power of the frequency
 #' @param fmax the maximum frequency in the spectrum

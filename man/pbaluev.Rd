@@ -2,8 +2,8 @@
 % Please edit documentation in R/utils.R
 \name{pbaluev}
 \alias{pbaluev}
-\title{Returns p-value of a frequency peack according to pbaluev (2008) given Z,
-fmax and tm. Copied from the LOMB library.}
+\title{Returns p-value of a frequency peak according to pbaluev (2008) given Z,
+fmax and tm. Reused from the LOMB library (https://rdrr.io/cran/lomb/)}
 \usage{
 pbaluev(Z, fmax, tm)
 }
@@ -19,6 +19,6 @@ an intermediate calculation step needed to compute the p-value according to
 pbaluev (2008).
 }
 \description{
-Returns p-value of a frequency peack according to pbaluev (2008) given Z,
-fmax and tm. Copied from the LOMB library.
+Returns p-value of a frequency peak according to pbaluev (2008) given Z,
+fmax and tm. Reused from the LOMB library (https://rdrr.io/cran/lomb/)
 }
