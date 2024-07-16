@@ -12,8 +12,7 @@
 #'
 #' @return A ggplot2 object that contains the diurnality plot in addition to a dataframe with 2 col: date and diurnality index
 #'
-#' @importFrom lubridate date hms hour minute
-#' @importFrom xts xts period.apply merge.xts
+#' @import ggplot2
 #'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
@@ -32,7 +31,7 @@ diurnality <- function(data,
   # di = (cd/td - cn/tn)/(cd/td + cn/tn)
 
   dates <- unique(lubridate::date(data[, 1]))
-  X <- xts(
+  X <- xts::xts(
     x = data[[activity]],
     order.by = data[, 1]
   )
@@ -87,7 +86,7 @@ diurnality <- function(data,
   hms_night_start <- hms(night_time[1])
   hms_midnight <- hms("00:00:00")
   hms_24t <- hms("24:00:00")
-  hms_night_end <- hms(night_time[2])
+  hms_night_end <- lubridate::hms(night_time[2])
   Tn <- (hms_24t - hms_night_start + hms_night_end - hms_midnight) / sample_size
 
   # Check conditions about the day and night time (overlapping, misplacement)
@@ -95,16 +94,16 @@ diurnality <- function(data,
     stop("The end of the day_time period should proceed the beginning of the night_time period")
   }
 
-  if (hour(hms_night_end) < 1) {
+  if (lubridate::hour(hms_night_end) < 1) {
     stop("The of the nightly period should be after midnight")
   }
 
-  if (hour(hms_night_end) > 11) {
+  if (lubridate::hour(hms_night_end) > 11) {
     stop("The end of the nightly period cannot be after mid-day! Come on!")
   }
 
   X_day <- X[day_range]
-  Cd <- period.apply(X_day, endpoints(X_day, "days"), sum)
+  Cd <- xts::period.apply(X_day, endpoints(X_day, "days"), sum)
 
   # Computing Td for the motion index
   # Td <- 40 # 40 samples * 15 minutes = 10 hours
@@ -120,7 +119,7 @@ diurnality <- function(data,
   shift <- hour(hms_24t - hms_night_start + hms_night_end - hms_midnight)
   shifted_night_range <- paste0("T00:00:00/T", shift, ":00:00")
   X_night <- X_night[shifted_night_range]
-  Cn <- period.apply(X_night, endpoints(X_night, "days"), sum)
+  Cn <- xts::period.apply(X_night, endpoints(X_night, "days"), sum)
 
   # Computing Tn for the motion index
   # Tn <- 44 #44 samples * 15 minutes = 11 hours
