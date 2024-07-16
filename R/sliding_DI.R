@@ -11,9 +11,6 @@
 #'
 #' @return A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
 #'
-#' @importFrom lubridate date hms hour minute
-#' @importFrom xts xts period.apply merge.xts
-#'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
 #' data <- df516b_2
@@ -33,7 +30,7 @@ sliding_DI <- function(data,
   end_date <- last(lubridate::date(data[, 1]))
 
   dates <- unique(lubridate::date(data[, 1]))
-  X <- xts(x = data[[activity]], order.by = data[, 1])
+  X <- xts::xts(x = data[[activity]], order.by = data[, 1])
   sampling <- dgm_periodicity(data)[["frequency"]]
 
   # Formatting time range of day and night
@@ -42,15 +39,15 @@ sliding_DI <- function(data,
   night_range <- paste0(timedata$night_start, "/", timedata$night_end[2:nrow(timedata)])
 
   # Compute the range of samples for the day and the night (Td & Tn)
-  hms_day_start <- hms(substr(timedata$day_start, 12, 19))
-  hms_day_end <- hms(substr(timedata$day_end, 12, 19))
-  sample_size <- hms(paste0("00:", sampling, ":00"))
+  hms_day_start <- lubridate::hms(substr(timedata$day_start, 12, 19))
+  hms_day_end <- lubridate::hms(substr(timedata$day_end, 12, 19))
+  sample_size <- lubridate::hms(paste0("00:", sampling, ":00"))
   Td <- abs((hms_day_end - hms_day_start) / sample_size)
 
-  hms_night_start <- hms(substr(timedata$night_start[1:nrow(timedata) - 1], 12, 19))
-  hms_midnight <- hms("00:00:00")
+  hms_night_start <- lubridate::hms(substr(timedata$night_start[1:nrow(timedata) - 1], 12, 19))
+  hms_midnight <- lubridate::hms("00:00:00")
   hms_24t <- hms("24:00:00")
-  hms_night_end <- hms(substr(timedata$night_end[2:nrow(timedata)], 12, 19))
+  hms_night_end <- lubridate::hms(substr(timedata$night_end[2:nrow(timedata)], 12, 19))
   Tn <- (hms_24t - hms_night_start + hms_night_end - hms_midnight) / sample_size
 
   # Check conditions about the day and night time (overlapping, misplacement)
@@ -66,16 +63,16 @@ sliding_DI <- function(data,
 
   # Computing Cd
   X_day <- X[day_range]
-  Cd <- period.apply(X_day, endpoints(X_day, "days"), sum)
+  Cd <- xts::period.apply(X_day, endpoints(X_day, "days"), sum)
 
   # Computing day value
   day_val <- Cd / Td
 
   # Computing Cn
   X_night <- X[night_range]
-  offset <- 3600 * hour(hms("12:00:00"))
+  offset <- 3600 * hour(lubridate::hms("12:00:00"))
   zoo::index(X_night) <- zoo::index(X_night) - offset
-  Cn <- period.apply(
+  Cn <- xts::period.apply(
     X_night, endpoints(X_night, "days"),
     sum
   )
