@@ -45,7 +45,7 @@ resample_dgm <- function(data, new_sampling) {
   for (var in names(xts_data)) {
     xts_var <- xts::period.apply(
       xts_data[, var],
-      endpoints(xts_data, on = "minutes", k = new_sampling),
+      xts::endpoints(xts_data, on = "minutes", k = new_sampling),
       FUN = sum
     )
     sampled_xts <- cbind(sampled_xts, xts_var)

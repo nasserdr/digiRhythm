@@ -11,6 +11,8 @@
 #'
 #' @return A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
 #'
+#' @import ggplot2
+#'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
 #' data <- df516b_2
@@ -63,7 +65,7 @@ sliding_DI <- function(data,
 
   # Computing Cd
   X_day <- X[day_range]
-  Cd <- xts::period.apply(X_day, endpoints(X_day, "days"), sum)
+  Cd <- xts::period.apply(X_day, xts::endpoints(X_day, "days"), sum)
 
   # Computing day value
   day_val <- Cd / Td
@@ -73,7 +75,7 @@ sliding_DI <- function(data,
   offset <- 3600 * hour(lubridate::hms("12:00:00"))
   zoo::index(X_night) <- zoo::index(X_night) - offset
   Cn <- xts::period.apply(
-    X_night, endpoints(X_night, "days"),
+    X_night, xts::endpoints(X_night, "days"),
     sum
   )
 

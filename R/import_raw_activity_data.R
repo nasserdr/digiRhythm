@@ -43,15 +43,7 @@
 #' @return A dataframe with datetime column and other activity columns, ready to
 #' be used with other functions in digirhythm
 #'
-#' @importFrom tidyr unite
-#' @importFrom magrittr %>%
-#' @importFrom readr read_delim
-#' @importFrom xts endpoints period.apply xts
-#' @importFrom zoo coredata index
-#' @importFrom dplyr filter select last tally
-#' @importFrom utils read.table
-#' @importFrom stringr str_trim
-#' @importFrom lubridate date round_date
+#' @import magrittr
 #'
 #' @examples
 #'
@@ -96,7 +88,7 @@ import_raw_activity_data <- function(filename,
   # Loading data from the CSV (with specific columns and skipping lines)
 
 
-  data <- read_delim(filename,
+  data <- readr::read_delim(filename,
     skip = skipLines,
     delim = sep,
     show_col_types = FALSE
@@ -105,9 +97,9 @@ import_raw_activity_data <- function(filename,
   data <- na.omit(data)
 
   data <- data %>%
-    mutate(across(where(is.character), str_trim))
+    mutate(across(where(is.character), stringr::str_trim))
 
-  data <- data %>% unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = "-")
+  data <- data %>% tidyr::unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = "-")
 
   data$datetime <- as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = original_tz)
 
@@ -137,7 +129,7 @@ import_raw_activity_data <- function(filename,
 
 
   # Transforming data to an XTS for easy management of sampling and date removal
-  data_xts <- xts(
+  data_xts <- xts::xts(
     data[, 2:ncol(data)],
     order.by = data$datetime
   )
@@ -147,7 +139,7 @@ import_raw_activity_data <- function(filename,
   for (var in names(data_xts)) {
     var_xts <- xts::period.apply(
       data_xts[, var],
-      endpoints(data_xts, "minutes", k = sampling),
+      xts::endpoints(data_xts, "minutes", k = sampling),
       FUN = sum
     )
     data_xts_sampled <- cbind(data_xts_sampled, var_xts)
@@ -156,8 +148,8 @@ import_raw_activity_data <- function(filename,
 
   # Creating a dataframe from the sampled XTS (what we will return)
   df <- data.frame(
-    datetime = index(data_xts_sampled),
-    coredata(data_xts_sampled)
+    datetime = zoo::index(data_xts_sampled),
+    zoo::coredata(data_xts_sampled)
   )
 
   df$datetime <- lubridate::round_date(df$datetime, paste0(sampling, " mins"))
@@ -177,8 +169,8 @@ import_raw_activity_data <- function(filename,
 
   if (trim_first_day) {
     n_samples_day1 <- df %>%
-      filter(date == unique(df$date)[1]) %>%
-      tally()
+      filter(lubridate::date == unique(df$date)[1]) %>%
+      dplyr::tally()
     if (n_samples_day1 < smallest_mandatory_daily_samples) {
       df <- df %>% filter(date != unique(df$date)[1])
     } else {
@@ -191,10 +183,10 @@ import_raw_activity_data <- function(filename,
 
   if (trim_last_day) {
     n_samples_day_last <- df %>%
-      filter(date == last(unique(df$date))) %>%
-      tally()
+      filter(date == dplyr::last(unique(df$date))) %>%
+      dplyr::tally()
     if (n_samples_day_last < smallest_mandatory_daily_samples) {
-      df <- df %>% filter(date != last(unique(df$date)))
+      df <- df %>% filter(date != dplyr::last(unique(df$date)))
     } else {
       if (verbose) {
         print("No data has been removed from the end")
@@ -205,10 +197,10 @@ import_raw_activity_data <- function(filename,
   if (trim_middle_days) {
     for (day in unique(df$date)) {
       n_samples_middle_day <- df %>%
-        filter(date == day) %>%
-        tally()
+        dplyr::filter(date == day) %>%
+        dplyr::tally()
       if (n_samples_middle_day < smallest_mandatory_daily_samples) {
-        df <- df %>% filter(date != day)
+        df <- df %>% dplyr::filter(date != day)
 
         if (verbose) {
           print(paste(
@@ -220,7 +212,7 @@ import_raw_activity_data <- function(filename,
     }
   }
 
-  df <- df %>% select(-date)
+  df <- df %>% dplyr::select(-date)
 
   if (verbose) {
     print(paste(
