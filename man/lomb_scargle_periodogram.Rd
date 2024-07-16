@@ -49,7 +49,7 @@ to: https://cran.r-project.org/web/packages/lomb/
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
-data <- df516b_2[1:672, c(1,2)]
+data <- df516b_2[1:672, c(1, 2)]
 sig <- 0.01
 lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
 }

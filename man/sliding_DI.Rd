@@ -30,7 +30,7 @@ each day and night, based on an activity dataframe
 data("df516b_2", package = "digiRhythm")
 data <- df516b_2
 data <- remove_activity_outliers(data)
-activity = names(data)[2]
+activity <- names(data)[2]
 data("timedata", package = "digiRhythm")
 timedata <- timedata
 d_index <- sliding_DI(data, activity, timedata)

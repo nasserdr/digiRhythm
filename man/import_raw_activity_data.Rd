@@ -83,19 +83,20 @@ verbose = TRUE)
 
 filename <- system.file("extdata", "sample_data.csv", package = "digiRhythm")
 data <- import_raw_activity_data(
-    filename,
-    skipLines = 7,
-    act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
-    sep = ',',
-    original_tz = 'CET',
-    target_tz = 'CET',
-    date_format = "\%d.\%m.\%Y",
-    time_format = "\%H:\%M:\%S",
-    sampling = 15,
-    trim_first_day = TRUE,
-    trim_middle_days = TRUE,
-    trim_last_day = TRUE,
-    verbose = TRUE)
+  filename,
+  skipLines = 7,
+  act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+  sep = ",",
+  original_tz = "CET",
+  target_tz = "CET",
+  date_format = "\%d.\%m.\%Y",
+  time_format = "\%H:\%M:\%S",
+  sampling = 15,
+  trim_first_day = TRUE,
+  trim_middle_days = TRUE,
+  trim_last_day = TRUE,
+  verbose = TRUE
+)
 print(head(data))
 
 }

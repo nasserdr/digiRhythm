@@ -46,11 +46,13 @@ specified activity column
 data("df516b_2")
 df <- df516b_2
 activity <- names(df)[2]
-activity_alias <- 'Motion Index'
-start <- "2020-05-01" #year-month-day
-end <- "2020-05-07" #year-month-day
+activity_alias <- "Motion Index"
+start <- "2020-05-01" # year-month-day
+end <- "2020-05-07" # year-month-day
 ncols <- 3
 sampling_rate <- 30
-my_dwp <- daily_activity_wrap_plot(df, activity, activity_alias, start, end, sampling_rate,
-ncols)
+my_dwp <- daily_activity_wrap_plot(
+  df, activity, activity_alias, start, end, sampling_rate,
+  ncols
+)
 }

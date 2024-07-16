@@ -37,7 +37,7 @@ Computes the diurnality index based on an activity dataframe
 data("df516b_2", package = "digiRhythm")
 data <- df516b_2
 data <- remove_activity_outliers(data)
-activity = names(data)[2]
+activity <- names(data)[2]
 d_index <- diurnality(data, activity)
 
 }

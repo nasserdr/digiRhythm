@@ -73,10 +73,10 @@ HP <- SSH / SUMALL
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
-df <- df516b_2[, c(1,2)]
+df <- df516b_2[, c(1, 2)]
 df <- remove_activity_outliers(df)
 df_act_info(df)
-activity = names(df)[2]
+activity <- names(df)[2]
 my_dfc_1 <- dfc(df, activity, sampling = 15)
 my_dfc_2 <- dfc(df, activity, sampling = 15, rolling_window = 4)
 }

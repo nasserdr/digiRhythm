@@ -33,9 +33,9 @@ specified activity column
 data("df516b_2")
 df <- df516b_2
 activity <- names(df)[2]
-start <- "2020-05-01" #year-month-day
-end <- "2020-08-13" #year-month-day
-activity_alias <- 'Motion Index'
+start <- "2020-05-01" # year-month-day
+end <- "2020-08-13" # year-month-day
+activity_alias <- "Motion Index"
 my_daa <- daily_average_activity(df, activity, activity_alias, start, end, save = NULL)
 print(my_daa)
 }
