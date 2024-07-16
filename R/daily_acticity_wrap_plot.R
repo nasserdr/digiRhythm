@@ -16,11 +16,9 @@
 #'
 #' @return A ggplot2 object that contains the daily average activity plot
 #'
-#' @importFrom magrittr %>%
-#' @importFrom stats time
-#' @import ggplot2
-#' @importFrom lubridate date
 #' @import dplyr
+#' @import ggplot2
+#' @import magrittr
 #'
 #' @export
 #'
