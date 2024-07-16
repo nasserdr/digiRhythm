@@ -15,6 +15,7 @@ data <- df %>% mutate(
 
 data <- data %>% mutate(time = as.POSIXct(time, format = "%d.%m.%Y %H:%M:%OS", tz = 'CET'))
 
+
 data1 <- data %>%
   group_by(time) %>%
   summarise(accel = sum(accel)) %>%

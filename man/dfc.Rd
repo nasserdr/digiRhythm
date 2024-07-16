@@ -72,11 +72,16 @@ DFC <- SSH / SUMSIG
 HP <- SSH / SUMALL
 }
 \examples{
-data("df516b_2", package = "digiRhythm")
-df <- df516b_2[, c(1, 2)]
-df <- remove_activity_outliers(df)
-df_act_info(df)
-activity <- names(df)[2]
-my_dfc_1 <- dfc(df, activity, sampling = 15)
-my_dfc_2 <- dfc(df, activity, sampling = 15, rolling_window = 4)
+sampling_period <- 15 * 60  # seconds
+two_weeks <- 2 * 7 * 24 * 60 * 60  # seconds
+amplitude_24h <- 5
+amplitude_12h <- 3
+noise_sd <- 2
+time_seq <- seq(0, two_weeks, by = sampling_period)
+time_posix <- as.POSIXct(time_seq, origin = "1970-01-01", tz = "UTC")
+sine_24h <- amplitude_24h * sin(2 * pi * time_seq / (24 * 60 * 60))
+sine_12h <- amplitude_12h * sin(2 * pi * time_seq / (12 * 60 * 60))
+noise <- rnorm(length(time_seq), mean = 0, sd = noise_sd)
+data <- sine_24h + sine_12h + noise
+df <- data.frame(time = time_posix, value = data)
 }

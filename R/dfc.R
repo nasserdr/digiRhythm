@@ -45,17 +45,34 @@
 #' removed.
 #'
 #' @import ggplot2
+#' @importFrom lubridate date
 #'
 #' @export
 #' @examples
-#' data("df516b_2", package = "digiRhythm")
-#' df <- df516b_2[, c(1, 2)]
-#' df <- remove_activity_outliers(df)
-#' df_act_info(df)
-#' activity <- names(df)[2]
-#' my_dfc_1 <- dfc(df, activity, sampling = 15)
-#' my_dfc_2 <- dfc(df, activity, sampling = 15, rolling_window = 4)
+#' sampling_period <- 15 * 60  # seconds
+#' two_weeks <- 2 * 7 * 24 * 60 * 60  # seconds
+#' amplitude_24h <- 5
+#' amplitude_12h <- 3
+#' noise_sd <- 2
+#' time_seq <- seq(0, two_weeks, by = sampling_period)
+#' time_posix <- as.POSIXct(time_seq, origin = "1970-01-01", tz = "UTC")
+#' sine_24h <- amplitude_24h * sin(2 * pi * time_seq / (24 * 60 * 60))
+#' sine_12h <- amplitude_12h * sin(2 * pi * time_seq / (12 * 60 * 60))
+#' noise <- rnorm(length(time_seq), mean = 0, sd = noise_sd)
+#' data <- sine_24h + sine_12h + noise
+#' df <- data.frame(time = time_posix, value = data)
 #######################################################
+
+# Old example, but too much computation time for a submission on CRAN
+# start <- Sys.time()
+# data("df516b_2", package = "digiRhythm")
+# df <- df516b_2[1:672, c(1, 2)]
+# df <- remove_activity_outliers(df)
+# df_act_info(df)
+# activity <- names(df)[2]
+# my_dfc_1 <- dfc(df, activity, sampling = 15)
+# print(paste('time taken:', Sys.time() - start))
+
 dfc <- function(
     data,
     activity,
@@ -68,7 +85,7 @@ dfc <- function(
     plot_lsp = TRUE) {
   data <- as.data.frame(data, row.names = NULL)
 
-  print(head(data))
+  print(utils::head(data))
   if (!is_dgm_friendly(data)) {
     stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information")
   }
@@ -114,10 +131,6 @@ dfc <- function(
   for (i in 1:n_days_scanned) {
     index_start_day <- i
     index_end_day <- i + rolling_window - 1
-
-    print(days[index_start_day])
-    print(days[index_end_day])
-    print(days)
 
     if (verbose) {
       cat("Processing dates ", format(days[index_start_day]), " until ", format(days[index_end_day]), "\n")
