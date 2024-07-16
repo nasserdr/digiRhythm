@@ -44,9 +44,7 @@
 #' Missing days are not permitted. If you have data with half day, it should be
 #' removed.
 #'
-#' @importFrom lubridate date
-#' @importFrom dplyr filter
-#' @importFrom stats ts
+#' @import ggplot2
 #'
 #' @export
 #' @examples
@@ -76,7 +74,7 @@ dfc <- function(
   }
 
 
-  data$date <- date(data$datetime)
+  data$date <- lubridate::date(data$datetime)
 
   days <- seq(
     data$date[1],
@@ -130,8 +128,8 @@ dfc <- function(
     # Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
 
     data_week <- data %>%
-      filter(date >= days[index_start_day]) %>%
-      filter(date <= days[index_end_day])
+      dplyr::filter(date >= days[index_start_day]) %>%
+      dplyr::filter(date <= days[index_end_day])
 
 
     # Selecting the first column (datetime) and the activity column
