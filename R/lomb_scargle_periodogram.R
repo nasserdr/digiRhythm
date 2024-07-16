@@ -20,7 +20,6 @@
 #' the frequency is harmonic or not.
 #'
 #' @import ggplot2
-#' @importFrom pracma fibsearch
 #'
 #' @export
 #'
@@ -131,7 +130,7 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
   })
 
   p.values <- unlist(p.values)
-  level <- fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
+  level <- pracma:fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
 
   # Returns a list that contains:
   # 1. an LSP dataframe with the following cols: Freq, Power, Harmonc Status,
