@@ -32,7 +32,7 @@ library(digiRhythm)
 data <- digiRhythm::df691b_1
 data <- remove_activity_outliers(data)
 data <- resample_dgm(data, 15)
-activity = names(data)[2]
+activity <- names(data)[2]
 head(data)
 ```
 
@@ -44,11 +44,11 @@ User have the possibility to save the plot with another extension or configurati
 User could additionally use this actogram object to work on the calculated data.
 
 ```{r actogram}
-start <- "2020-08-25" #year-month-day
-end <- "2020-10-11" #year-month-day -->
-activity_alias <- 'Motion Index'
-#save <- 'sample_results/actogram' #if NULL, don't save the image
-my_actogram <- actogram(data, activity, activity_alias , start, end, save = NULL)
+start <- "2020-08-25" # year-month-day
+end <- "2020-10-11" # year-month-day -->
+activity_alias <- "Motion Index"
+# save <- 'sample_results/actogram' #if NULL, don't save the image
+my_actogram <- actogram(data, activity, activity_alias, start, end, save = NULL)
 ```
 
 # Average Activity
@@ -57,11 +57,11 @@ Now, we plot the average activity. We follow the same dataframe and same logic l
 And user could use the resulted object as the actogram object.
 
 ```{r daily_average_activity}
-start <- "2020-08-25" #year-month-day
-end <- "2020-10-11" #year-month-day -->
-activity_alias <- 'Motion Index'
-#save <- 'sample_results/actogram' #if NULL, don't save the image
-my_daa <- daily_average_activity(data, activity, activity_alias , start, end, save = NULL)
+start <- "2020-08-25" # year-month-day
+end <- "2020-10-11" # year-month-day -->
+activity_alias <- "Motion Index"
+# save <- 'sample_results/actogram' #if NULL, don't save the image
+my_daa <- daily_average_activity(data, activity, activity_alias, start, end, save = NULL)
 ```
 
 # Diurnality Index
@@ -73,7 +73,7 @@ Management times are periods when humans influence the activity of the animal, s
 As the actogram function it offers the possibility to save the graph directly or using the ggplot object to configurate a different plot or work on the calculated data.
 
 ```{r diurnality}
-day_time = c("06:30:00", "16:30:00")
-night_time = c("18:00:00", "T05:00:00")
+day_time <- c("06:30:00", "16:30:00")
+night_time <- c("18:00:00", "T05:00:00")
 my_di <- diurnality(data, activity, day_time, night_time, save = NULL)
 ```

@@ -27,9 +27,9 @@ This Vignette will help you making sure that the data you provide to DigiRhythm 
 knitr::opts_chunk$set(echo = TRUE)
 library(digiRhythm)
 
-#A sample dataset could be found here
-url <- 'https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/516b_2.csv'
-destination <- file.path(tempdir(), '516b_2.csv')
+# A sample dataset could be found here
+url <- "https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/516b_2.csv"
+destination <- file.path(tempdir(), "516b_2.csv")
 download.file(url, destfile = destination)
 
 # system(paste("head -n 15",  filename)) #Run it only on linux
@@ -39,7 +39,7 @@ download.file(url, destfile = destination)
 # First Record:,,30.04.2020,11:54:20,,,
 # Last Record:,,15.06.2020,11:06:55,,,
 # File Time Zone:,,W. Europe Standard Time,,,,
-# 
+#
 # Date,Time,Motion Index,Standing,Lying,Steps,Lying Bouts
 # 30.04.2020,11:54:20,0,0:00.0,0:40.0,0,0
 # 30.04.2020,11:55:00,0,0:00.0,1:00.0,0,0
@@ -48,7 +48,6 @@ download.file(url, destfile = destination)
 # 30.04.2020,11:58:00,0,0:00.0,1:00.0,0,0
 # 30.04.2020,11:59:00,0,0:00.0,1:00.0,0,0
 # 30.04.2020,12:00:00,0,0:00.0,1:00.0,0,0
-
 ```
 
 As shown in the previous lines, there are some information that are not needed for working with the data, namely, the first 7 lines. The date and time columns are in two separate columns. In this case, the import_raw_activity_data function is useful. We did not really want to make a universal import function because there might be an unlimited number of cases. However, we only create a function called import_raw_activity_data that solves a couple of most encountered problems, namely the following:
@@ -62,19 +61,19 @@ For our particular example, as mentionned in the function call below, we would l
 
 ```{r Importing}
 data <- import_raw_activity_data(destination,
-                                   skipLines = 7,
-                                   act.cols.names = c("Date", "Time", "Motion Index", 'Steps'),
-                                   date_format = "%d.%m.%Y",
-                                   time_format = "%H:%M:%S",
-                                   sep = ',',
-                                   original_tz = 'CET',
-                                   target_tz = 'CET',
-                                   sampling = 15,
-                                   trim_first_day = TRUE,
-                                   trim_middle_days = TRUE,
-                                   trim_last_day = TRUE,
-                                   verbose = TRUE)
-
+  skipLines = 7,
+  act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+  date_format = "%d.%m.%Y",
+  time_format = "%H:%M:%S",
+  sep = ",",
+  original_tz = "CET",
+  target_tz = "CET",
+  sampling = 15,
+  trim_first_day = TRUE,
+  trim_middle_days = TRUE,
+  trim_last_day = TRUE,
+  verbose = TRUE
+)
 ```
 
 As Shown, the argument verbose = TRUE outputs some useful information about the data loading process. We particularly mention the following output:

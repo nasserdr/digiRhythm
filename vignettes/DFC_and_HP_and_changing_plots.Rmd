@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(digiRhythm)
-data <- digiRhythm::df691b_1 
+data <- digiRhythm::df691b_1
 data <- resample_dgm(data, 15)
 data <- remove_activity_outliers(data)
-activity = names(data)[3]
+activity <- names(data)[3]
 head(activity)
 ```
 
@@ -38,7 +38,7 @@ The user does not need to worry about looping over days, extract the lomb scargl
 is also a function call lomb_scargle_periodogram where the user can investigate the activity a little bit deeper. We preview the lomb_scargle_periodogram function and its output, then we go to the dfc function.
 
 ```{r lsp}
-df <- data[1:672, c('datetime', activity)]
+df <- data[1:672, c("datetime", activity)]
 my_lsp <- lomb_scargle_periodogram(df, alpha = 0.01, plot = TRUE)
 ```
 
@@ -49,8 +49,8 @@ Warning: At the moment, function only computes the LSP the first 7 days of the d
 Now, to the DFC. The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
 ```{r dfc_hp}
-my_dfc <- dfc(data, activity = activity,  plot = FALSE, verbose = FALSE)
-#Setting plot to TRUE will visualize all the LSP plots (like the one above) during each sliding window. Rather used for deeper investigation and debugging.
+my_dfc <- dfc(data, activity = activity, plot = FALSE, verbose = FALSE)
+# Setting plot to TRUE will visualize all the LSP plots (like the one above) during each sliding window. Rather used for deeper investigation and debugging.
 print(my_dfc)
 ```
 # Accessing output data and changing the plots using DigiRhythm
@@ -81,10 +81,10 @@ As an illustrative example, in the below code we add a new aesthetic layer to th
 
 ```{r change_aes}
 library(ggplot2)
-new_plot <- my_dfc + 
+new_plot <- my_dfc +
   theme(
-    text=element_text(family="Times", size=8), 
-    axis.text.y=element_text(size=15, colour="black"))
+    text = element_text(family = "Times", size = 8),
+    axis.text.y = element_text(size = 15, colour = "black")
+  )
 print(new_plot)
-
 ```

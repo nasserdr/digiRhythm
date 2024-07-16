@@ -7,23 +7,21 @@
 #' @export
 #'
 
-df_act_info <- function(df){
-
-  print('First days of the data set: ')
+df_act_info <- function(df) {
+  print("First days of the data set: ")
   print(head(df))
 
-  print('Last days of the data set: ')
+  print("Last days of the data set: ")
   print(tail(df))
 
-  print(paste('The dataset contains', length(unique(as.Date(df[,1]))), 'Days'))
+  print(paste("The dataset contains", length(unique(as.Date(df[, 1]))), "Days"))
 
-  first <- as.Date(df[1,1])
+  first <- as.Date(df[1, 1])
 
-  print(paste('Starting date is:', first))
+  print(paste("Starting date is:", first))
 
-  last <- as.Date(df[nrow(df),1])
-  print(paste('Last date is:', last))
-
+  last <- as.Date(df[nrow(df), 1])
+  print(paste("Last date is:", last))
 }
 
 #' Remove outliers from the data
@@ -37,17 +35,16 @@ df_act_info <- function(df){
 #'
 
 
-remove_activity_outliers <- function(df){
-
+remove_activity_outliers <- function(df) {
   data <- as.data.frame(df)
   for (i in 2:ncol(df)) {
-    Q <- quantile(data[,i], probs = c(.25, .75), na.rm = TRUE)
-    iqr <- IQR(data[,i])
-    up <-  Q[2] + 1.5*iqr # Upper Range
-    low <- Q[1] - 1.5*iqr # Lower Range
-    non_outliers <- which(data[,i] <= up | data[,i] >= low)
-    outliers <- which(data[,i] > up | data[,i] < low)
-    mean_without_outliers <- mean(data[non_outliers,i], na.rm = TRUE)
+    Q <- quantile(data[, i], probs = c(.25, .75), na.rm = TRUE)
+    iqr <- IQR(data[, i])
+    up <- Q[2] + 1.5 * iqr # Upper Range
+    low <- Q[1] - 1.5 * iqr # Lower Range
+    non_outliers <- which(data[, i] <= up | data[, i] >= low)
+    outliers <- which(data[, i] > up | data[, i] < low)
+    mean_without_outliers <- mean(data[non_outliers, i], na.rm = TRUE)
     data[outliers, i] <- mean_without_outliers
   }
   data
@@ -67,12 +64,10 @@ remove_activity_outliers <- function(df){
 
 print_v <- function(
     string,
-    verbose){
-
-  if(verbose) {
-    cat(string, '\n')
+    verbose) {
+  if (verbose) {
+    cat(string, "\n")
   }
-
 }
 
 #' Returns the periodicity of a digiRhythm dataframe
@@ -88,9 +83,7 @@ print_v <- function(
 #' df <- df516b_2
 #' dgm_periodicity(df)
 #'
-
-dgm_periodicity <- function(data){
-
+dgm_periodicity <- function(data) {
   # Replaced by the below because it gives a bug of rownames when the daylight saving
   # changes
   # xts_data <- data
@@ -99,13 +92,12 @@ dgm_periodicity <- function(data){
   # xts_data <- as.xts(xts_data)
 
   xts_data <- xts(
-    x =  data[,2],
-    order.by = data[,1]
+    x = data[, 2],
+    order.by = data[, 1]
   )
 
 
   xts::periodicity(xts_data)
-
 }
 
 
@@ -119,19 +111,19 @@ dgm_periodicity <- function(data){
 #' pbaluev (2008).
 #'
 
-#Copied from the LOMB library
+# Copied from the LOMB library
 pbaluev <- function(Z, fmax, tm) {
-  #code copied from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
-  N = length(tm)
-  Dt = mean(tm^2) - mean(tm)^2
-  NH = N - 1
+  # code copied from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
+  N <- length(tm)
+  Dt <- mean(tm^2) - mean(tm)^2
+  NH <- N - 1
   NK <- N - 3
-  fsingle <- (1 - Z) ^ (0.5 * NK)
+  fsingle <- (1 - Z)^(0.5 * NK)
   Teff <- sqrt(4 * pi * Dt) # Effective baseline
   W <- fmax * Teff
   ggamma_NH <- sqrt(2 / N) * exp(lgamma(N / 2) - lgamma((N - 1) / 2))
-  tau <- ggamma_NH * W * (1 - Z) ^ (0.5 * (NK - 1))*sqrt(0.5 * NH * Z)
-  p = -(exp(-tau) - 1) + fsingle * exp(-tau)
+  tau <- ggamma_NH * W * (1 - Z)^(0.5 * (NK - 1)) * sqrt(0.5 * NH * Z)
+  p <- -(exp(-tau) - 1) + fsingle * exp(-tau)
   return(p)
 }
 
@@ -147,8 +139,7 @@ pbaluev <- function(Z, fmax, tm) {
 #'
 
 
-levopt <-  function(Z,alpha,fmax,tm){
-  prob = pbaluev(Z,fmax,tm)
+levopt <- function(Z, alpha, fmax, tm) {
+  prob <- pbaluev(Z, fmax, tm)
   (log(prob) - log(alpha))^2
 }
-

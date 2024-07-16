@@ -26,15 +26,12 @@
 #'
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
-#' data <- df516b_2[1:672, c(1,2)]
+#' data <- df516b_2[1:672, c(1, 2)]
 #' sig <- 0.01
 #' lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
-
-
-lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE) {
-
+lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE) {
   if (!is_dgm_friendly(data, verbose = TRUE)) {
-    stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
+    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information")
   }
 
   # if (length(unique(as.Date(data[,1]))) != 7 ) {
@@ -43,15 +40,17 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
   # }
 
   x <- data
-  start <- as.Date(x[1,1])
+  start <- as.Date(x[1, 1])
   # print(start)
-  end <- as.Date(x[nrow(x),1])
+  end <- as.Date(x[nrow(x), 1])
   # print(end)
 
-  from_to = paste('From',
-                  start,
-                  'To',
-                  end)
+  from_to <- paste(
+    "From",
+    start,
+    "To",
+    end
+  )
 
   ofac <- 1
   names <- colnames(x)
@@ -82,8 +81,8 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
 
   n <- length(y)
   tspan <- t[n] - t[1]
-  fr.d <- 1/tspan
-  step <- 1/(tspan * ofac)
+  fr.d <- 1 / tspan
+  step <- 1 / (tspan * ofac)
 
 
   # if (is.null(to)) {
@@ -97,13 +96,13 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
 
   x <- t * 2 * pi
   y <- y - mean(y)
-  norm = 1/sum(y^2)
+  norm <- 1 / sum(y^2)
 
   w <- 2 * pi * freq
   PN <- rep(0, n.out)
   for (i in 1:n.out) {
     wi <- w[i]
-    tau <- 0.5 * atan2(sum(sin(wi * t)), sum(cos(wi * t)))/wi
+    tau <- 0.5 * atan2(sum(sin(wi * t)), sum(cos(wi * t))) / wi
     arg <- wi * (t - tau)
     cs <- cos(arg)
     sn <- sin(arg)
@@ -111,7 +110,7 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
     B <- sum(cs * cs)
     C <- (sum(y * sn))^2
     D <- sum(sn * sn)
-    PN[i] <- A/B + C/D
+    PN[i] <- A / B + C / D
   }
 
   PN <- norm * PN
@@ -127,17 +126,17 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
   # tm = t
   #
   # p <- pbaluev(Z, fmax, tm = t)
-  p.values <- lapply(PN, function(x){
+  p.values <- lapply(PN, function(x) {
     pbaluev(x, fmax, tm = t)
   })
 
   p.values <- unlist(p.values)
-  level = fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
+  level <- fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
 
-  #Returns a list that contains:
-  #1. an LSP dataframe with the following cols: Freq, Power, Harmonc Status,
-  #corresponding period in hours, pvalue (Baluev) of the frequency.
-  #2. sig.level
+  # Returns a list that contains:
+  # 1. an LSP dataframe with the following cols: Freq, Power, Harmonc Status,
+  # corresponding period in hours, pvalue (Baluev) of the frequency.
+  # 2. sig.level
 
   lsp_data <- data.frame(
     power = PN,
@@ -145,39 +144,42 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
     p_values = p.values
   )
 
-  lsp_data <- lsp_data %>% mutate(period_seconds = (1/frequency_hz))
-  lsp_data <- lsp_data %>% mutate(period_hours = period_seconds/3600)
+  lsp_data <- lsp_data %>% mutate(period_seconds = (1 / frequency_hz))
+  lsp_data <- lsp_data %>% mutate(period_hours = period_seconds / 3600)
 
-  harmonic_periods <- 24/seq(1,12) #24h, 12h, 8h, ....
-  l <- lapply(harmonic_periods, function(x){
-    which.min(abs(x-lsp_data$period_hours))
+  harmonic_periods <- 24 / seq(1, 12) # 24h, 12h, 8h, ....
+  l <- lapply(harmonic_periods, function(x) {
+    which.min(abs(x - lsp_data$period_hours))
   })
 
   l <- unlist(l)
-  lsp_data$status_harmonic <- 'Non-Harmonic'
-  lsp_data$status_harmonic[l] <- 'Harmonic'
+  lsp_data$status_harmonic <- "Non-Harmonic"
+  lsp_data$status_harmonic[l] <- "Harmonic"
 
 
   output <- list(lsp_data = lsp_data, sig.level = level, alpha = alpha)
 
-  len <- 24*60/sampling # The number of 15 'minutes' day
-  lsp_data <- lsp_data[1:len,]
-  if(plot){
-    hdata <- lsp_data %>% filter(status_harmonic == 'Harmonic') %>%
+  len <- 24 * 60 / sampling # The number of 15 'minutes' day
+  lsp_data <- lsp_data[1:len, ]
+  if (plot) {
+    hdata <- lsp_data %>%
+      filter(status_harmonic == "Harmonic") %>%
       select(frequency_hz, power, period_hours) %>%
-      mutate(new_h = paste(round(period_hours, digits = 1), 'h'))
+      mutate(new_h = paste(round(period_hours, digits = 1), "h"))
 
-    p <- ggplot(data = lsp_data,
-                aes(x = frequency_hz, y = power)) +
-      ylim(c(0, 1.2*max(lsp_data$power))) +
+    p <- ggplot(
+      data = lsp_data,
+      aes(x = frequency_hz, y = power)
+    ) +
+      ylim(c(0, 1.2 * max(lsp_data$power))) +
       geom_col(aes(fill = status_harmonic)) +
       geom_hline(yintercept = level, linetype = "dotted") +
       # annotate("text",
       #          x = max(lsp_data$frequency_hz),
       #          y = level*1.05,
       #          label = paste("P<", alpha), size = 6, vjust = 0) +
-      labs(fill = 'Status', y = 'Power', x = 'Frequency (Hz)')
-    if(extra_info_plot){
+      labs(fill = "Status", y = "Power", x = "Frequency (Hz)")
+    if (extra_info_plot) {
       p <- p + theme(
         panel.background = element_rect(fill = "white"),
         axis.text = element_text(color = "#000000"),
@@ -185,33 +187,37 @@ lomb_scargle_periodogram <- function (data, alpha = 0.01, sampling = 15, plot = 
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
         legend.key.width = unit(0.5, "cm"),
-        legend.justification ="right",
-        legend.position = c(1,0.89),
-        plot.margin = margin(t = 50)) +
+        legend.justification = "right",
+        legend.position = c(1, 0.89),
+        plot.margin = margin(t = 50)
+      ) +
         geom_text(data = hdata, mapping = aes(
           x = frequency_hz,
           y = power,
           label = new_h,
           angle = 90,
-          hjust = -0.4)) + ggtitle(paste('LSP for ', datanames[2],from_to))
+          hjust = -0.4
+        )) + ggtitle(paste("LSP for ", datanames[2], from_to))
     } else {
       p <- p + theme(
         panel.background = element_rect(fill = "white"),
         axis.text = element_text(color = "#000000"),
         text = element_text(size = 15),
         axis.line = element_line(size = 0.5),
-        legend.position = 'none',
-        plot.margin = margin(t = 50)) +
+        legend.position = "none",
+        plot.margin = margin(t = 50)
+      ) +
         geom_text(data = hdata, mapping = aes(
           x = frequency_hz,
           y = power,
           label = new_h,
           angle = 90,
-          hjust = -0.4))
+          hjust = -0.4
+        ))
     }
 
     print(p)
-    }
+  }
 
   return(output)
 }

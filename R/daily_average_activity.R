@@ -26,22 +26,18 @@
 #' data("df516b_2")
 #' df <- df516b_2
 #' activity <- names(df)[2]
-#' start <- "2020-05-01" #year-month-day
-#' end <- "2020-08-13" #year-month-day
-#' activity_alias <- 'Motion Index'
+#' start <- "2020-05-01" # year-month-day
+#' end <- "2020-08-13" # year-month-day
+#' activity_alias <- "Motion Index"
 #' my_daa <- daily_average_activity(df, activity, activity_alias, start, end, save = NULL)
 #' print(my_daa)
-
-
 daily_average_activity <- function(
-  df,
-  activity,
-  activity_alias,
-  start,
-  end,
-  save
-){
-
+    df,
+    activity,
+    activity_alias,
+    start,
+    end,
+    save) {
   df$date <- lubridate::date(df$datetime)
   data_to_plot <- df %>%
     filter(lubridate::date(df$datetime) >= start) %>%
@@ -51,20 +47,21 @@ daily_average_activity <- function(
   start <- lubridate::date(start)
   end <- lubridate::date(end)
 
-  sum_of_activity_over_all_days_per_sample = NULL
-  sum_of_activity_over_all_days_per_sample =  data.frame(
+  sum_of_activity_over_all_days_per_sample <- NULL
+  sum_of_activity_over_all_days_per_sample <- data.frame(
     time = as.character(),
     average = as.numeric()
   )
 
-  for(t in unique(data_to_plot$time)){
+  for (t in unique(data_to_plot$time)) {
     tdf <- data_to_plot %>% filter(time == t)
-    mean = mean(tdf[[activity]])
+    mean <- mean(tdf[[activity]])
     sum_of_activity_over_all_days_per_sample <- rbind(
       sum_of_activity_over_all_days_per_sample,
       data.frame(
         time = t,
-        average = mean)
+        average = mean
+      )
     )
   }
 
@@ -75,11 +72,13 @@ daily_average_activity <- function(
 
   s <- s %>% select(datetime, average)
 
-  avg_act_plot <- ggplot(s,
-                         aes(
-                           x = datetime,
-                           y = average
-                         )) +
+  avg_act_plot <- ggplot(
+    s,
+    aes(
+      x = datetime,
+      y = average
+    )
+  ) +
     geom_line() +
     xlab("Time") +
     ylab(paste0("Daily Average of ", activity_alias)) +
@@ -87,19 +86,19 @@ daily_average_activity <- function(
     theme_classic() +
     theme(plot.title = element_text(hjust = 0.5)) +
     theme(
-      axis.text = element_text(color = 'black'),
-      text=element_text(size = 15),
+      axis.text = element_text(color = "black"),
+      text = element_text(size = 15),
       panel.background = element_rect(fill = "white"),
-      axis.line = element_line(size = 0.5))
+      axis.line = element_line(size = 0.5)
+    )
 
 
   if (!is.null(save)) {
-
     cat("Saving image in :", save, "\n")
     ggsave(
-      paste0(save, '.tiff'),
+      paste0(save, ".tiff"),
       avg_act_plot,
-      device = 'tiff',
+      device = "tiff",
       width = 15,
       height = 6,
       units = "cm",

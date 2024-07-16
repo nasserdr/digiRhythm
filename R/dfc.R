@@ -1,4 +1,3 @@
-
 #' Computes the Degree of Function coupling (DFC), Harmonic Part (HP) and Weekly
 #' Lomb-Scargle Spectrum (LSP Spec) for one variable in an activity dataset.
 #' The dataset should be digiRhythm friendly.
@@ -52,69 +51,71 @@
 #' @export
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
-#' df <- df516b_2[, c(1,2)]
+#' df <- df516b_2[, c(1, 2)]
 #' df <- remove_activity_outliers(df)
 #' df_act_info(df)
-#' activity = names(df)[2]
+#' activity <- names(df)[2]
 #' my_dfc_1 <- dfc(df, activity, sampling = 15)
 #' my_dfc_2 <- dfc(df, activity, sampling = 15, rolling_window = 4)
-
 #######################################################
 dfc <- function(
     data,
     activity,
-    sampling = 15, #in minutes
+    sampling = 15, # in minutes
     sig = 0.05,
     rolling_window = 7,
     plot = TRUE,
     plot_harmonic_part = TRUE,
     verbose = TRUE,
-    plot_lsp = TRUE
-)
-{
-
+    plot_lsp = TRUE) {
   data <- as.data.frame(data, row.names = NULL)
 
   print(head(data))
   if (!is_dgm_friendly(data)) {
-    stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
+    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information")
   }
 
 
   data$date <- date(data$datetime)
 
-  days <- seq(data$date[1],
-              last(data$date),
-              1)
+  days <- seq(
+    data$date[1],
+    last(data$date),
+    1
+  )
   if (length(days) < 2) {
-    stop('You need at least 2 days of data to run the Degree of Functional Coupling algorithm')
+    stop("You need at least 2 days of data to run the Degree of Functional Coupling algorithm")
   }
 
 
   if (length(days) < rolling_window) {
-    stop('The number of rolling widown should be bigger than the number of days in the dataset.')
+    stop("The number of rolling widown should be bigger than the number of days in the dataset.")
   }
 
   dfc <- NULL
   spec <- NULL
   from <- NULL
 
-  dfc <- data.frame(from = character(),
-                    to = character(),
-                    dfc = numeric(),
-                    hp = numeric()) #The data frame for DFC
+  dfc <- data.frame(
+    from = character(),
+    to = character(),
+    dfc = numeric(),
+    hp = numeric()
+  ) # The data frame for DFC
 
-  spec <- data.frame(fromtodate = character(),
-                     sample = numeric(),
-                     freq = numeric(),
-                     power = numeric(),
-                     pvalue = numeric()) #The data frame for SPEC
+  spec <- data.frame(
+    fromtodate = character(),
+    sample = numeric(),
+    freq = numeric(),
+    power = numeric(),
+    pvalue = numeric()
+  ) # The data frame for SPEC
 
   n_days_scanned <- length(days) - rolling_window - 1
   print(n_days_scanned)
   for (i in 1:n_days_scanned) {
-    index_start_day = i
-    index_end_day = i + rolling_window - 1
+    index_start_day <- i
+    index_end_day <- i + rolling_window - 1
 
     print(days[index_start_day])
     print(days[index_end_day])
@@ -122,43 +123,43 @@ dfc <- function(
 
     if (verbose) {
       cat("Processing dates ", format(days[index_start_day]), " until ", format(days[index_end_day]), "\n")
-
     }
 
-    samples_per_day = 24*60/sampling #The number of data points per day
+    samples_per_day <- 24 * 60 / sampling # The number of data points per day
 
-    #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
+    # Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
 
-    data_week <- data %>% filter(date >= days[index_start_day]) %>%
+    data_week <- data %>%
+      filter(date >= days[index_start_day]) %>%
       filter(date <= days[index_end_day])
 
 
-    #Selecting the first column (datetime) and the activity column
+    # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
     lsp <- lomb_scargle_periodogram(df_var, alpha = sig, plot = TRUE)
-    #Computing the p-values for each frequency
+    # Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
     # p = [1.0 - pow(1.0 - math.exp(-x), 2.0 * nout / ofac) for x in py]
 
 
-    #Adjusting the length of the vectors in case of missing data.
-    #In case of no missing data, I expect 96 samples (if sampling = 15 min),
+    # Adjusting the length of the vectors in case of missing data.
+    # In case of no missing data, I expect 96 samples (if sampling = 15 min),
     # Therefore, I expect all other vector having 96 cells
     if (length(lsp$lsp_data$power) < samples_per_day) {
-      len = length(lsp$lsp_data$power)
+      len <- length(lsp$lsp_data$power)
       expy <- exp(-lsp$lsp_data$power)
     } else {
-      len = samples_per_day
+      len <- samples_per_day
       expy <- exp(-lsp$lsp_data$power[1:len])
     }
 
-    lsp_data <- lsp$lsp_data[1:len,]
-    harm_power <- lsp_data$power[lsp_data$status_harmonic == 'Harmonic'] #The harmonic powers
+    lsp_data <- lsp$lsp_data[1:len, ]
+    harm_power <- lsp_data$power[lsp_data$status_harmonic == "Harmonic"] # The harmonic powers
 
-    sumall <- sum(lsp_data$power) #sum of all powers
-    ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level
-                              & lsp_data$status_harmonic == 'Harmonic'])
-    sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)])  #sum of all significant
+    sumall <- sum(lsp_data$power) # sum of all powers
+    ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level &
+      lsp_data$status_harmonic == "Harmonic"])
+    sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)]) # sum of all significant
 
     # frequencies (each one has a power)
     # sumall: sum of powers for all frequencies (96) ==> 100: ALL
@@ -173,21 +174,21 @@ dfc <- function(
     spec <- rbind(spec, data.frame(
       rep(paste0(format(days[index_start_day]), "_to_", format(days[index_end_day])), len),
       1:len,
-      (1:len)/7,
+      (1:len) / 7,
       lsp_data$power,
-      lsp_data$p_values))
-    dfc[i,] <-  c(format(days[index_start_day]), format(days[index_end_day]), DFC, HP)
+      lsp_data$p_values
+    ))
+    dfc[i, ] <- c(format(days[index_start_day]), format(days[index_end_day]), DFC, HP)
     if (verbose) {
-      print(dfc[i,])
+      print(dfc[i, ])
     }
-
   }
   dfc$from <- as.Date(dfc$from, format("%Y-%m-%d"))
   dfc$to <- as.Date(dfc$to, format("%Y-%m-%d"))
   dfc$dfc <- as.numeric(dfc$dfc)
   dfc$hp <- as.numeric(dfc$hp)
 
-  if(plot_harmonic_part){
+  if (plot_harmonic_part) {
     dfc_plot <- ggplot(dfc, aes(x = from)) +
       geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
       geom_line(aes(y = hp, linetype = "Harmonic part")) +
@@ -195,8 +196,8 @@ dfc <- function(
       ylab("") +
       # xlim(df$date[1], last(df$date)) +
       theme(
-        axis.text.x = element_text(size=rel(1.5), color = 'black'),
-        axis.text.y = element_text(size=rel(1.5), color = 'black'),
+        axis.text.x = element_text(size = rel(1.5), color = "black"),
+        axis.text.y = element_text(size = rel(1.5), color = "black"),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
@@ -204,29 +205,29 @@ dfc <- function(
         legend.justification = "left",
         legend.key.size = unit(7, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75),
-        plot.margin = margin(0, 0.5, 0, 0, "cm"))
-
-  } else{
+        legend.position = c(0.7, 0.75),
+        plot.margin = margin(0, 0.5, 0, 0, "cm")
+      )
+  } else {
     dfc_plot <- ggplot(dfc, aes(x = from)) +
       geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
       xlab("") +
       ylab("") +
       # xlim(df$date[1], last(df$date)) +
       theme(
-        axis.text.x = element_text(size=rel(1.5), color = 'black'),
-        axis.text.y = element_text(size=rel(1.5), color = 'black'),
+        axis.text.x = element_text(size = rel(1.5), color = "black"),
+        axis.text.y = element_text(size = rel(1.5), color = "black"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
         legend.key.width = unit(0.5, "cm"),
         legend.justification = "left",
         legend.key.size = unit(7, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75),
-        plot.margin = margin(0, 0.5, 0, 0, "cm"))
-
+        legend.position = c(0.7, 0.75),
+        plot.margin = margin(0, 0.5, 0, 0, "cm")
+      )
   }
-  if(plot){
+  if (plot) {
     print(dfc_plot)
   }
 

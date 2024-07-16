@@ -18,40 +18,38 @@
 #' df <- remove_activity_outliers(df)
 #' new_sampling <- 30
 #' new_dgm <- resample_dgm(df, new_sampling)
-
-
-resample_dgm <- function(data, new_sampling){
-
+resample_dgm <- function(data, new_sampling) {
   xts_data <- xts(
-    x = data[,c(2:ncol(data))],
-    order.by = data[,1]
+    x = data[, c(2:ncol(data))],
+    order.by = data[, 1]
   )
 
 
   original_sampling <- xts::periodicity(xts_data)$frequency
 
-  if((new_sampling %% original_sampling) != 0){
+  if ((new_sampling %% original_sampling) != 0) {
     stop("The new sampling should be a multiple of the current sampling in minutes")
   }
 
-  if(new_sampling < original_sampling){
+  if (new_sampling < original_sampling) {
     stop("The new sampling should be bigger than the current sampling")
   }
 
-  if(is.null(new_sampling)){
-    stop('The new sampling cannot be NULL')
+  if (is.null(new_sampling)) {
+    stop("The new sampling cannot be NULL")
   }
 
-  if(new_sampling <= 0 ){
-    stop('The new sampling cannot be non-positive')
+  if (new_sampling <= 0) {
+    stop("The new sampling cannot be non-positive")
   }
 
   sampled_xts <- NULL
-  for(var in names(xts_data)){
+  for (var in names(xts_data)) {
     xts_var <- period.apply(
-      xts_data[,var],
-      endpoints(xts_data, on = 'minutes', k = new_sampling),
-      FUN = sum)
+      xts_data[, var],
+      endpoints(xts_data, on = "minutes", k = new_sampling),
+      FUN = sum
+    )
     sampled_xts <- cbind(sampled_xts, xts_var)
   }
 
