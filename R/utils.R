@@ -1,7 +1,6 @@
 #' Outputs some information about the activity dataframe
 #'
 #' @param df The dataframe containing the activity data
-#' @importFrom utils head tail
 #' @return No return value. Prints the head and tail as well as the starting and
 #'  end date of a digiRhythm friendly dataframe.
 #' @export
@@ -9,10 +8,10 @@
 
 df_act_info <- function(df) {
   print("First days of the data set: ")
-  print(head(df))
+  print(utils::head(df))
 
   print("Last days of the data set: ")
-  print(tail(df))
+  print(utils::tail(df))
 
   print(paste("The dataset contains", length(unique(as.Date(df[, 1]))), "Days"))
 
@@ -28,7 +27,6 @@ df_act_info <- function(df) {
 #'
 #' @param df The dataframe containing the activity data
 #'
-#' @importFrom stats IQR quantile
 #' @return return a dataframe where columns start the second one have undergone
 #' an outlier removal.
 #' @export
@@ -38,8 +36,8 @@ df_act_info <- function(df) {
 remove_activity_outliers <- function(df) {
   data <- as.data.frame(df)
   for (i in 2:ncol(df)) {
-    Q <- quantile(data[, i], probs = c(.25, .75), na.rm = TRUE)
-    iqr <- IQR(data[, i])
+    Q <- stats::quantile(data[, i], probs = c(.25, .75), na.rm = TRUE)
+    iqr <- stats::IQR(data[, i])
     up <- Q[2] + 1.5 * iqr # Upper Range
     low <- Q[1] - 1.5 * iqr # Lower Range
     non_outliers <- which(data[, i] <= up | data[, i] >= low)
@@ -55,8 +53,6 @@ remove_activity_outliers <- function(df) {
 #'
 #' @param string The string to print
 #' @param verbose if TRUE, print the string
-#'
-#' @importFrom crayon red green
 #'
 #' @return No return value. Prints the string concatenated with a verbose if the
 #'  latter is not NULL.
@@ -74,8 +70,6 @@ print_v <- function(
 #'
 #' @param data a digiRhythm friendly dataframe
 #'
-#' @importFrom xts periodicity as.xts
-#'
 #' @return returns a periodicity object of type xts.
 #' @export
 #' @examples
@@ -84,18 +78,10 @@ print_v <- function(
 #' dgm_periodicity(df)
 #'
 dgm_periodicity <- function(data) {
-  # Replaced by the below because it gives a bug of rownames when the daylight saving
-  # changes
-  # xts_data <- data
-  # rownames(xts_data) <- data[,1]
-  # xts_data[1] <- NULL
-  # xts_data <- as.xts(xts_data)
-
-  xts_data <- xts(
+  xts_data <- xts::xts(
     x = data[, 2],
     order.by = data[, 1]
   )
-
 
   xts::periodicity(xts_data)
 }
