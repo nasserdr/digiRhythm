@@ -234,7 +234,7 @@ ggsave(
 ###############################################################################
 
 #Real data
-
+library(digiRhythm)
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
 df <- df[1:672,c(1,2)]

@@ -201,42 +201,39 @@ dfc <- function(
 
   if (plot_harmonic_part) {
     dfc_plot <- ggplot(dfc, aes(x = from)) +
-      geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
+      geom_line(aes(y = dfc, linetype = "Degree of functional coupling")) +
       geom_line(aes(y = hp, linetype = "Harmonic part")) +
-      xlab("") +
-      ylab("") +
-      # xlim(df$date[1], last(df$date)) +
+      ylab("Percentage") +
+      xlab("Date") +
       theme(
-        axis.text.x = element_text(size = rel(1.5), color = "black"),
-        axis.text.y = element_text(size = rel(1.5), color = "black"),
+        axis.text.x = element_text(size=rel(1), color = 'black'),
+        axis.text.y = element_text(size=rel(1), color = 'black'),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
         legend.key.width = unit(0.5, "cm"),
         legend.justification = "left",
-        legend.key.size = unit(7, "pt"),
+        legend.key.size = unit(10, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7, 0.75),
-        plot.margin = margin(0, 0.5, 0, 0, "cm")
-      )
+        legend.position = c(0.7,0.75),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))
   } else {
     dfc_plot <- ggplot(dfc, aes(x = from)) +
-      geom_line(aes(y = dfc, linetype = "Degree of functional coupling (%)")) +
-      xlab("") +
-      ylab("") +
-      # xlim(df$date[1], last(df$date)) +
+      geom_line(aes(y = dfc, linetype = "Degree of functional coupling")) +
+      ylab("Percentage") +
+      xlab("Date") +
       theme(
-        axis.text.x = element_text(size = rel(1.5), color = "black"),
-        axis.text.y = element_text(size = rel(1.5), color = "black"),
+        axis.text.x = element_text(size=rel(1), color = 'black'),
+        axis.text.y = element_text(size=rel(1), color = 'black'),
+        panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
         legend.key.width = unit(0.5, "cm"),
         legend.justification = "left",
-        legend.key.size = unit(7, "pt"),
+        legend.key.size = unit(10, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7, 0.75),
-        plot.margin = margin(0, 0.5, 0, 0, "cm")
-      )
+        legend.position = c(0.7,0.75),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))
   }
   if (plot) {
     print(dfc_plot)
