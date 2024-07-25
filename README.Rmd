@@ -26,7 +26,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 # devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 ```
 
-## Example
+## Examples
 
 You can access few examples from the vignettes provided along with the package.
 
