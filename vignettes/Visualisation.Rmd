@@ -1,6 +1,6 @@
 ---
 title: "Further options of visualization in DigiRhythm"
-author: "Hassan Roland Nasser and Marie Schneider"
+author: "Hassan-Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -16,10 +16,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-DigiRhythm additionally contains some deeper visualisation possibilities.
-    - the function daily_activity_wrap_plot could be used to visualise the activity over time per day
+DigiRhythm additionally contains some deeper visualization possibilities.
+    - the function daily_activity_wrap_plot could be used to visualize the activity over time per day
     - the function plot_quadro is a possibility to combine different forms of visualizing activity (actogram, average activity, DFC and HP and daily activity)
-    - the function plot_actogram_avg_activity will show what heppens, if Hassan wrote the code
+    - the function plot_actogram_avg_activity will show what happens, if Hassan wrote the code
 
 First, we start by loading a dataset, removing the outliers, resample it to 15 min and choose the activity to study.
 

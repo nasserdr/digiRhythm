@@ -1,6 +1,6 @@
 ---
 title: "Visualizing actograms, average activity and diurnality index"
-author: "Hassan Roland Nasser and Marie Schneider"
+author: "Hassan-Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

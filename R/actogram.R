@@ -14,10 +14,7 @@
 #'
 #' @return A ggplot2 object that contains the actogram plot
 #'
-#' @importFrom magrittr %>%
-#' @importFrom stats time
 #' @import ggplot2
-#' @importFrom lubridate date
 #' @import dplyr
 #'
 #' @export

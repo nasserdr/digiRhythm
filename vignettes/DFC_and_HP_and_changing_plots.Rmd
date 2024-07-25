@@ -1,6 +1,6 @@
 ---
 title: "Computing the DFC/HP and manipulating the functions returned objects"
-author: "Hassan Roland Nasser and Marie Schneider"
+author: "Hassan-Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -31,10 +31,10 @@ The degree of functional coupling and the harmonic power could be computed using
 The DFC algorithm is a bit complicated. It's, therefore, needed that we clarify few points about some computing considerations and also about the arguments of the function itself:
 
 - The recommended sampling period is between 15 and 30 min.
-- The DFC and HP are computed based on 7 days of data. If the data contains 8 days of data, then we will only have two DFC and HP values. The first value is computed based on Day1-Day7 and the second value is computed based on Day2-Day8. Therefore, the number of DFC and HP data points would be exactly equal: D - 6 (where D is the total number of days).
-- Since the DFC is based on the Lomb-Scargle Periodogram (LSP), then the DFC allows having complete missing days in the dataset. In order to compute a DFC for each subset of data, the user needs to split the data into two different subsets beforehand.
+- The DFC and HP are computed each X days. We call X the rolling window. For example, if the rolling window is 7 days, the first DFC/HP value is computed for the subset between day 1 and day 7, and the second DFC/HP value is computed for the subset between day 2 and day 8, and so on. If the data contains 8 days of data, then we will only have two DFC and HP values. The recommended rolling window is 7 days, however the user can choose a rolling window not less than two days and not more that the number of days in the dataset -1.
+- As the computation of DFC/HP are mainly based on the power of the 24-hours harmonics (24/1 is the first harmonic, 24/2 is the second harmonic, 24/3 is the third harmonic, and so on), the user can choose up till which harmonic to consider. The default value is 12. It's important to note that the lowest harmonic period should be twice bigger than the sampling period. For example, if your data is sampled at 15 minutes, then the lowest harmonic period should be 30 minutes. This is because the Nyquist frequency is half the sampling frequency. Consequently, the harmonic cutoff parameter should be set to not more than 48 (because 24 hours * 60 min / 48 = 30 min = 2 * 15 min of sampling period).
 
-The user does not need to worry about looping over days, extract the lomb scargle periodogram for every 7 days and then compile the results to obtain the degree of functional coupling. This is done in loop inside the dfc function. However, there
+The user does not need to worry about looping over days or extracting the Lomb Scargle periodogram for every X (rolling window) days and then compile the results to obtain the degree of functional coupling. This is done in loop inside the dfc function. However, there
 is also a function call lomb_scargle_periodogram where the user can investigate the activity a little bit deeper. We preview the lomb_scargle_periodogram function and its output, then we go to the dfc function.
 
 ```{r lsp}
@@ -44,12 +44,17 @@ my_lsp <- lomb_scargle_periodogram(df, alpha = 0.01, plot = TRUE)
 
 In the above plot, we see plenty of information. First, we have the whole periodogram for the dataframe df visualized. Second, we can distinguish between
 harmonic and non harmonic frequencies. Harmonic frequencies are plotted in blue and tagged with the time period they correspond to. For instance, we can check the power of the 24h cycles, 12h cycles, 6h cycles and so on. Third, we have a dotted horizontal line that makes it easy to visually check which frequencies are considered to originated from noise rather than from a actual signal. Frequency bars that make it above this line are considered to be originated from a real activity. The probability of this event is calculated using the method of Baluev (2008). The plot also shows, as title, the activity time span used for the computation.
-Warning: At the moment, function only computes the LSP the first 7 days of the data. A loop, to calculate LSP for the whole data, will be included in a later version. However, at the moment user can see the LSP-diagrams of the whole data, if running the dfc function. Before the complete DFC and HP diagramm, each LSP diagramm of the sliding 7-day periods were computed.
+Warning: At the moment, function only computes the LSP the first 7 days of the data. A loop, to calculate LSP for the whole data, will be included in a later version. However, at the moment user can see the LSP-diagrams of the whole data, if running the dfc function. Before the complete DFC and HP diagram, each LSP diagram of the sliding 7-day periods were computed.
 
 Now, to the DFC. The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
 ```{r dfc_hp}
-my_dfc <- dfc(data, activity = activity, plot = FALSE, verbose = FALSE)
+my_dfc <- dfc(data, # The dataset which first column is the datetime in posix and the subsequent columns are numeric activities
+              activity = activity, # the name of the activity column
+              sampling = 15, # the sampling frequency of my dataset is 15
+              alpha = 0,5, # consider frequency peaks with higher than 0.5 p-value as significant
+              harm_cutoff = 12, # consider up till the harmonic 24/12 which is two hours
+              plot = FALSE, verbose = FALSE)
 # Setting plot to TRUE will visualize all the LSP plots (like the one above) during each sliding window. Rather used for deeper investigation and debugging.
 print(my_dfc)
 ```
@@ -83,7 +88,7 @@ As an illustrative example, in the below code we add a new aesthetic layer to th
 library(ggplot2)
 new_plot <- my_dfc +
   theme(
-    text = element_text(family = "Times", size = 8),
+    text = element_text(family = "Times", size = 14),
     axis.text.y = element_text(size = 15, colour = "black")
   )
 print(new_plot)

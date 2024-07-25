@@ -1,6 +1,6 @@
 ---
 title: "Loading and preprocessing data in DigiRhythm"
-author: "Hassan Roland Nasser and Marie Schneider"
+author: "Hassan-Roland Nasser and Marie Schneider"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

@@ -11,44 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 digiRhythm is an R library developed at Agroscope and provides a set of tools to 
-analyze and visualize the rhythmic behavior of animals.
-
-**TO DO CORE FUNCTIONALITIES:**
-
-- [X] Create a function that read Icetag data stored in a CSV file.
-- [X] Add the import_raw_icetage_data as an example to the README file.
-- [X] Create a function that computes the degree of functional coupling.
-- [X] Add the the dfc as an example to the README file.
-- [x] Create a function that computes the diurnality index.
-- [x] Add the the dfc as an example to the README file.
-- [ ] Consider adding other sample data sets (check which ones appear to have
-non-noisy data from the previous analysis and visualizations).
-- [ ] Enhance the actogram (from the original codes).
-- [ ] Add a function that fills NA values in the activity data set.
-- [ ] Add a function that creates a histogram for the significant and harmonic
-frequencies within the DFC (Patricia's case).
-
-**TO DO - VISUALIZATION FUNCTIONS:**
-
-- [X] Create a function that visualize the actogram.
-- [ ] Create a function that visualize the actogram + average activity.
-- [ ] Create a function that visualize the actogram + average activity + DFC.
-- [ ] Create a function that visualizes all daily activities with control over
-the number of columns.
-
-**TO DO - UTILITIES AND DOCUMENTATIONS:**
-
-- [X] Define data inside the library
-- [X] Add and example about the import_raw_icetag_data to the README.
-- [x] Create a function to test if a data set is digiRhythm friendly.
-- [x] Create a proper documentation for the data set.
-- [x] configure data sets with lazy loading
-- [ ] Create test functions for all the functionalities.
-- [ ] Add a note about the fact that visualizations were created in a way they
-are aligned with the standards of common journals and give details about these 
-settings + Add a note where the code can be customized to change these settings.
-- [ ] Make a series of videos about the digiRhythm library.
-
+analyze and rhythmic behavior of animals using the Degree of Functional Coupling. 
+It also provides a set of vizualization tools such as Actogram, Diurnality Index,
+Average Daily Activity, and Daily Activity Wrap Plot.
 
 ## Installation
 
@@ -60,78 +25,9 @@ You can install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 # devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 ```
+
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+You can access few examples from the vignettes provided along with the package.
 
-```{r example, message=FALSE, warning=FALSE, paged.print=FALSE}
-library(digiRhythm)
-
-# The file name with the path
-url <- "https://github.com/nasserdr/digiRhythm_sample_datasets/raw/main/516b_2.csv"
-download.file(url, destfile = "516b_2.csv")
-filename <- file.path(getwd(), "516b_2.csv")
-
-# The columns that we are interested in
-colstoread <- c("Date", "Time", "Motion Index", "Steps")
-
-# Reading the activity data from the csv file
-data <- import_raw_icetag_data(filename = filename, skipLines = , act.cols.names = colstoread, sampling = 15)
-
-print(head(data))
-```
-
-This is an example on how to visualize the actogram
-
-```{r visualize, message=FALSE, warning=FALSE, paged.print=FALSE}
-data("df691b_1", package = "digiRhythm")
-df <- remove_activity_outliers(df691b_1)
-df_act_info(df)
-activity <- names(df)[2]
-start <- "2020-08-25"
-end <- "2020-10-11"
-save <- TRUE
-outputdir <- "testresults"
-outplotname <- "myplot"
-width <- 10
-device <- "tiff"
-height <- 5
-actogram(df, activity, start, end,
-  save = FALSE,
-  outputdir = "testresults", outplotname = "actoplot", width = 10,
-  height = 5, device = "tiff"
-)
-```
-
-This is an example on how to compute the degree of functional coupling.
-
-```{r dfc_example, results = FALSE, warning=FALSE, paged.print=FALSE}
-data("df516b_2", package = "digiRhythm")
-df <- remove_activity_outliers(df516b_2)
-df_act_info(df)
-activity <- names(df)[2]
-my_dfc <- dfc(df, activity, sampling = 15, show_lsp_plot = FALSE)
-
-# You may want to explore the two list inside my_dfc.
-# DFC and SPECTRUM are saved inside my_dfc, each as a list
-```
-
-This is an example on how to compute the diurnality index:
-
-```{r dindex_example, results = FALSE, warning=FALSE, paged.print=FALSE}
-data("df516b_2", package = "digiRhythm")
-df <- remove_activity_outliers(df516b_2)
-df_act_info(df)
-activity <- names(df)[2]
-d_index <- diurnality(data, activity, plot = TRUE)
-```
-
-This is an example on how you can resample your data:
-
-```{r resample, results = FALSE, warning=FALSE, paged.print=FALSE}
-data("df516b_2", package = "digiRhythm")
-df <- df516b_2
-df <- remove_activity_outliers(df)
-new_sampling <- 30
-new_dgm <- resample_dgm(df, new_sampling)
-```
+[Vignettes](https://cran.r-project.org/web/packages/digiRhythm/index.html)
