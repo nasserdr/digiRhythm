@@ -93,12 +93,14 @@ dgm_periodicity <- function(data) {
 #' @param Z the power of the frequency
 #' @param fmax the maximum frequency in the spectrum
 #' @param tm the time grid of the original time series
-#' @return an intermediate calculation step needed to compute the p-value according to
+#' @return an intermediate calculation step needed to compute the p-value
+#' according to
 #' pbaluev (2008).
 #'
 
 pbaluev <- function(Z, fmax, tm) {
-  # Adapted from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
+  # Adapted from astropy timeseries
+  # (https://docs.astropy.org/en/stable/timeseries/index.html)
   N <- length(tm)
   Dt <- mean(tm^2) - mean(tm)^2
   NH <- N - 1
@@ -131,19 +133,21 @@ levopt <- function(Z, alpha, fmax, tm) {
 #' Function to calculate the smallest possible harmonic to consider given
 #' a sampling frequency. The minimum possible harmonic = 2 x the period of the
 #' maximum frequency according to the Shanon theorem. Example: if the sampling
-#' period is 15 min, the minimum possible treatable period is 30 minutes and that
-#' corresponds to the 48th harmonic (24 hours * 60 minutes / 48 = 30 minutes)
+#' period is 15 min, the minimum possible treatable period is 30 minutes and
+#' that corresponds to the 48th harmonic (24 hours * 60 minutes / 48 =
+#' 30 minutes)
 #'
 #' @param sampling_period_in_minutes The sampling period of the acquired
 #' data in minutes
 #'
-#' @return Returns the smallest possible harmonic (of 24 hours) to consider given
-#' a sampling frequency.
+#' @return Returns the smallest possible harmonic (of 24 hours) to consider
+#' given a sampling frequency.
 
 lowest_possible_harmonic_period <- function(sampling_period_in_minutes) {
   harmonics <- seq(1, 1000)
   harmonic_periods <- 24 * 60 / harmonics
-  all_reachable_harmonic_period <- harmonics[harmonic_periods >= 2 * sampling_period_in_minutes]
+  all_reachable_harmonic_period <- harmonics[harmonic_periods >=
+    2 * sampling_period_in_minutes]
   lowest_reachable_harmonic_period <- max(all_reachable_harmonic_period)
   return(lowest_reachable_harmonic_period)
 }

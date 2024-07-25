@@ -43,3 +43,4 @@ Suggests: knitr,
     testthat (>= 3.0.0),
     usethis
 VignetteBuilder: knitr
+URL: https://nasserdr.github.io/digiRhythm/

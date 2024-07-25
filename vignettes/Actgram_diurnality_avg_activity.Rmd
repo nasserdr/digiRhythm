@@ -61,7 +61,12 @@ start <- "2020-08-25" # year-month-day
 end <- "2020-10-11" # year-month-day -->
 activity_alias <- "Motion Index"
 # save <- 'sample_results/actogram' #if NULL, don't save the image
-my_daa <- daily_average_activity(data, activity, activity_alias, start, end, save = NULL)
+my_daa <- daily_average_activity(data, activity,
+  activity_alias,
+  start,
+  end,
+  save = NULL
+)
 ```
 
 # Diurnality Index

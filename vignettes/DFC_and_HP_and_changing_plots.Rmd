@@ -49,13 +49,16 @@ Warning: At the moment, function only computes the LSP the first 7 days of the d
 Now, to the DFC. The below plot shows the DFC and HP in the same graph. Both variables are percentages.
 
 ```{r dfc_hp}
-my_dfc <- dfc(data, # The dataset which first column is the datetime in posix and the subsequent columns are numeric activities
-              activity = activity, # the name of the activity column
-              sampling = 15, # the sampling frequency of my dataset is 15
-              alpha = 0,5, # consider frequency peaks with higher than 0.5 p-value as significant
-              harm_cutoff = 12, # consider up till the harmonic 24/12 which is two hours
-              plot = FALSE, verbose = FALSE)
-# Setting plot to TRUE will visualize all the LSP plots (like the one above) during each sliding window. Rather used for deeper investigation and debugging.
+my_dfc <- dfc(data, # The dataset
+  activity = activity, # the name of the activity column
+  sampling = 15, # the sampling frequency of my dataset is 15
+  alpha = 0, 5, # significance level
+  harm_cutoff = 12, # up till the harmonic 24/12 which is two hours
+  plot = FALSE, verbose = FALSE
+)
+# Setting plot to TRUE will visualize all the LSP plots (like the one above)
+# during each sliding window. Rather used for deeper investigation and
+# debugging.
 print(my_dfc)
 ```
 # Accessing output data and changing the plots using DigiRhythm

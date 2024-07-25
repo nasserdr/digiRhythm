@@ -52,7 +52,8 @@ is_dgm_friendly <- function(data, verbose = FALSE) {
     # Checking if we have more than one column
     if (ncol(data) == 1) {
       message <- paste0(crayon::red("x Illogical number of columns: "), "The
-                        dataset has only one column. Minimum number of columns is 2")
+                        dataset has only one column. Minimum number of columns
+                        is 2")
       print_v(message, verbose)
       is_dgm <- FALSE
     } else {

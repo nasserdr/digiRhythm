@@ -2,19 +2,20 @@
 #' Lomb-Scargle Spectrum (LSP Spec) for one variable in an activity dataset.
 #' The dataset should be digiRhythm friendly.
 #'
-#' The computation of DFC/HP/LSP parameters is done using a rolling window of 7 days (i.e.,
-#' first, we compute the parameters of Days 1-7 then, of days 2-8 and so on).
-#' For each window of the 7 days, the function will compute the LSP spectrum to
-#' determine the power of each frequency. Using Baluev (2008), we will compute the
-#' significance of the amplitude of each frequency component and determine whether
-#' it is significant or not. Then, we will have all the significant frequencies,
-#' whose amplitudes' summation will be denominated as SUMSIG. Among all the available
-#' frequencies, some are harmonic (those that correspond to waves of period
-#' 24h, 12h, 24h/3, 24h/4, ...). As a result, we will have frequency components
-#' that are significant and harmonic, whose powers' summation is called SSH (sum
-#' significant and harmonic). The summation of all frequency components up to a
-#' frequency reflecting a 24h period is called SUMALL. Therefore, DFC and HP are
-#' computed as follows:
+#' The computation of DFC/HP/LSP parameters is done using a rolling window. If
+#' the rolling window is 7 days, first, we compute the parameters of Days 1-7
+#' then, of days 2-8 and so on). For each window of the 7 days, the function
+#' will compute the LSP spectrum to determine the power of each frequency. Using
+#' Baluev (2008), we will compute the significance of the amplitude of each
+#' frequency component and determine whether it is significant or not. Then, we
+#' will have all the significant frequencies, whose amplitudes' summation will
+#' be denominated as SUMSIG. Among all the available frequencies, some are
+#' harmonic (those that correspond to waves of period 24h, 12h, 24h/3, 24h/4,
+#' ...). As a result, we will have frequency components that are significant and
+#' harmonic, whose powers' summation is called SSH (sum significant and
+#' harmonic). The summation of all frequency components up to a frequency
+#' reflecting a 24h period is called SUMALL. Therefore, DFC and HP are computed
+#' as follows:
 #'
 #' DFC <- SSH / SUMSIG
 #' HP <- SSH / SUMALL
@@ -28,7 +29,8 @@
 #' significant frequency component.
 #' @param harm_cutoff the order of the highest harmonic needed to be considered.
 #' An integer equal to 1, 2, 3, ... Default is 12.
-#' @param rolling_window The rolling window used to compute the LSP. Default is 7 days.
+#' @param rolling_window The rolling window used to compute the LSP. Default is
+#' 7 days.
 #' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
 #' @param plot_harmonic_part if TRUE, it shows the harmonic part in the DFC plot
@@ -41,7 +43,8 @@
 #' ** The date in format YYYY-MM-DD.
 #' ** The DFC computed using a @rolling_window days.
 #' ** The Harmonic Part (ratio).
-#' Data are supposed to sampled with a specific smpling rate. It should be the same sampling rate
+#' Data are supposed to sampled with a specific smpling rate. It should be the
+#' same sampling rate
 #' as in the given argument @sampling
 #' Missing days are not permitted. If you have data with half day, it should be
 #' removed.
@@ -82,7 +85,8 @@ dfc <- function(
 
   print(utils::head(data))
   if (!is_dgm_friendly(data)) {
-    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information")
+    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your
+         console for more information")
   }
 
 
@@ -94,12 +98,14 @@ dfc <- function(
     1
   )
   if (length(days) < 2) {
-    stop("You need at least 2 days of data to run the Degree of Functional Coupling algorithm")
+    stop("You need at least 2 days of data to run the Degree of Functional
+         Coupling algorithm")
   }
 
 
   if (length(days) < rolling_window) {
-    stop("The number of rolling widown should be bigger than the number of days in the dataset.")
+    stop("The number of rolling widown should be bigger than the number of
+         days in the dataset.")
   }
 
   dfc <- NULL
@@ -128,12 +134,16 @@ dfc <- function(
     index_end_day <- i + rolling_window - 1
 
     if (verbose) {
-      cat("Processing dates ", format(days[index_start_day]), " until ", format(days[index_end_day]), "\n")
+      cat(
+        "Processing dates ", format(days[index_start_day]), " until ",
+        format(days[index_end_day]), "\n"
+      )
     }
 
     samples_per_day <- 24 * 60 / sampling # The number of data points per day
 
-    # Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
+    # Filtering the next seven days by date (not by index - in case of missing
+    # data, filtering by index would make errors)
 
     data_week <- data %>%
       dplyr::filter(date >= days[index_start_day]) %>%
@@ -142,7 +152,10 @@ dfc <- function(
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
-    lsp <- lomb_scargle_periodogram(df_var, alpha = alpha, harm_cutoff = harm_cutoff, plot = TRUE)
+    lsp <- lomb_scargle_periodogram(df_var,
+      alpha = alpha,
+      harm_cutoff = harm_cutoff, plot = TRUE
+    )
     # Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
     # p = [1.0 - pow(1.0 - math.exp(-x), 2.0 * nout / ofac) for x in py]
@@ -160,31 +173,34 @@ dfc <- function(
     }
 
     lsp_data <- lsp$lsp_data[1:len, ]
-    harm_power <- lsp_data$power[lsp_data$status_harmonic == "Harmonic"] # The harmonic powers
+    harm_power <- lsp_data$power[
+      lsp_data$status_harmonic == "Harmonic"
+    ] # The harmonic powers
 
     sumall <- sum(lsp_data$power) # sum of all powers
     ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level.power &
       lsp_data$status_harmonic == "Harmonic"])
-    sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level.power)]) # sum of all significant
-
-    # frequencies (each one has a power)
-    # sumall: sum of powers for all frequencies (96) ==> 100: ALL
-    # sumsig: 10 significant frequencies ==> 20             : subset of ALL
-    # ssh: a subset of 10 ( 5 frequencies) ==> 10           : Subset of a subset of ALL
-    # Because sumsig is always smaller than sumall and HP and DFC, then DFC is always
-    # Bigger than HP
+    sumsig <- sum(lsp_data$power[which(
+      lsp_data$power >= lsp$sig.level.power
+    )]) # sum of all significant
 
     HP <- ssh / sumall
     DFC <- ssh / sumsig
 
     spec <- rbind(spec, data.frame(
-      rep(paste0(format(days[index_start_day]), "_to_", format(days[index_end_day])), len),
+      rep(paste0(
+        format(days[index_start_day]), "_to_",
+        format(days[index_end_day])
+      ), len),
       1:len,
       (1:len) / 7,
       lsp_data$power,
       lsp_data$p_values
     ))
-    dfc[i, ] <- c(format(days[index_start_day]), format(days[index_end_day]), DFC, HP)
+    dfc[i, ] <- c(
+      format(days[index_start_day]), format(days[index_end_day]),
+      DFC, HP
+    )
     if (verbose) {
       print(dfc[i, ])
     }

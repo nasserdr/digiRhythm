@@ -48,6 +48,13 @@ end <- "2020-10-11" # year-month-day
 sampling_rate <- 15
 ncols <- 3 # number of columns
 # save <- 'sample_results/daily_wrap_plot' #if Null, doesn't save the image
-my_daily_wrap_plot <- daily_activity_wrap_plot(data, activity, activity_alias, start, end, sampling_rate, ncols, save = Null)
+my_daily_wrap_plot <- daily_activity_wrap_plot(data, activity,
+  activity_alias,
+  start,
+  end,
+  sampling_rate,
+  ncols,
+  save = Null
+)
 ```
 
