@@ -1,0 +1,12 @@
+pandoc: 3.1.11
+pkgdown: 2.1.0
+pkgdown_sha: ~
+articles:
+  Actgram_diurnality_avg_activity: Actgram_diurnality_avg_activity.html
+  DFC_and_HP_and_changing_plots: DFC_and_HP_and_changing_plots.html
+  Loading_and_preprocessing_data_in_DigiRhythm: Loading_and_preprocessing_data_in_DigiRhythm.html
+  Visualisation: Visualisation.html
+last_built: 2024-07-25T12:27Z
+urls:
+  reference: https://nasserdr.github.io/digiRhythm/reference
+  article: https://nasserdr.github.io/digiRhythm/articles
