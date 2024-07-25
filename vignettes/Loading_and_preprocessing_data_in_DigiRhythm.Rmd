@@ -28,8 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(digiRhythm)
 
 # A sample dataset could be found here
-url <- "https://raw.githubusercontent.com/nasserdr/
-digiRhythm_sample_datasets/main/516b_2.csv"
+url <- "https://raw.githubusercontent.com/nasserdr/digiRhythm_sample_datasets/main/516b_2.csv"
 destination <- file.path(tempdir(), "516b_2.csv")
 download.file(url, destfile = destination)
 
