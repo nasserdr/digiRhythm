@@ -52,7 +52,10 @@ daily_activity_wrap_plot <- function(
     filter(date >= start) %>%
     filter(date <= end)
 
-  data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
+  data_to_plot$time <- format(data_to_plot$datetime,
+    format = "%H:%M",
+    tz = "CET"
+  )
 
 
 
@@ -71,7 +74,10 @@ daily_activity_wrap_plot <- function(
   )) +
     geom_area() +
     facet_wrap(~date, ncol = ncols) +
-    ggtitle(paste(activity_alias, "(", data_to_plot$date[1], "-", last(data_to_plot$date), ")")) +
+    ggtitle(paste(
+      activity_alias, "(", data_to_plot$date[1], "-",
+      last(data_to_plot$date), ")"
+    )) +
     xlab("Time") +
     theme(
       axis.text = element_text(color = "black"),
@@ -90,7 +96,10 @@ daily_activity_wrap_plot <- function(
       legend.position = c(0.05, 0.89)
     ) +
     scale_x_continuous(
-      breaks = seq(sampling_rate - 2, 24 * 60 / sampling_rate - sampling_rate + 4, length.out = 4),
+      breaks = seq(sampling_rate - 2,
+        24 * 60 / sampling_rate - sampling_rate + 4,
+        length.out = 4
+      ),
       labels = c("03:00", "09:00", "15:00", "21:00")
     )
 

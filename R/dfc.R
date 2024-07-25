@@ -24,8 +24,10 @@
 #' @param activity The name of the activity.
 #' @param sampling The sampling period of the data set in minutes.
 #' the Lomb Scargle Periodogram is computed.
-#' @param sig The significance level that should be used to determine the
+#' @param alpha The significance level that should be used to determine the
 #' significant frequency component.
+#' @param harm_cutoff the order of the highest harmonic needed to be considered.
+#' An integer equal to 1, 2, 3, ... Default is 12.
 #' @param rolling_window The rolling window used to compute the LSP. Default is 7 days.
 #' @param plot if TRUE, the DFC/HP plot will be shown.
 #' @param verbose if TRUE, print weekly progress.
@@ -49,35 +51,28 @@
 #'
 #' @export
 #' @examples
-#' sampling_period <- 15 * 60  # seconds
-#' two_weeks <- 2 * 7 * 24 * 60 * 60  # seconds
+#' sampling_period <- 15 * 60 # seconds
+#' two_weeks <- 2 * 7 * 24 * 60 * 60 # seconds
 #' amplitude_24h <- 5
 #' amplitude_12h <- 3
 #' noise_sd <- 2
 #' time_seq <- seq(0, two_weeks, by = sampling_period)
-#' time_posix <- as.POSIXct(time_seq, origin = "1970-01-01", tz = "UTC")
+#' time_posix <- as.POSIXct(time_seq, origin = "1970-01-01")
 #' sine_24h <- amplitude_24h * sin(2 * pi * time_seq / (24 * 60 * 60))
 #' sine_12h <- amplitude_12h * sin(2 * pi * time_seq / (12 * 60 * 60))
 #' noise <- rnorm(length(time_seq), mean = 0, sd = noise_sd)
 #' data <- sine_24h + sine_12h + noise
 #' df <- data.frame(time = time_posix, value = data)
+#' names(df) <- c("datetime", "activity")
+#' print(str(df))
+#' my_lsp <- dfc(df, "activity", alpha = 0.05, harm_cutoff = 12, plot = TRUE)
 #######################################################
-
-# Old example, but too much computation time for a submission on CRAN
-# start <- Sys.time()
-# data("df516b_2", package = "digiRhythm")
-# df <- df516b_2[1:672, c(1, 2)]
-# df <- remove_activity_outliers(df)
-# df_act_info(df)
-# activity <- names(df)[2]
-# my_dfc_1 <- dfc(df, activity, sampling = 15)
-# print(paste('time taken:', Sys.time() - start))
-
 dfc <- function(
     data,
     activity,
     sampling = 15, # in minutes
-    sig = 0.05,
+    alpha = 0.05,
+    harm_cutoff = 12,
     rolling_window = 7,
     plot = TRUE,
     plot_harmonic_part = TRUE,
@@ -147,7 +142,7 @@ dfc <- function(
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
-    lsp <- lomb_scargle_periodogram(df_var, alpha = sig, plot = TRUE)
+    lsp <- lomb_scargle_periodogram(df_var, alpha = alpha, harm_cutoff = harm_cutoff, plot = TRUE)
     # Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
     # p = [1.0 - pow(1.0 - math.exp(-x), 2.0 * nout / ofac) for x in py]
@@ -168,9 +163,9 @@ dfc <- function(
     harm_power <- lsp_data$power[lsp_data$status_harmonic == "Harmonic"] # The harmonic powers
 
     sumall <- sum(lsp_data$power) # sum of all powers
-    ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level &
+    ssh <- sum(lsp_data$power[lsp_data$power >= lsp$sig.level.power &
       lsp_data$status_harmonic == "Harmonic"])
-    sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level)]) # sum of all significant
+    sumsig <- sum(lsp_data$power[which(lsp_data$power >= lsp$sig.level.power)]) # sum of all significant
 
     # frequencies (each one has a power)
     # sumall: sum of powers for all frequencies (96) ==> 100: ALL
@@ -206,8 +201,8 @@ dfc <- function(
       ylab("Percentage") +
       xlab("Date") +
       theme(
-        axis.text.x = element_text(size=rel(1), color = 'black'),
-        axis.text.y = element_text(size=rel(1), color = 'black'),
+        axis.text.x = element_text(size = rel(1), color = "black"),
+        axis.text.y = element_text(size = rel(1), color = "black"),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
@@ -215,16 +210,17 @@ dfc <- function(
         legend.justification = "left",
         legend.key.size = unit(10, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75),
-        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))
+        legend.position = c(0.7, 0.75),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")
+      )
   } else {
     dfc_plot <- ggplot(dfc, aes(x = from)) +
       geom_line(aes(y = dfc, linetype = "Degree of functional coupling")) +
       ylab("Percentage") +
       xlab("Date") +
       theme(
-        axis.text.x = element_text(size=rel(1), color = 'black'),
-        axis.text.y = element_text(size=rel(1), color = 'black'),
+        axis.text.x = element_text(size = rel(1), color = "black"),
+        axis.text.y = element_text(size = rel(1), color = "black"),
         panel.background = element_rect(fill = "white"),
         axis.line = element_line(size = 0.5),
         legend.key = element_rect(fill = "white"),
@@ -232,8 +228,9 @@ dfc <- function(
         legend.justification = "left",
         legend.key.size = unit(10, "pt"),
         legend.title = element_blank(),
-        legend.position = c(0.7,0.75),
-        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm"))
+        legend.position = c(0.7, 0.75),
+        plot.margin = margin(0.5, 0.5, 0.5, 0.5, "cm")
+      )
   }
   if (plot) {
     print(dfc_plot)

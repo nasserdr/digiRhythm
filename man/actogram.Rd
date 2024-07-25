@@ -37,6 +37,7 @@ start <- "2020-05-01" # year-month-day
 end <- "2020-08-13" # year-month-day
 activity_alias <- "Motion Index"
 my_actogram <- actogram(df, activity, activity_alias, start, end,
-  save = NULL)
+  save = NULL
+)
 print(my_actogram)
 }

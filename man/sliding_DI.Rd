@@ -20,7 +20,8 @@ be the name of the saved image. it should contain the path and name without
 the extension.}
 }
 \value{
-A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
+A ggplot2 object that contains the Sliding diurnality plot in
+addition to a dataframe with 2 col: date and sliding diurnality index
 }
 \description{
 Computes the diurnality index, using different start and end definitions for

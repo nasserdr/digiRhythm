@@ -1,23 +1,26 @@
 #' Computes the Lomb Scargle Periodogram and returns the information needed for
-#' computing the DFC and HP. A plot visualizing the Harmonic Frequencies presence
-#' in the spectrum is possible. The function is inspired from the Lomb library in
-#' a great part, with modifications to fit the requirements of harmonic powers and
-#' computation of the DFC. This function is inspired by the lsp function from the
-#' lomb package and adapted to add different colors for harmonic and non harmonic
-#' frequencies in the signal. For more information about lomb::lsp, please refer
+#' computing the DFC and HP. A plot visualizing the Harmonic Frequencies
+#' presence in the spectrum is possible. The function is inspired from the Lomb
+#' library in a great part, with modifications to fit the requirements of
+#' harmonic powers and computation of the DFC. This function is inspired by the
+#' lsp function from the lomb package and adapted to add different colors for
+#' harmonic and non harmonic frequencies in the signal. For more information
+#' about lomb::lsp, please refer
 #' to: https://cran.r-project.org/web/packages/lomb/
 #'
 #' @param data a digiRhythm friendly dataframe of only two columns
 #' @param sampling the sampling period in minutes. default = 15 min.
 #' @param alpha the statistical significance for the false alarm
+#' @param harm_cutoff the order of the highest harmonic needed to be considered.
+#' An integer equal to 1, 2, 3, ... Default is 12.
 #' @param plot if TRUE, the LSP will be plotted
 #' @param extra_info_plot if True, extra information will be shown on the plot
 #'
 #' @return a list that contains a dataframe (detailed below), the significance
-#' level and alpha (for the record). The dataframe contains the power the frequency,
-#' the frequency in HZ, the p values according to Baluev 2008, the period that corresponds
-#' to the frequency in seconds and in hours and finally, a boolean to tell whether
-#' the frequency is harmonic or not.
+#' level and significance (for the record). The dataframe contains the power the
+#' frequency, the frequency in HZ, the p values according to Baluev 2008, the
+#' period that corresponds to the frequency in seconds and in hours and finally,
+#' a boolean to tell whether the frequency is harmonic or not.
 #'
 #' @import ggplot2
 #'
@@ -26,17 +29,30 @@
 #' @examples
 #' data("df516b_2", package = "digiRhythm")
 #' data <- df516b_2[1:672, c(1, 2)]
-#' sig <- 0.01
-#' lomb_scargle_periodogram(data, alpha = sig, plot = TRUE)
-lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE) {
+#' lomb_scargle_periodogram(data, alpha = 0.01, harm_cutof = 12, plot = TRUE)
+#'
+lomb_scargle_periodogram <- function(data, alpha = 0.01, harm_cutoff = 12,
+                                     sampling = 15, plot = TRUE,
+                                     extra_info_plot = TRUE) {
   if (!is_dgm_friendly(data, verbose = TRUE)) {
-    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information")
+    stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your
+         console for more information")
   }
 
-  # if (length(unique(as.Date(data[,1]))) != 7 ) {
-  #   warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
-  #        A dynamic number of days will be introduced in a later version.')
-  # }
+  theoretical_cutoff <- lowest_possible_harmonic_period(sampling)
+
+  # Check if the needed cutoff harmonic is bigger than the theoretical cutoff
+  if (harm_cutoff > theoretical_cutoff) {
+    warning("The sought harmonic cutoff is bigger than what is possible given
+    the sampling period. The cutoff harmonic should correspond to a period that
+       is at least 2 times the sampling period. For example, with a sampling
+       period of 15 min, the lowest possible period that can be treated is 30
+       min, which corresponds to the 48th harmonic period.")
+    print(paste0("changing the harmoinc cutoff to ", theoretical_cutoff))
+    used_harmonic_cutoff <- theoretical_cutoff
+  } else {
+    used_harmonic_cutoff <- harm_cutoff
+  }
 
   x <- data
   start <- as.Date(x[1, 1])
@@ -80,17 +96,28 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
 
   n <- length(y)
   tspan <- t[n] - t[1]
-  fr.d <- 1 / tspan
+  fr.d <- 1 / tspan # Sampling frequency
   step <- 1 / (tspan * ofac)
+  step
 
-
-  # if (is.null(to)) {
   f.max <- floor(0.5 * n * ofac) * step
-  # } else {
-  #   f.max <- to
-  # }
 
   freq <- seq(fr.d, f.max, by = step)
+
+  # Replace the frequencies that are the nearest to the harmonic corresponding
+  # frequencies by the actual harmonic frequencies. #24h,12h, 8h, ....
+  harmonic_periods_seconds <- 24 * 3600 / seq(1, used_harmonic_cutoff)
+
+  harmonics_frequencies_hz <- 1 / harmonic_periods_seconds
+
+  l <- lapply(harmonics_frequencies_hz, function(x) {
+    which.min(abs(x - freq))
+  })
+  l <- unlist(l)
+
+  freq[l] <- harmonics_frequencies_hz
+
+
   n.out <- length(freq)
 
   x <- t * 2 * pi
@@ -114,17 +141,8 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
 
   PN <- norm * PN
 
-
-  # PN.max <- max(PN)
-  # peak.freq <- freq[PN == PN.max]
-
   scanned <- freq
-  #
   fmax <- max(freq)
-  # Z <- PN.max
-  # tm = t
-  #
-  # p <- pbaluev(Z, fmax, tm = t)
   p.values <- lapply(PN, function(x) {
     pbaluev(x, fmax, tm = t)
   })
@@ -146,7 +164,7 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
   lsp_data <- lsp_data %>% mutate(period_seconds = (1 / frequency_hz))
   lsp_data <- lsp_data %>% mutate(period_hours = period_seconds / 3600)
 
-  harmonic_periods <- 24 / seq(1, 12) # 24h, 12h, 8h, ....
+  harmonic_periods <- 24 / seq(1, used_harmonic_cutoff) # 24h, 12h, 8h, ....
   l <- lapply(harmonic_periods, function(x) {
     which.min(abs(x - lsp_data$period_hours))
   })
@@ -156,16 +174,27 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
   lsp_data$status_harmonic[l] <- "Harmonic"
 
 
-  output <- list(lsp_data = lsp_data, sig.level = level, alpha = alpha)
+  output <- list(lsp_data = lsp_data, sig.level.power = level, alpha = alpha)
 
-  len <- 24 * 60 / sampling # The number of 15 'minutes' day
-  lsp_data <- lsp_data[1:len, ]
+  len <- 24 * 60 / sampling
+
+  # According to the cutoff harmonic, the LSP plot will be displayed only
+  # up to the frequency that corresponds to the cutoff harmonic. The graph will
+  # disregard all the frequencies that are higher than the cutoff harmonic + 1
+  # cuotff_plus_one <- used_harmonic_cutoff + 1
+  # freq_cutoff_plus_one = 24 / cuotff_plus_one
+
+  index_freq_cutoff_plus_one <- which.min(abs(24 / used_harmonic_cutoff -
+    lsp_data$period_hours))
+
+  lsp_data <- lsp_data[1:index_freq_cutoff_plus_one, ]
+
+  hdata <- lsp_data %>%
+    filter(status_harmonic == "Harmonic") %>%
+    select(frequency_hz, power, period_hours) %>%
+    mutate(new_h = paste(round(period_hours, digits = 2), "h"))
+
   if (plot) {
-    hdata <- lsp_data %>%
-      filter(status_harmonic == "Harmonic") %>%
-      select(frequency_hz, power, period_hours) %>%
-      mutate(new_h = paste(round(period_hours, digits = 1), "h"))
-
     p <- ggplot(
       data = lsp_data,
       aes(x = frequency_hz, y = power)
@@ -173,10 +202,6 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
       ylim(c(0, 1.2 * max(lsp_data$power))) +
       geom_col(aes(fill = status_harmonic)) +
       geom_hline(yintercept = level, linetype = "dotted") +
-      # annotate("text",
-      #          x = max(lsp_data$frequency_hz),
-      #          y = level*1.05,
-      #          label = paste("P<", alpha), size = 6, vjust = 0) +
       labs(fill = "Status", y = "Power", x = "Frequency (Hz)")
     if (extra_info_plot) {
       p <- p + theme(
@@ -217,6 +242,5 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, sampling = 15, plot = T
 
     print(p)
   }
-
   return(output)
 }

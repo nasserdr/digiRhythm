@@ -20,6 +20,7 @@ Johann Heinrich von Thünen- Institute of Organic Farming
 timedata
 }
 \description{
-A dataset of start and endtime of the morningmilking and eveningmilking on a dairy farm.
+A dataset of start and endtime of the morning milking and evening milking
+on a dairy farm.
 }
 \keyword{datasets}

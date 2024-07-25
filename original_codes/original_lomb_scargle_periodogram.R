@@ -1,9 +1,30 @@
 library(pracma)
 library(digiRhythm)
 data("df516b_2", package = "digiRhythm")
+source("~/projects/digiRhythm/R/utils.R")
+library(ggplot2)
+library(tidyverse)
+
+# Inputs
+sampling = 15
+harm_cutoff <- 12
+theoretical_cutoff <- lowest_possible_harmonic_period(sampling)
+
+# Check if the needed cutoff harmonic is bigger than the theoretical cutoff
+if (harm_cutoff > theoretical_cutoff) {
+  warning("The sought harmonic cutoff is bigger than what is possible given the
+       sampling period. The cutoff harmonic should correspond to a period that
+       is at least 2 times the sampling period. For example, with a sampling
+       period of 15 min, the lowest possible period that can be treated is 30
+       min, which corresponds to the 48th harmonic period.")
+  print(paste0('changing the harmoinc cutoff to ', theoretical_cutoff))
+  used_harmonic_cutoff <- theoretical_cutoff
+} else {
+  used_harmonic_cutoff <- harm_cutoff
+}
 
 for(days in c(1:15)){
-  sampling = 15
+
   useful_len = (60/sampling)*24*days
   data <- df516b_2[1:useful_len, c(1,2)]
 
@@ -14,11 +35,6 @@ for(days in c(1:15)){
   if (!is_dgm_friendly(data, verbose = TRUE)) {
     stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
   }
-
-  # if (length(unique(as.Date(data[,1]))) != 7 ) {
-  #   warning('This LSP function is customized to use data with 7 days span only. But, the data contains less or more than 7 days.
-  #        A dynamic number of days will be introduced in a later version.')
-  # }
 
   x <- data
   start <- as.Date(x[1,1])
@@ -60,9 +76,8 @@ for(days in c(1:15)){
 
   n <- length(y)
   tspan <- t[n] - t[1]
-  fr.d <- 1/tspan
   step <- 1/(tspan * ofac)
-
+  step
 
   # if (is.null(to)) {
   f.max <- floor(0.5 * n * ofac) * step
@@ -71,6 +86,20 @@ for(days in c(1:15)){
   # }
 
   freq <- seq(fr.d, f.max, by = step)
+
+  #Replace the frequencies that are the nearest to the harmonic corresponding
+  #frequencies by the actual harmonic frequencies.
+  harmonic_periods_seconds <- 24*3600/seq(1,used_harmonic_cutoff) #24h, 12h, 8h, ....
+  harmonics_frequencies_hz <- 1/harmonic_periods_seconds
+
+  l <- lapply(harmonics_frequencies_hz, function(x){
+    which.min(abs(x - freq))
+  })
+  l <- unlist(l)
+
+  freq[l] <- harmonics_frequencies_hz
+
+
   n.out <- length(freq)
 
   x <- t * 2 * pi
@@ -110,7 +139,7 @@ for(days in c(1:15)){
   })
 
   p.values <- unlist(p.values)
-  level = fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
+  level = pracma::fibsearch(levopt, 0, 1, alpha, fmax = fmax, tm = t)$xmin
 
   #Returns a list that contains:
   #1. an LSP dataframe with the following cols: Freq, Power, Harmonc Status,
@@ -126,7 +155,7 @@ for(days in c(1:15)){
   lsp_data <- lsp_data %>% mutate(period_seconds = (1/frequency_hz))
   lsp_data <- lsp_data %>% mutate(period_hours = period_seconds/3600)
 
-  harmonic_periods <- 24/seq(1,12) #24h, 12h, 8h, ....
+  harmonic_periods <- 24/seq(1,used_harmonic_cutoff) #24h, 12h, 8h, ....
   l <- lapply(harmonic_periods, function(x){
     which.min(abs(x-lsp_data$period_hours))
   })
@@ -139,12 +168,20 @@ for(days in c(1:15)){
   output <- list(lsp_data = lsp_data, sig.level = level, alpha = alpha)
 
   len <- 24*60/sampling
-  lsp_data <- lsp_data[1:len,]
-  if(plot){
-    hdata <- lsp_data %>% filter(status_harmonic == 'Harmonic') %>%
-      select(frequency_hz, power, period_hours) %>%
-      mutate(new_h = paste(round(period_hours, digits = 1), 'h'))
 
+  #According to the cutoff harmonic, the LSP plot will be displayed only
+  #up to the frequency that corresponds to the cutoff harmonic. The graph will
+  #disregard all the frequencies that are higher than the cutoff harmonic + 1
+
+  index_freq_cutoff_plus_one <- which.min(abs( 24 / used_harmonic_cutoff - lsp_data$period_hours))
+
+  lsp_data <- lsp_data[1:index_freq_cutoff_plus_one,]
+
+  hdata <- lsp_data %>% filter(status_harmonic == 'Harmonic') %>%
+    select(frequency_hz, power, period_hours) %>%
+    mutate(new_h = paste(round(period_hours, digits = 2), 'h'))
+
+  if(plot){
     p <- ggplot(data = lsp_data,
                 aes(x = frequency_hz, y = power)) +
       ylim(c(0, 1.2*max(lsp_data$power))) +
@@ -171,7 +208,7 @@ for(days in c(1:15)){
           y = power,
           label = new_h,
           angle = 90,
-          hjust = -0.4)) + ggtitle(paste(days, ' day - LSP for ', datanames[2],from_to))
+          hjust = -0.4)) + ggtitle(paste('LSP for ', datanames[2],from_to))
     } else {
       p <- p + theme(
         panel.background = element_rect(fill = "white"),
@@ -190,10 +227,5 @@ for(days in c(1:15)){
 
     print(p)
   }
-
-
-
-
-
 
 }

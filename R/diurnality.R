@@ -2,15 +2,16 @@
 #'
 #' @param data a digiRhythm-friendly dataset
 #' @param activity The number of non-useful lines to skip (lines to header)
-#' @param day_time an array containing the start and end of the day period. Default:
-#' c("06:30:00", "16:30:00").
-#' @param night_time an array containing the start and end of the night period. Default:
-#' c("18:00:00", "T05:00:00").
+#' @param day_time an array containing the start and end of the day period.
+#' Default: c("06:30:00", "16:30:00").
+#' @param night_time an array containing the start and end of the night period.
+#' Default: c("18:00:00", "T05:00:00").
 #' @param save if NULL, the image is not saved. Otherwise, this parameter will
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
-#' @return A ggplot2 object that contains the diurnality plot in addition to a dataframe with 2 col: date and diurnality index
+#' @return A ggplot2 object that contains the diurnality plot in addition to a
+#' dataframe with 2 col: date and diurnality index
 #'
 #' @import ggplot2
 #'
@@ -91,7 +92,8 @@ diurnality <- function(data,
 
   # Check conditions about the day and night time (overlapping, misplacement)
   if (hms_day_end > hms_night_start) {
-    stop("The end of the day_time period should proceed the beginning of the night_time period")
+    stop("The end of the day_time period should proceed the beginning of the
+         night_time period")
   }
 
   if (lubridate::hour(hms_night_end) < 1) {
@@ -116,7 +118,8 @@ diurnality <- function(data,
 
   offset <- 3600 * lubridate::hour(hms_night_start)
   zoo::index(X_night) <- zoo::index(X_night) - offset
-  shift <- lubridate::hour(hms_24t - hms_night_start + hms_night_end - hms_midnight)
+  shift <- lubridate::hour(hms_24t - hms_night_start +
+    hms_night_end - hms_midnight)
   shifted_night_range <- paste0("T00:00:00/T", shift, ":00:00")
   X_night <- X_night[shifted_night_range]
   Cn <- xts::period.apply(X_night, xts::endpoints(X_night, "days"), sum)
@@ -143,7 +146,10 @@ diurnality <- function(data,
   # computing the dirunality index
   df <- data.frame(
     date = zoo::index(d),
-    diurnality = (zoo::coredata(d[, "day_val"]) - zoo::coredata(d[, "night_val"])) / (zoo::coredata(d[, "day_val"]) + zoo::coredata(d[, "night_val"]))
+    diurnality = (zoo::coredata(d[, "day_val"]) -
+      zoo::coredata(d[, "night_val"])) /
+      (zoo::coredata(d[, "day_val"]) +
+        zoo::coredata(d[, "night_val"]))
   )
   names(df) <- c("date", "diurnality")
   df <- na.omit(df)

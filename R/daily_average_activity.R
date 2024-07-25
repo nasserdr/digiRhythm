@@ -27,7 +27,9 @@
 #' start <- "2020-05-01" # year-month-day
 #' end <- "2020-08-13" # year-month-day
 #' activity_alias <- "Motion Index"
-#' my_daa <- daily_average_activity(df, activity, activity_alias, start, end, save = NULL)
+#' my_daa <- daily_average_activity(df, activity, activity_alias, start, end,
+#'   save = NULL
+#' )
 #' print(my_daa)
 daily_average_activity <- function(
     df,
@@ -40,7 +42,10 @@ daily_average_activity <- function(
   data_to_plot <- df %>%
     filter(lubridate::date(df$datetime) >= start) %>%
     filter(lubridate::date(df$datetime) <= end)
-  data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
+  data_to_plot$time <- format(data_to_plot$datetime,
+    format = "%H:%M",
+    tz = "CET"
+  )
 
   start <- lubridate::date(start)
   end <- lubridate::date(end)
@@ -66,7 +71,9 @@ daily_average_activity <- function(
   s <- sum_of_activity_over_all_days_per_sample
 
   s$datetime <- paste(data_to_plot$date[1], s$time)
-  s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"), tz = lubridate::tz(df$datetime))
+  s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"),
+    tz = lubridate::tz(df$datetime)
+  )
 
   s <- s %>% select(datetime, average)
 

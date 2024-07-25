@@ -17,18 +17,19 @@ diurnality(
 
 \item{activity}{The number of non-useful lines to skip (lines to header)}
 
-\item{day_time}{an array containing the start and end of the day period. Default:
-c("06:30:00", "16:30:00").}
+\item{day_time}{an array containing the start and end of the day period.
+Default: c("06:30:00", "16:30:00").}
 
-\item{night_time}{an array containing the start and end of the night period. Default:
-c("18:00:00", "T05:00:00").}
+\item{night_time}{an array containing the start and end of the night period.
+Default: c("18:00:00", "T05:00:00").}
 
 \item{save}{if NULL, the image is not saved. Otherwise, this parameter will
 be the name of the saved image. it should contain the path and name without
 the extension.}
 }
 \value{
-A ggplot2 object that contains the diurnality plot in addition to a dataframe with 2 col: date and diurnality index
+A ggplot2 object that contains the diurnality plot in addition to a
+dataframe with 2 col: date and diurnality index
 }
 \description{
 Computes the diurnality index based on an activity dataframe

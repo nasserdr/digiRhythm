@@ -97,9 +97,8 @@ dgm_periodicity <- function(data) {
 #' pbaluev (2008).
 #'
 
-# Copied from the LOMB library
 pbaluev <- function(Z, fmax, tm) {
-  # code copied from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
+  # Adapted from astropy timeseries (https://docs.astropy.org/en/stable/timeseries/index.html)
   N <- length(tm)
   Dt <- mean(tm^2) - mean(tm)^2
   NH <- N - 1
@@ -124,8 +123,27 @@ pbaluev <- function(Z, fmax, tm) {
 #' @return Returns the level given the p-value computed with pbaluev (2008).
 #'
 
-
 levopt <- function(Z, alpha, fmax, tm) {
   prob <- pbaluev(Z, fmax, tm)
   (log(prob) - log(alpha))^2
+}
+
+#' Function to calculate the smallest possible harmonic to consider given
+#' a sampling frequency. The minimum possible harmonic = 2 x the period of the
+#' maximum frequency according to the Shanon theorem. Example: if the sampling
+#' period is 15 min, the minimum possible treatable period is 30 minutes and that
+#' corresponds to the 48th harmonic (24 hours * 60 minutes / 48 = 30 minutes)
+#'
+#' @param sampling_period_in_minutes The sampling period of the acquired
+#' data in minutes
+#'
+#' @return Returns the smallest possible harmonic (of 24 hours) to consider given
+#' a sampling frequency.
+
+lowest_possible_harmonic_period <- function(sampling_period_in_minutes) {
+  harmonics <- seq(1, 1000)
+  harmonic_periods <- 24 * 60 / harmonics
+  all_reachable_harmonic_period <- harmonics[harmonic_periods >= 2 * sampling_period_in_minutes]
+  lowest_reachable_harmonic_period <- max(all_reachable_harmonic_period)
+  return(lowest_reachable_harmonic_period)
 }

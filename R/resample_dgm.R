@@ -1,10 +1,12 @@
 #' Change the sampling of a digiRhythm friendly dataset
 #'
-#' This function upsamples the data but does not downsample them. The new sampling
-#' should be a multiple of the current sampling period, and should be given in minutes.
+#' This function upsamples the data but does not downsample them. The new
+#' sampling should be a multiple of the current sampling period, and should be
+#' given in minutes.
 #'
 #' @param data The dataframe containing the activity data
-#' @param new_sampling The new sampling (multiple of current sampling) in minutes
+#' @param new_sampling The new sampling (multiple of current sampling) in
+#' minutes
 #'
 #' @return A digiRhythm friendly dataset with the new sampling
 #'
@@ -26,7 +28,8 @@ resample_dgm <- function(data, new_sampling) {
   original_sampling <- xts::periodicity(xts_data)$frequency
 
   if ((new_sampling %% original_sampling) != 0) {
-    stop("The new sampling should be a multiple of the current sampling in minutes")
+    stop("The new sampling should be a multiple of the current sampling in
+         minutes")
   }
 
   if (new_sampling < original_sampling) {

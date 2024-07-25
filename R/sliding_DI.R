@@ -9,7 +9,8 @@
 #' be the name of the saved image. it should contain the path and name without
 #' the extension.
 #'
-#' @return A ggplot2 object that contains the Sliding diurnality plot in addition to a dataframe with 2 col: date and sliding diurnality index
+#' @return A ggplot2 object that contains the Sliding diurnality plot in
+#' addition to a dataframe with 2 col: date and sliding diurnality index
 #'
 #' @import ggplot2
 #'
@@ -36,9 +37,14 @@ sliding_DI <- function(data,
   sampling <- dgm_periodicity(data)[["frequency"]]
 
   # Formatting time range of day and night
-  timedata <- subset(timedata, lubridate::date(timedata$night_end) >= start_date & lubridate::date(timedata$night_end) <= end_date)
+  timedata <- subset(timedata, lubridate::date(timedata$night_end) >=
+    start_date & lubridate::date(timedata$night_end)
+  <= end_date)
   day_range <- paste0(timedata$day_start, "/", timedata$day_end)
-  night_range <- paste0(timedata$night_start, "/", timedata$night_end[2:nrow(timedata)])
+  night_range <- paste0(
+    timedata$night_start, "/",
+    timedata$night_end[2:nrow(timedata)]
+  )
 
   # Compute the range of samples for the day and the night (Td & Tn)
   hms_day_start <- lubridate::hms(substr(timedata$day_start, 12, 19))
@@ -46,22 +52,15 @@ sliding_DI <- function(data,
   sample_size <- lubridate::hms(paste0("00:", sampling, ":00"))
   Td <- abs((hms_day_end - hms_day_start) / sample_size)
 
-  hms_night_start <- lubridate::hms(substr(timedata$night_start[1:nrow(timedata) - 1], 12, 19))
+  hms_night_start <- lubridate::hms(substr(timedata$night_start[1:nrow(timedata)
+  - 1], 12, 19))
   hms_midnight <- lubridate::hms("00:00:00")
   hms_24t <- lubridate::hms("24:00:00")
-  hms_night_end <- lubridate::hms(substr(timedata$night_end[2:nrow(timedata)], 12, 19))
+  hms_night_end <- lubridate::hms(substr(
+    timedata$night_end[2:nrow(timedata)],
+    12, 19
+  ))
   Tn <- (hms_24t - hms_night_start + hms_night_end - hms_midnight) / sample_size
-
-  # Check conditions about the day and night time (overlapping, misplacement)
-  # if (hms_day_end > hms_night_start) {
-  # stop("The end of the day_time period should proceed the beginning of the night_time period")
-  # }
-  # if (lubridate::hour(hms_night_end) < 1) {
-  # stop("The of the nightly period should be after midnight")
-  # }
-  # if (lubridate::hour(hms_night_end) > 11) {
-  # stop("The end of the nightly period cannot be after mid-day! Come on!")
-  # }
 
   # Computing Cd
   X_day <- X[day_range]
@@ -99,7 +98,11 @@ sliding_DI <- function(data,
   # Computing the diurnality index
   df <- data.frame(
     date = zoo::index(d),
-    diurnality = (zoo::coredata(d[, "day_val"]) - zoo::coredata(d[, "night_val"])) / (zoo::coredata(d[, "day_val"]) + zoo::coredata(d[, "night_val"]))
+    diurnality = (zoo::coredata(d[, "day_val"]) - zoo::coredata(d[
+      ,
+      "night_val"
+    ]))
+    / (zoo::coredata(d[, "day_val"]) + zoo::coredata(d[, "night_val"]))
   )
 
   names(df) <- c("date", "diurnality")
@@ -112,11 +115,13 @@ sliding_DI <- function(data,
     xlab("Date") +
     ylim(-1, 1) +
     theme(
-      axis.text = element_text(color = "#000000"), text = element_text(size = 15),
+      axis.text = element_text(color = "#000000"),
+      text = element_text(size = 15),
       panel.background = element_rect(fill = "white"),
       axis.line = element_line(linewidth = 0.5),
     ) +
     geom_hline(yintercept = 0, linetype = "dotted", col = "black")
+
 
   if (!is.null(save)) {
     cat("Saving image in :", save, "\n")

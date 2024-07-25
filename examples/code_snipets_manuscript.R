@@ -20,11 +20,11 @@ library(patchwork)
 #devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 
 # To install the stable version from CRAN
-install.packages('digiRhythm')
+#install.packages('digiRhythm')
 library(digiRhythm)
 
 ###############################################################################
-################################## FIGURE: 2 ##################################
+################################## FIGURE: 1 ##################################
 ###############################################################################
 
 # LSP on purely synthetic data ----------------------------
@@ -272,7 +272,7 @@ ggsave(
 ################################## FIGURE: 4 ##################################
 ###############################################################################
 
-lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE)
+my_lsp <- lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = TRUE, extra_info_plot = TRUE)
 
 name <- paste0('figures/Figure 4.png')
 ggsave(
@@ -352,7 +352,10 @@ td <- as.data.frame(timedata)
 my_sliding_di <- sliding_DI(df,
                             activity,
                             td)
-name <- paste0('figures/Figure 8.png')
+
+print(str(td))
+print(head(td))
+name <- paste0('./figures/Figure 8.png')
 ggsave(
   name,
   plot = lsp <- last_plot(),
@@ -391,7 +394,7 @@ ggsave(
 
 my_dfc +
   theme(
-    text=element_text(family="Times", size=8),
+    text=element_text(family="Times", size=20),
     axis.text.y=element_text(size=15, colour="red"))
 
 name <- paste0('figures/Figure 10.png')

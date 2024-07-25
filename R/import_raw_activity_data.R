@@ -1,18 +1,21 @@
 #' Reads Raw Activity Data from csv files
 #'
-#' Reads Activity Data (data, time, activity(ies)) from a CSV file where we can skip
-#' some lines (usually representing the metadata) and select specific activities.
+#' Reads Activity Data (data, time, activity(ies)) from a CSV file where we can
+#' skip some lines (usually representing the metadata) and select specific
+#' activities.
 #'
 #' This function prepare the data stored in a csv to be compatible with the
 #' digiRhythm package. You have the possibility to skip the first lines and
-#' choose which columns to read. You also have the possibility to sample the data.
+#' choose which columns to read. You also have the possibility to sample the
+#' data.
 #' You can also choose whether to remove partial days (where no data over a
 #' full day is present) by trimming last, middle or last days.
 #' This function expects that the first and second columns are respectively
 #' date and time where the format should be mentioned.
 #'
 #' file <- file.path('data', 'sample_data')
-#' colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we are interested in
+#' colstoread <- c("Date", "Time", "Motion Index", 'Steps') #The colums that we
+#' are interested in
 #' data <- improt_raw_icetag_data(filename = file,
 #'                                skipLines = 7,
 #'                                act.cols.names = colstoread,
@@ -70,7 +73,11 @@
 
 import_raw_activity_data <- function(filename,
                                      skipLines = 0,
-                                     act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+                                     act.cols.names = c(
+                                       "Date", "Time",
+                                       "Motion Index",
+                                       "Steps"
+                                     ),
                                      date_format = "%d.%m.%Y",
                                      time_format = "%H:%M:%S",
                                      sep = ",",
@@ -99,14 +106,24 @@ import_raw_activity_data <- function(filename,
   data <- data %>%
     mutate(across(where(is.character), stringr::str_trim))
 
-  data <- data %>% tidyr::unite(datetime, c(act.cols.names[1], act.cols.names[2]), sep = "-")
+  data <- data %>% tidyr::unite(datetime, c(
+    act.cols.names[1],
+    act.cols.names[2]
+  ), sep = "-")
 
-  data$datetime <- as.POSIXct(data$datetime, format = paste0(date_format, " -", time_format), tz = original_tz)
+  data$datetime <- as.POSIXct(data$datetime,
+    format = paste0(
+      date_format, " -",
+      time_format
+    ),
+    tz = original_tz
+  )
 
   data$datetime <- format(data$datetime, tz = target_tz)
   data$datetime <- as.POSIXct(data$datetime, tz = target_tz)
 
-  # Keep the datetime column + all other numeric-only columns // Remove non numeric cols
+  # Keep the datetime column + all other numeric-only columns //
+  # Remove non numeric cols
   if (verbose) {
     cat("Removing the following columns because they are not numeric")
     cat("\n")
@@ -163,7 +180,10 @@ import_raw_activity_data <- function(filename,
   smallest_mandatory_daily_samples <- floor(0.8 * 60 * 24 / sampling)
 
   if (verbose) {
-    print(paste("Minimum Required number of samples per day", smallest_mandatory_daily_samples))
+    print(paste(
+      "Minimum Required number of samples per day",
+      smallest_mandatory_daily_samples
+    ))
   }
   df$date <- lubridate::date(df$datetime)
 

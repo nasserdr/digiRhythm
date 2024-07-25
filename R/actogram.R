@@ -30,7 +30,8 @@
 #' end <- "2020-08-13" # year-month-day
 #' activity_alias <- "Motion Index"
 #' my_actogram <- actogram(df, activity, activity_alias, start, end,
-#'   save = NULL)
+#'   save = NULL
+#' )
 #' print(my_actogram)
 actogram <- function(
     df,
@@ -48,10 +49,15 @@ actogram <- function(
   data_to_plot <- df %>%
     filter(lubridate::date(datetime) >= start) %>%
     filter(lubridate::date(datetime) <= end)
-  data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
+  data_to_plot$time <- format(data_to_plot$datetime,
+    format = "%H:%M",
+    tz = "CET"
+  )
   data_to_plot <- data_to_plot %>% select(-datetime)
 
-  data_to_plot$date_numeric <- xtfrm(as.Date(data_to_plot$date, format = "%Y-%m-%d"))
+  data_to_plot$date_numeric <- xtfrm(as.Date(data_to_plot$date,
+    format = "%Y-%m-%d"
+  ))
 
 
   equally_spaced_select <- function(x) {
@@ -60,7 +66,9 @@ actogram <- function(
   }
 
   if (length(unique(data_to_plot$date_numeric)) > 15) {
-    breaks_for_y_axis <- equally_spaced_select(unique(data_to_plot$date_numeric))
+    breaks_for_y_axis <- equally_spaced_select(unique(
+      data_to_plot$date_numeric
+    ))
     labels_for_y_axis <- equally_spaced_select(unique(data_to_plot$date))
   } else {
     breaks_for_y_axis <- unique(data_to_plot$date_numeric)

@@ -10,7 +10,8 @@ dfc(
   data,
   activity,
   sampling = 15,
-  sig = 0.05,
+  alpha = 0.05,
+  harm_cutoff = 12,
   rolling_window = 7,
   plot = TRUE,
   plot_harmonic_part = TRUE,
@@ -26,8 +27,11 @@ dfc(
 \item{sampling}{The sampling period of the data set in minutes.
 the Lomb Scargle Periodogram is computed.}
 
-\item{sig}{The significance level that should be used to determine the
+\item{alpha}{The significance level that should be used to determine the
 significant frequency component.}
+
+\item{harm_cutoff}{the order of the highest harmonic needed to be considered.
+An integer equal to 1, 2, 3, ... Default is 12.}
 
 \item{rolling_window}{The rolling window used to compute the LSP. Default is 7 days.}
 
@@ -72,16 +76,19 @@ DFC <- SSH / SUMSIG
 HP <- SSH / SUMALL
 }
 \examples{
-sampling_period <- 15 * 60  # seconds
-two_weeks <- 2 * 7 * 24 * 60 * 60  # seconds
+sampling_period <- 15 * 60 # seconds
+two_weeks <- 2 * 7 * 24 * 60 * 60 # seconds
 amplitude_24h <- 5
 amplitude_12h <- 3
 noise_sd <- 2
 time_seq <- seq(0, two_weeks, by = sampling_period)
-time_posix <- as.POSIXct(time_seq, origin = "1970-01-01", tz = "UTC")
+time_posix <- as.POSIXct(time_seq, origin = "1970-01-01")
 sine_24h <- amplitude_24h * sin(2 * pi * time_seq / (24 * 60 * 60))
 sine_12h <- amplitude_12h * sin(2 * pi * time_seq / (12 * 60 * 60))
 noise <- rnorm(length(time_seq), mean = 0, sd = noise_sd)
 data <- sine_24h + sine_12h + noise
 df <- data.frame(time = time_posix, value = data)
+names(df) <- c("datetime", "activity")
+print(str(df))
+my_lsp <- dfc(df, "activity", alpha = 0.05, harm_cutoff = 12, plot = TRUE)
 }

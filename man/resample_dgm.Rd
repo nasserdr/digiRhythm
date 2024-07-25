@@ -9,14 +9,16 @@ resample_dgm(data, new_sampling)
 \arguments{
 \item{data}{The dataframe containing the activity data}
 
-\item{new_sampling}{The new sampling (multiple of current sampling) in minutes}
+\item{new_sampling}{The new sampling (multiple of current sampling) in
+minutes}
 }
 \value{
 A digiRhythm friendly dataset with the new sampling
 }
 \description{
-This function upsamples the data but does not downsample them. The new sampling
-should be a multiple of the current sampling period, and should be given in minutes.
+This function upsamples the data but does not downsample them. The new
+sampling should be a multiple of the current sampling period, and should be
+given in minutes.
 }
 \examples{
 data("df516b_2", package = "digiRhythm")
