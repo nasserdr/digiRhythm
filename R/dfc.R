@@ -89,6 +89,20 @@ dfc <- function(
          console for more information")
   }
 
+  theoretical_cutoff <- lowest_possible_harmonic_period(sampling)
+
+  # Check if the needed cutoff harmonic is bigger than the theoretical cutoff
+  if (harm_cutoff > theoretical_cutoff) {
+    warning("The sought harmonic cutoff is bigger than what is possible given
+    the sampling period. The cutoff harmonic should correspond to a period that
+       is at least 2 times the sampling period. For example, with a sampling
+       period of 15 min, the lowest possible period that can be treated is 30
+       min, which corresponds to the 48th harmonic period.")
+    print(paste0("changing the harmoinc cutoff to ", theoretical_cutoff))
+    used_harmonic_cutoff <- theoretical_cutoff
+  } else {
+    used_harmonic_cutoff <- harm_cutoff
+  }
 
   data$date <- lubridate::date(data$datetime)
 
@@ -154,7 +168,7 @@ dfc <- function(
     df_var <- data_week %>% select(1, `activity`)
     lsp <- lomb_scargle_periodogram(df_var,
       alpha = alpha,
-      harm_cutoff = harm_cutoff, plot = TRUE
+      harm_cutoff = used_harmonic_cutoff, plot = TRUE
     )
     # Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
