@@ -81,6 +81,9 @@ dfc <- function(
     plot_harmonic_part = TRUE,
     verbose = TRUE,
     plot_lsp = TRUE) {
+
+  print(paste('Sampling DFC85 : ', sampling))
+
   data <- as.data.frame(data, row.names = NULL)
 
   print(utils::head(data))
@@ -88,22 +91,6 @@ dfc <- function(
     stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your
          console for more information")
   }
-
-  theoretical_cutoff <- lowest_possible_harmonic_period(sampling)
-
-  # Check if the needed cutoff harmonic is bigger than the theoretical cutoff
-  if (harm_cutoff > theoretical_cutoff) {
-    warning("The sought harmonic cutoff is bigger than what is possible given
-    the sampling period. The cutoff harmonic should correspond to a period that
-       is at least 2 times the sampling period. For example, with a sampling
-       period of 15 min, the lowest possible period that can be treated is 30
-       min, which corresponds to the 48th harmonic period.")
-    print(paste0("changing the harmoinc cutoff to ", theoretical_cutoff))
-    used_harmonic_cutoff <- theoretical_cutoff
-  } else {
-    used_harmonic_cutoff <- harm_cutoff
-  }
-
   data$date <- lubridate::date(data$datetime)
 
   days <- seq(
@@ -166,10 +153,14 @@ dfc <- function(
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
-    lsp <- lomb_scargle_periodogram(df_var,
+    lsp <- lomb_scargle_periodogram(
+      data = df_var,
       alpha = alpha,
-      harm_cutoff = used_harmonic_cutoff, plot = TRUE
+      harm_cutoff = harm_cutoff,
+      sampling = sampling,
+      plot = TRUE
     )
+
     # Computing the p-values for each frequency
     # From timbre: seems they did not take the case where p>0.01 into account
     # p = [1.0 - pow(1.0 - math.exp(-x), 2.0 * nout / ofac) for x in py]

@@ -33,7 +33,8 @@ significant frequency component.}
 \item{harm_cutoff}{the order of the highest harmonic needed to be considered.
 An integer equal to 1, 2, 3, ... Default is 12.}
 
-\item{rolling_window}{The rolling window used to compute the LSP. Default is 7 days.}
+\item{rolling_window}{The rolling window used to compute the LSP. Default is
+7 days.}
 
 \item{plot}{if TRUE, the DFC/HP plot will be shown.}
 
@@ -51,25 +52,27 @@ The DFC contains 3 columns:
 ** The date in format YYYY-MM-DD.
 ** The DFC computed using a @rolling_window days.
 ** The Harmonic Part (ratio).
-Data are supposed to sampled with a specific smpling rate. It should be the same sampling rate
+Data are supposed to sampled with a specific smpling rate. It should be the
+same sampling rate
 as in the given argument @sampling
 Missing days are not permitted. If you have data with half day, it should be
 removed.
 }
 \description{
-The computation of DFC/HP/LSP parameters is done using a rolling window of 7 days (i.e.,
-first, we compute the parameters of Days 1-7 then, of days 2-8 and so on).
-For each window of the 7 days, the function will compute the LSP spectrum to
-determine the power of each frequency. Using Baluev (2008), we will compute the
-significance of the amplitude of each frequency component and determine whether
-it is significant or not. Then, we will have all the significant frequencies,
-whose amplitudes' summation will be denominated as SUMSIG. Among all the available
-frequencies, some are harmonic (those that correspond to waves of period
-24h, 12h, 24h/3, 24h/4, ...). As a result, we will have frequency components
-that are significant and harmonic, whose powers' summation is called SSH (sum
-significant and harmonic). The summation of all frequency components up to a
-frequency reflecting a 24h period is called SUMALL. Therefore, DFC and HP are
-computed as follows:
+The computation of DFC/HP/LSP parameters is done using a rolling window. If
+the rolling window is 7 days, first, we compute the parameters of Days 1-7
+then, of days 2-8 and so on). For each window of the 7 days, the function
+will compute the LSP spectrum to determine the power of each frequency. Using
+Baluev (2008), we will compute the significance of the amplitude of each
+frequency component and determine whether it is significant or not. Then, we
+will have all the significant frequencies, whose amplitudes' summation will
+be denominated as SUMSIG. Among all the available frequencies, some are
+harmonic (those that correspond to waves of period 24h, 12h, 24h/3, 24h/4,
+...). As a result, we will have frequency components that are significant and
+harmonic, whose powers' summation is called SSH (sum significant and
+harmonic). The summation of all frequency components up to a frequency
+reflecting a 24h period is called SUMALL. Therefore, DFC and HP are computed
+as follows:
 }
 \details{
 DFC <- SSH / SUMSIG

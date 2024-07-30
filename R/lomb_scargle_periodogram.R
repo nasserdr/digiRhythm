@@ -31,15 +31,18 @@
 #' data <- df516b_2[1:672, c(1, 2)]
 #' lomb_scargle_periodogram(data, alpha = 0.01, harm_cutof = 12, plot = TRUE)
 #'
-lomb_scargle_periodogram <- function(data, alpha = 0.01, harm_cutoff = 12,
-                                     sampling = 15, plot = TRUE,
+lomb_scargle_periodogram <- function(data,
+                                     alpha = 0.01,
+                                     harm_cutoff = 12,
+                                     sampling = 15,
+                                     plot = TRUE,
                                      extra_info_plot = TRUE) {
   if (!is_dgm_friendly(data, verbose = TRUE)) {
     stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your
          console for more information")
   }
 
-  theoretical_cutoff <- lowest_possible_harmonic_period(sampling)
+  theoretical_cutoff <- highest_possible_harm_cutoff(sampling)
 
   # Check if the needed cutoff harmonic is bigger than the theoretical cutoff
   if (harm_cutoff > theoretical_cutoff) {
@@ -185,7 +188,7 @@ lomb_scargle_periodogram <- function(data, alpha = 0.01, harm_cutoff = 12,
   # freq_cutoff_plus_one = 24 / cuotff_plus_one
 
   index_freq_cutoff_plus_one <- which.min(abs(24 / used_harmonic_cutoff -
-    lsp_data$period_hours))
+                                                lsp_data$period_hours))
 
   lsp_data <- lsp_data[1:index_freq_cutoff_plus_one, ]
 

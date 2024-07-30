@@ -26,34 +26,28 @@ is_dgm_friendly <- function(data, verbose = FALSE) {
   } else {
     # Checking if the first column meets the requirements
     if ("POSIXct" %in% class(data[, 1]) | "POSIXt" %in% class(data[, 1])) {
-      message <- paste0(crayon::green("v Correct time format: "), "First column
-                        has a POSIXct Format")
+      message <- paste0(crayon::green("v Correct time format: "), "First column has a POSIXct Format")
       print_v(message, verbose)
     } else {
-      message <- paste0(crayon::red("x Inorrect time format: "), "First column
-                        does not a POSIXct Format")
+      message <- paste0(crayon::red("x Inorrect time format: "), "First column does not a POSIXct Format")
       print_v(message, verbose)
       is_dgm <- FALSE
     }
 
 
-    # Checking if data contains at least 7 days of data
+    # Checking if data contains at least 2 days of data
     if (length(unique(as.Date(data[, 1]))) >= 2) {
-      message <- paste0(crayon::green("v Number of days: "), "Bigger or equal
-                        than 2")
+      message <- paste0(crayon::green("v Number of days good for DFC: "), length(unique(as.Date(data[, 1]))), " days >= 2 days")
       print_v(message, verbose)
     } else {
-      message <- paste0(crayon::red("x Number of days: "), "Less than 2 (minimum
-                        of 2 days is recommended)")
+      message <- paste0(crayon::red("x Number of days NOT good for DFC: "), length(unique(as.Date(data[, 1]))), " days < 2 days (minimum of 2 days is required to compute the DFC, but other functionalities will still work.)")
       print_v(message, verbose)
       is_dgm <- FALSE
     }
 
     # Checking if we have more than one column
     if (ncol(data) == 1) {
-      message <- paste0(crayon::red("x Illogical number of columns: "), "The
-                        dataset has only one column. Minimum number of columns
-                        is 2")
+      message <- paste0(crayon::red("x Illogical number of columns: "), "The dataset has only one column. Minimum number of columns is 2")
       print_v(message, verbose)
       is_dgm <- FALSE
     } else {

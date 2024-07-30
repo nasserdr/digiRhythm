@@ -10,7 +10,7 @@ library(ggplot2)
 data("df516b_2", package = "digiRhythm")
 df <- df516b_2
 activity = names(df)[2]
-sampling = 15
+sampling = 5
 sig <- 0.05
 plot <- TRUE
 verbose = TRUE
@@ -80,6 +80,7 @@ sampling = 15
 plot <- TRUE
 verbose = TRUE
 rolling_window = 7
+harm_cutoff <- 60
 plot_harmonic_part = TRUE
 
 df <- as.data.frame(df, row.names = NULL)
@@ -117,6 +118,22 @@ spec <- data.frame(fromtodate = character(),
 n_days_scanned <- length(days) - rolling_window - 1
 
 i = 1
+
+theoretical_cutoff <- highest_possible_harm_cutoff(sampling)
+
+# Check if the needed cutoff harmonic is bigger than the theoretical cutoff
+if (harm_cutoff > theoretical_cutoff) {
+  warning("The sought harmonic cutoff is bigger than what is possible given
+    the sampling period. The cutoff harmonic should correspond to a period that
+       is at least 2 times the sampling period. For example, with a sampling
+       period of 15 min, the lowest possible period that can be treated is 30
+       min, which corresponds to the 48th harmonic period.")
+  print(paste0("changing the harmoinc cutoff to ", theoretical_cutoff))
+  used_harmonic_cutoff <- theoretical_cutoff
+} else {
+  used_harmonic_cutoff <- harm_cutoff
+}
+
 
 for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
 

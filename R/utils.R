@@ -142,12 +142,13 @@ levopt <- function(Z, alpha, fmax, tm) {
 #'
 #' @return Returns the smallest possible harmonic (of 24 hours) to consider
 #' given a sampling frequency.
+#' @export
 
-lowest_possible_harmonic_period <- function(sampling_period_in_minutes) {
+highest_possible_harm_cutoff <- function(sampling_period_in_minutes) {
   harmonics <- seq(1, 1000)
   harmonic_periods <- 24 * 60 / harmonics
   all_reachable_harmonic_period <- harmonics[harmonic_periods >=
     2 * sampling_period_in_minutes]
-  lowest_reachable_harmonic_period <- max(all_reachable_harmonic_period)
-  return(lowest_reachable_harmonic_period)
+  l <- max(all_reachable_harmonic_period)
+  return(as.numeric(l))
 }
