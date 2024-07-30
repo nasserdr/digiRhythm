@@ -1,6 +1,7 @@
 utils::globalVariables(
   c(
     "datetime",
+    "time",
     "average",
     "hp",
     "where",
