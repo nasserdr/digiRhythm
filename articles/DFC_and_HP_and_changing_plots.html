@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">digiRhythm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
                         <h4 data-toc-skip class="author">Hassan-Roland
 Nasser and Marie Schneider</h4>
             
-            <h4 data-toc-skip class="date">2024-07-29</h4>
+            <h4 data-toc-skip class="date">2024-07-30</h4>
       
 
       <div class="d-none name"><code>DFC_and_HP_and_changing_plots.Rmd</code></div>
@@ -116,10 +116,8 @@ function and its output, then we go to the dfc function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">672</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"datetime"</span>, <span class="va">activity</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">my_lsp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lomb_scargle_periodogram.html">lomb_scargle_periodogram</a></span><span class="op">(</span><span class="va">df</span>, alpha <span class="op">=</span> <span class="fl">0.01</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>8 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre></div>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/lsp-1.png" width="672"></p>
@@ -150,6 +148,7 @@ graph. Both variables are percentages.</p>
 <span>  harm_cutoff <span class="op">=</span> <span class="fl">12</span>, <span class="co"># up till the harmonic 24/12 which is two hours</span></span>
 <span>  plot <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Sampling DFC85 :  15"</span></span>
 <span><span class="co">#&gt;              datetime Motion.Index Steps</span></span>
 <span><span class="co">#&gt; 1 2020-08-25 00:00:00           20     8</span></span>
 <span><span class="co">#&gt; 2 2020-08-25 00:15:00           52    46</span></span>
@@ -158,297 +157,213 @@ graph. Both variables are percentages.</p>
 <span><span class="co">#&gt; 5 2020-08-25 01:00:00           83    26</span></span>
 <span><span class="co">#&gt; 6 2020-08-25 01:15:00           50    23</span></span>
 <span><span class="co">#&gt; [1] 42</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre></div>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-1.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-2.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-3.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-4.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-5.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-6.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-7.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-8.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-9.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-10.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-11.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-12.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-13.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-14.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-15.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-16.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-17.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-18.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-19.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-20.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-21.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-22.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-23.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-24.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-25.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-26.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-27.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-28.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-29.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-30.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-31.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-32.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-33.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-34.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-35.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-36.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-37.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-38.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-39.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-40.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-41.png" width="672"></p>
-<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<pre><code><span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>6 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span></code></pre>
 <p><img src="DFC_and_HP_and_changing_plots_files/figure-html/dfc_hp-42.png" width="672"></p>

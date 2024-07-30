@@ -23,7 +23,7 @@ to: https://cran.r-project.org/web/packages/lomb/"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">digiRhythm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,10 +121,8 @@ a boolean to tell whether the frequency is harmonic or not.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"df516b_2"</span>, package <span class="op">=</span> <span class="st">"digiRhythm"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">df516b_2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">672</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu">lomb_scargle_periodogram</span><span class="op">(</span><span class="va">data</span>, alpha <span class="op">=</span> <span class="fl">0.01</span>, harm_cutof <span class="op">=</span> <span class="fl">12</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                         than 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>8 days &gt;= 2 days </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Motion.Index</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
 <span class="r-plt img"><img src="lomb_scargle_periodogram-1.png" alt="" width="700" height="433"></span>

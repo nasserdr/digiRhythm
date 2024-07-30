@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">digiRhythm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
                         <h4 data-toc-skip class="author">Hassan-Roland
 Nasser and Marie Schneider</h4>
             
-            <h4 data-toc-skip class="date">2024-07-29</h4>
+            <h4 data-toc-skip class="date">2024-07-30</h4>
       
 
       <div class="d-none name"><code>Loading_and_preprocessing_data_in_DigiRhythm.Rmd</code></div>
@@ -152,7 +152,7 @@ less than 80% of data.</p>
 <span>  trim_last_day <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Reading the CSV file /tmp/RtmpMdyYXd/516b_2.csv"</span></span>
+<span><span class="co">#&gt; [1] "Reading the CSV file /tmp/Rtmpy0f1DG/516b_2.csv"</span></span>
 <span><span class="co">#&gt; Removing the following columns because they are not numeric</span></span>
 <span><span class="co">#&gt; [1] "First data points ... "</span></span>
 <span><span class="co">#&gt;              datetime Motion.Index Steps</span></span>
@@ -190,10 +190,8 @@ TRUE, it will output details about why or why not the data is not
 considered digiRhythm friendly.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/is_dgm_friendly.html">is_dgm_friendly</a></span><span class="op">(</span><span class="va">data</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column</span></span>
-<span><span class="co">#&gt;                         has a POSIXct Format </span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days: </span>Bigger or equal</span></span>
-<span><span class="co">#&gt;                         than 2 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">v Number of days good for DFC: </span>46 days &gt;= 2 days </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; Motion.Index</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">v Correct numeric format - Column 3 ==&gt; Steps</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">The data is digiRhythm friendly</span></span></span>
