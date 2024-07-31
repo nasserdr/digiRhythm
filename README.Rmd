@@ -30,4 +30,4 @@ You can install the development version from [GitHub](https://github.com/) with:
 
 You can access few examples from the vignettes provided along with the package.
 
-[Vignettes](https://cran.r-project.org/web/packages/digiRhythm/index.html)
+[Vignettes](https://CRAN.R-project.org/package=digiRhythm/index.html)

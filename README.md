@@ -32,4 +32,4 @@ You can access few examples from the vignettes provided along with the package,
 either on the package website or from the Vignettes:
 
 [Website](https://nasserdr.github.io/digiRhythm/)
-[Vignettes](https://cran.r-project.org/web/packages/digiRhythm/index.html)
+[Vignettes](https://cran.r-project.org/package=digiRhythm/index.html)
