@@ -376,7 +376,7 @@ df <- df516b_2
 df <- resample_dgm(df, 15)
 activity = names(df)[2]
 
-my_dfc <- dfc(df, activity = activity,  sig = 0.05, plot = FALSE, verbose = FALSE)
+my_dfc <- dfc(df, activity = activity,  alpha = 0.05, plot = FALSE, verbose = FALSE)
 name <- paste0('figures/Figure 9.png')
 ggsave(
   name,
@@ -407,3 +407,4 @@ ggsave(
   scale = 1,
   dpi = dp,
   limitsize = TRUE)
+

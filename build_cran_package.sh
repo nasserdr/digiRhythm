@@ -31,6 +31,6 @@ cp -R README.md ../dgm
 cd ..
 
 /opt/local/R/4.2.3/bin/R CMD build dgm
-/opt/local/R/4.2.3/bin/R CMD check digirhythm_1.2.tar.gz --as-cran dgm
+/opt/local/R/4.2.3/bin/R CMD check digirhythm_2.3.tar.gz --as-cran dgm
 
 rm -rf ../dgm/*

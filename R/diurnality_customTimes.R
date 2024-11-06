@@ -21,11 +21,11 @@
 #' activity <- names(data)[2]
 #' data("timedata", package = "digiRhythm")
 #' timedata <- timedata
-#' d_index <- sliding_DI(data, activity, timedata)
+#' d_index <- diurnality_customTimes(data, activity, timedata)
 #'
 #' @export
 
-sliding_DI <- function(data,
+diurnality_customTimes <- function(data,
                        activity,
                        timedata,
                        save = NULL) {
