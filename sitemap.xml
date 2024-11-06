@@ -21,6 +21,7 @@
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/dfc.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/dgm_periodicity.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/diurnality.html</loc></url>
+<url><loc>https://nasserdr.github.io/digiRhythm/reference/diurnality_customTimes.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/highest_possible_harm_cutoff.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/import_raw_activity_data.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/index.html</loc></url>
@@ -31,7 +32,6 @@
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/print_v.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/remove_activity_outliers.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/resample_dgm.html</loc></url>
-<url><loc>https://nasserdr.github.io/digiRhythm/reference/sliding_DI.html</loc></url>
 <url><loc>https://nasserdr.github.io/digiRhythm/reference/timedata.html</loc></url>
 </urlset>
 
