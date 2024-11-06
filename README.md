@@ -12,7 +12,7 @@ index, to visualize the actogram and the average activity.
 This repository contains the most updated version of the library, while the CRAN package and its vignettes could be found at [CRAN](https://cran.r-project.org/package=digiRhythm).
 
 The library is still under development and we are working on adding more functionalities to it. If you have any suggestions or you want to contribute to the library, please feel free to contact us.
-Email: roland.nasser@agroscope.admin.ch or hassan.nasser@me.com
+Email: hassan-roland.nasser@agroscope.admin.ch or hassan.nasser@me.com
 
 ## Installation
 
