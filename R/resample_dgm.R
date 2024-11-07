@@ -20,7 +20,7 @@
 #' new_dgm <- resample_dgm(df, new_sampling)
 resample_dgm <- function(data, new_sampling) {
   xts_data <- xts::xts(
-    x = data[, c(2:ncol(data))],
+    x = data[, c(2:ncol(data)), drop = FALSE],
     order.by = data[, 1]
   )
 

@@ -11,7 +11,7 @@ new_sampling <- 30
 df <- as.data.frame(df)
 xts_data <- df
 xts_data <- xts(
-  x = df[,c(2:ncol(df))],
+  x = df[,c(2:ncol(df)), drop = FALSE],
   order.by = df[,1]
 )
 

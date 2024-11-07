@@ -8,7 +8,7 @@ rm -rf ../dgm.Rcheck/*
 rm -rf ../digiRhythm*.tar.gz
 
 #Data files
-cp -R data ../dgm
+cp -R data ../dgm/data
 cp -R inst ../dgm
 
 #Manuals
