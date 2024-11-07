@@ -17,6 +17,7 @@ StripTrailingWhitespace: Yes
 
 BuildType: Package
 PackageUseDevtools: Yes
+PackagePath: ~/projects/dgm
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageCheckArgs: --as-cran dgm
 PackageRoxygenize: rd,namespace

@@ -3,18 +3,19 @@
 #to execute an R CMD check independently for a CRAN submission
 
 #Moving the files
+cd /home/agsad.admin.ch/f80859433/projects/digiRhythm
 rm -rf ../dgm/*
 rm -rf ../dgm.Rcheck/*
 rm -rf ../digiRhythm*.tar.gz
 
 #Data files
-cp -R data ../dgm/data
+cp -R data ../dgm
 cp -R inst ../dgm
 
 #Manuals
 cp -R man ../dgm
 
-cp -R Meta ../dgm
+#cp -R Meta ../dgm
 cp -R doc ../dgm/inst
 
 #Code
