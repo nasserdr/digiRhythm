@@ -9,7 +9,9 @@ library(lubridate)
 library(dplyr)
 library(lomb)
 library(patchwork)
-
+library(latex2exp)
+library(glue)
+setwd("~/projects/digiRhythm/examples")
 ###############################################################################
 ####################### Installing DigiRhythm ##################################
 
@@ -41,7 +43,7 @@ dp <- 140
 
 all_plots <- list()
 i <- 1
-
+legend <- 1
 for (period in c(24, 6)){
   #Creating a signal with a period = 24 and computing its lsp
   p <- period*3600 #period in seconds (24h * 3600 s)
@@ -62,7 +64,7 @@ for (period in c(24, 6)){
     geom_line() +
     xlab('Day') +
     ylab('Signal Intensity') +
-    ggtitle('') +
+    ggtitle(paste0('(', legend, ')')) +
     theme(
       axis.text = element_text(color = "#000000"),
       text = element_text(size = 15),
@@ -73,7 +75,8 @@ for (period in c(24, 6)){
       legend.justification ="right",
       legend.key.size = unit(7, "pt"),
       legend.position = c(1,0.89),
-      plot.margin = margin(t = 50)) +
+      plot.margin = margin(t = 50),
+      plot.title = element_text(hjust = 0.95)) +
       scale_x_continuous(n.breaks = 8)
 
   name <- paste0('figures/sig', period, '.pdf')
@@ -91,11 +94,14 @@ for (period in c(24, 6)){
   lsp_plot <- lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = FALSE, extra_info_plot = FALSE )
 
   lsp_df <- lsp_plot$lsp_data
+  lsp_df$frequency_hz <- lsp_df$frequency_hz*3600*24
+
+  legend <- legend + 1
   ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
     geom_line() +
-    xlab('Frequency') +
+    xlab('Frequency (cycles/hour)')+
     ylab('Power') +
-    ggtitle('') +
+    ggtitle(paste0('(', legend, ')')) +
     theme(
       panel.background = element_rect(fill = "white"),
       axis.text = element_text(color = "#000000"),
@@ -106,12 +112,14 @@ for (period in c(24, 6)){
       legend.justification ="right",
       legend.key.size = unit(7, "pt"),
       legend.position = c(1,0.89),
-      plot.margin = margin(t = 50)) +
-    scale_x_continuous(n.breaks = 8)
+      plot.margin = margin(t = 50),
+      plot.title = element_text(hjust = 0.95)) +
+    scale_x_continuous(n.breaks = 7)
 
 
+  legend <- legend + 1
 
-  name <- paste0('figures/lsp', period, '.pdf')
+  name <- paste0('./figures/lsp', period, '.pdf')
   ggsave(
     name,
     plot = lsp <- last_plot() ,
@@ -151,11 +159,12 @@ df$num <- as.numeric(df$datetime)
 df$num <- df$num - min(df$num)
 df$num <- df$num/24/3600
 
+legend <- legend + 1
 ggplot(data = df, aes(x = num, y = activity)) +
   geom_line() +
   xlab('Day') +
   ylab('Signal Intensity') +
-  ggtitle('') +
+  ggtitle(paste0('(', legend, ')')) +
   theme(
     axis.text = element_text(color = "#000000"),
     text = element_text(size = 15),
@@ -166,7 +175,8 @@ ggplot(data = df, aes(x = num, y = activity)) +
     legend.justification ="right",
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
-    plot.margin = margin(t = 50)) +
+    plot.margin = margin(t = 50),
+    plot.title = element_text(hjust = 0.95)) +
   scale_x_continuous(n.breaks = 8)
 
 name <- paste0('figures/all_sig.pdf')
@@ -183,11 +193,14 @@ df$num <- NULL
 lsp_plot <- lomb_scargle_periodogram(df, alpha = 0.01, sampling = 15, plot = FALSE, extra_info_plot = FALSE)
 
 lsp_df <- lsp_plot$lsp_data
+lsp_df$frequency_hz <- lsp_df$frequency_hz*3600*24
+
+legend <- legend + 1
 ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
   geom_line() +
-  xlab('Frequency') +
+  xlab('Frequency (cycles/hour)')+
   ylab('Power') +
-  ggtitle('') +
+  ggtitle(paste0('(', legend, ')')) +
   theme(
     panel.background = element_rect(fill = "white"),
     axis.text = element_text(color = "#000000"),
@@ -198,8 +211,10 @@ ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
     legend.justification ="right",
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
-    plot.margin = margin(t = 50)) +
-  scale_x_continuous(n.breaks = 8)
+    plot.margin = margin(t = 50),
+    plot.title = element_text(hjust = 0.95)) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 7))
+
 
 name <- paste0('figures/all_lsp.pdf')
 ggsave(
@@ -216,6 +231,7 @@ all_plots[[5]] <- signal
 all_plots[[6]] <- lsp
 
 wrap_plots(all_plots, ncol = 2)
+
 
 name <- paste0('figures/Figure 2.png')
 
