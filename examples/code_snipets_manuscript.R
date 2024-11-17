@@ -99,8 +99,9 @@ for (period in c(24, 6)){
   legend <- legend + 1
   ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
     geom_line() +
-    xlab('Frequency (cycles/hour)')+
+    xlab('Frequency (cycles/day)')+
     ylab('Power') +
+    xlim(0, 10) +
     ggtitle(paste0('(', legend, ')')) +
     theme(
       panel.background = element_rect(fill = "white"),
@@ -113,9 +114,7 @@ for (period in c(24, 6)){
       legend.key.size = unit(7, "pt"),
       legend.position = c(1,0.89),
       plot.margin = margin(t = 50),
-      plot.title = element_text(hjust = 0.95)) +
-    scale_x_continuous(n.breaks = 7)
-
+      plot.title = element_text(hjust = 0.95))
 
   legend <- legend + 1
 
@@ -198,8 +197,9 @@ lsp_df$frequency_hz <- lsp_df$frequency_hz*3600*24
 legend <- legend + 1
 ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
   geom_line() +
-  xlab('Frequency (cycles/hour)')+
+  xlab('Frequency (cycles/day)')+
   ylab('Power') +
+  xlim(0, 10) +
   ggtitle(paste0('(', legend, ')')) +
   theme(
     panel.background = element_rect(fill = "white"),
@@ -212,9 +212,7 @@ ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
     legend.key.size = unit(7, "pt"),
     legend.position = c(1,0.89),
     plot.margin = margin(t = 50),
-    plot.title = element_text(hjust = 0.95)) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 7))
-
+    plot.title = element_text(hjust = 0.95))
 
 name <- paste0('figures/all_lsp.pdf')
 ggsave(
