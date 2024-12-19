@@ -52,47 +52,55 @@ verbose = TRUE
 # plot <- TRUE
 # verbose = TRUE
 plot_harmonic_part = TRUE
-
+harm_cutoff <- 60
+rolling_window <- 7
 #Example from Marie's dataset
 
 #Start of the function body
 #We assume that the first column is a datetime column and the other columns are activity columns
 #df should be a dataframe
 
-target_tz <- 'GMT'
-data <- import_raw_activity_data("team/marie/12112.csv",
-                               skipLines = 7,
-                               act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
-                               date_format = "%d.%m.%Y",
-                               time_format = "%H:%M:%S",
-                               sep = ",",
-                               original_tz = "CET",
-                               target_tz = target_tz,
-                               sampling = 15,
-                               trim_first_day = TRUE,
-                               trim_middle_days = TRUE,
-                               trim_last_day = TRUE,
-                               verbose = FALSE)
+# target_tz <- 'GMT'
+# data <- import_raw_activity_data("team/marie/12112.csv",
+#                                skipLines = 7,
+#                                act.cols.names = c("Date", "Time", "Motion Index", "Steps"),
+#                                date_format = "%d.%m.%Y",
+#                                time_format = "%H:%M:%S",
+#                                sep = ",",
+#                                original_tz = "CET",
+#                                target_tz = target_tz,
+#                                sampling = 15,
+#                                trim_first_day = TRUE,
+#                                trim_middle_days = TRUE,
+#                                trim_last_day = TRUE,
+#                                verbose = FALSE)
+#
+# sig = 0.05
+# activity = names(data)[2]
+# sampling = 15
+# plot <- TRUE
+# verbose = TRUE
+# rolling_window = 7
+# harm_cutoff <- 60
+# plot_harmonic_part = TRUE
 
-sig = 0.05
-activity = names(data)[2]
-sampling = 15
-plot <- TRUE
-verbose = TRUE
-rolling_window = 7
-harm_cutoff <- 60
-plot_harmonic_part = TRUE
 
+#Example data SFF
+df <- read_excel("examples/data/data_sff_bachman.xlsx",
+                       sheet = "57 - Ajlin_10min", col_types = c("date",
+                                                                 "date", "numeric", "numeric", "numeric", "numeric",
+                                                                 "numeric", "numeric", "numeric"), skip = 10)
+df <- df %>% select(c(1,5)) %>% mutate(activity = as.numeric(activity))
 df <- as.data.frame(df, row.names = NULL)
 
 if (!is_dgm_friendly(df)) {
   stop('The data is not digiRhythm friendly. type ?is_dgm_friendly in your console for more information')
 }
+index_col_date <- length(df) + 1
+df[, index_col_date] <- as.Date(df[,1])
 
-
-df$date <- as.Date(df$datetime)
-days <- seq(from = df$date[1],
-            to = last(df$date),
+days <- seq(from = df[1,index_col_date],
+            to = df[nrow(df), index_col_date],
             by = 1)
 
 if (length(days) < 2) {
@@ -138,6 +146,8 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
     cat("Processing dates ", format(days[i]), " until ", format(days[(i + rolling_window - 1)]), "\n")
 
   }
+  index_start_day <- i
+  index_end_day <- i + rolling_window - 1
 
   samples_per_day = 24*60/sampling #The number of data points per day
 
@@ -146,7 +156,7 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   # data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + rolling_window - 1])
 
   # with baseR
-  data_week <- df[df$date >= days[i] & df$date <= days[i + rolling_window - 1], ]
+  data_week <- df[df[,1] >= days[index_start_day] & df[,1] <= days[index_end_day], ]
 
   #Selecting the first column (datetime) and the activity column
   df_var <- data_week %>% select(1, `activity`)

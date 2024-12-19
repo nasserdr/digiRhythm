@@ -82,8 +82,6 @@ dfc <- function(
     verbose = TRUE,
     plot_lsp = TRUE) {
 
-  print(paste('Sampling DFC85 : ', sampling))
-
   data <- as.data.frame(data, row.names = NULL)
 
   print(utils::head(data))
@@ -91,13 +89,14 @@ dfc <- function(
     stop("The data is not digiRhythm friendly. type ?is_dgm_friendly in your
          console for more information")
   }
-  data$date <- lubridate::date(data$datetime)
 
-  days <- seq(
-    data$date[1],
-    last(data$date),
-    1
-  )
+  index_col_date <- length(df) + 1
+  df[, index_col_date] <- as.Date(df[,1])
+
+  days <- seq(from = df[1,index_col_date],
+              to = df[nrow(df), index_col_date],
+              by = 1)
+
   if (length(days) < 2) {
     stop("You need at least 2 days of data to run the Degree of Functional
          Coupling algorithm")
@@ -147,7 +146,7 @@ dfc <- function(
     # data, filtering by index would make errors)
 
 
-    data_week <- df[df$date >= days[index_start_day] & df$date <= days[index_end_day], ]
+    data_week <- df[df[,1] >= days[index_start_day] & df[,1] <= days[index_end_day], ]
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
