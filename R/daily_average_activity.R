@@ -39,9 +39,11 @@ daily_average_activity <- function(
     end,
     save) {
   df$date <- lubridate::date(df$datetime)
-  data_to_plot <- df %>%
-    filter(lubridate::date(df$datetime) >= start) %>%
-    filter(lubridate::date(df$datetime) <= end)
+  # data_to_plot <- df %>%
+  #   filter(lubridate::date(df$datetime) >= start) %>%
+  #   filter(lubridate::date(df$datetime) <= end)
+  data_to_plot <- df[as.Date(df$datetime) >= start & as.Date(df$datetime) <= end, ]
+
   data_to_plot$time <- format(data_to_plot$datetime,
     format = "%H:%M",
     tz = "CET"

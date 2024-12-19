@@ -19,10 +19,13 @@ save <- 'sample_results/daily_average_activity' #if NULL, don't save the image
 #Start of the function
 
 df$date <- lubridate::date(df$datetime)
-data_to_plot <- df %>%
-  filter(lubridate::date(datetime) >= start) %>%
-  filter(lubridate::date(datetime) <= end)
+# data_to_plot <- df %>%
+#   filter(lubridate::date(datetime) >= start) %>%
+#   filter(lubridate::date(datetime) <= end)
+
+data_to_plot <- df[as.Date(df$datetime) >= start & as.Date(df$datetime) <= end, ]
 data_to_plot$time <- format(data_to_plot$datetime, format = "%H:%M", tz = "CET")
+
 
 start <- lubridate::date(start)
 end <- lubridate::date(end)
