@@ -155,7 +155,7 @@ dfc <- function(
       alpha = alpha,
       harm_cutoff = harm_cutoff,
       sampling = sampling,
-      plot = TRUE
+      plot = plot_lsp
     )
 
     # Computing the p-values for each frequency

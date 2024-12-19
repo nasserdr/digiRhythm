@@ -46,4 +46,36 @@ daily_average_activity(df_10min,
                        end = "2024-01-28",
                        save = NULL)
 
-dfc(data_sff_bachman, activity = "activity")
+cow_dfc <- dfc(df_10min, activity = "activity")
+all_DFCs <- NULL
+# DFC for all cows
+for (cow in ten_min_list){
+  df_10min <- read_excel("examples/data/data_sff_bachman.xlsx",
+                         sheet = cow, col_types = c("date",
+                                                    "date", "numeric", "numeric", "numeric", "numeric",
+                                                    "numeric", "numeric", "numeric"), skip = 10)
+  cow_dfc <- dfc(df_10min,
+                 activity = "activity",
+                 sampling = 10,
+                 harm_cutoff = 12,
+                 rolling_window = 7,
+                 plot = TRUE,
+                 plot_harmonic_part = TRUE,
+                 verbose = TRUE,
+                 plot_lsp = FALSE
+                 )
+
+  data <- cow_dfc$data
+  data$cow <- "57 - Ajlin"
+  all_DFCs <- rbind(all_DFCs, data)
+}
+
+# Plot DFCs for all cows, line by line, one color per cow
+ggplot(all_DFCs, aes(x = to, y = dfc, color = cow)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Degree of Functional Coupling",
+       x = "Date",
+       y = "DFC") +
+  theme(legend.position = "none")
