@@ -146,10 +146,8 @@ dfc <- function(
     # Filtering the next seven days by date (not by index - in case of missing
     # data, filtering by index would make errors)
 
-    data_week <- data %>%
-      dplyr::filter(date >= days[index_start_day]) %>%
-      dplyr::filter(date <= days[index_end_day])
 
+    data_week <- df[df$date >= days[index_start_day] & df$date <= days[index_end_day], ]
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)

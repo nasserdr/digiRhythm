@@ -94,9 +94,6 @@ df$date <- as.Date(df$datetime)
 days <- seq(from = df$date[1],
             to = last(df$date),
             by = 1)
-tz(df$date) <- target_tz
-tz(days) <- target_tz
-print(days)
 
 if (length(days) < 2) {
   warning('You need at least 2 days of data to run the Degree of Functional Coupling algorithm')
@@ -145,8 +142,11 @@ for (i in 1:n_days_scanned) {# Loop over the days (7 by 7)
   samples_per_day = 24*60/sampling #The number of data points per day
 
   #Filtering the next seven days by date (not by index - in case of missing data, filtering by index would make errors)
-  data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + rolling_window - 1])
+  # with dplyr
+  # data_week <- df %>% filter(date >= days[i]) %>%  filter(date <= days[i + rolling_window - 1])
 
+  # with baseR
+  data_week <- df[df$date >= days[i] & df$date <= days[i + rolling_window - 1], ]
 
   #Selecting the first column (datetime) and the activity column
   df_var <- data_week %>% select(1, `activity`)
