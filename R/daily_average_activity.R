@@ -17,6 +17,7 @@
 #' @import magrittr
 #' @import ggplot2
 #' @import dplyr
+#' @import lubridate
 #'
 #' @export
 #'
@@ -38,45 +39,41 @@ daily_average_activity <- function(
     start,
     end,
     save) {
-  df$date <- lubridate::date(df$datetime)
+  index_col_date = length(df) + 1
+  df[, index_col_date] <- lubridate::date(df[,1])
   # data_to_plot <- df %>%
-  #   filter(lubridate::date(df$datetime) >= start) %>%
-  #   filter(lubridate::date(df$datetime) <= end)
-  data_to_plot <- df[as.Date(df$datetime) >= start & as.Date(df$datetime) <= end, ]
+  #   filter(lubridate::date(datetime) >= start) %>%
+  #   filter(lubridate::date(datetime) <= end)
 
-  data_to_plot$time <- format(data_to_plot$datetime,
-    format = "%H:%M",
-    tz = "CET"
-  )
+  data_to_plot <- df[as.Date(df[,1]) >= start & as.Date(df[,1]) <= end, ]
+  index_col_time <- length(data_to_plot) + 1
+  data_to_plot$time <- format(data_to_plot[,1], format = "%H:%M")
+
 
   start <- lubridate::date(start)
   end <- lubridate::date(end)
 
-  sum_of_activity_over_all_days_per_sample <- NULL
-  sum_of_activity_over_all_days_per_sample <- data.frame(
+  sum_of_activity_over_all_days_per_sample = NULL
+  sum_of_activity_over_all_days_per_sample =  data.frame(
     time = as.character(),
     average = as.numeric()
   )
 
-  for (t in unique(data_to_plot$time)) {
+  for(t in unique(data_to_plot$time)){
     tdf <- data_to_plot %>% filter(time == t)
-    mean <- mean(tdf[[activity]])
+    mean = mean(tdf[[activity]])
     sum_of_activity_over_all_days_per_sample <- rbind(
       sum_of_activity_over_all_days_per_sample,
       data.frame(
         time = t,
-        average = mean
-      )
+        average = mean)
     )
   }
 
   s <- sum_of_activity_over_all_days_per_sample
 
-  s$datetime <- paste(data_to_plot$date[1], s$time)
-  s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"),
-    tz = lubridate::tz(df$datetime)
-  )
-
+  s$datetime <- paste(data_to_plot[1,index_col_date], s$time)
+  s$datetime <- as.POSIXct(s$datetime, format("%Y-%m-%d %H:%M"))
   s <- s %>% select(datetime, average)
 
   avg_act_plot <- ggplot(
