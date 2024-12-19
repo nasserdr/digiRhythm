@@ -90,11 +90,11 @@ dfc <- function(
          console for more information")
   }
 
-  index_col_date <- length(df) + 1
-  df[, index_col_date] <- as.Date(df[,1])
+  index_col_date <- length(data) + 1
+  data[, index_col_date] <- as.Date(data[,1])
 
-  days <- seq(from = df[1,index_col_date],
-              to = df[nrow(df), index_col_date],
+  days <- seq(from = data[1,index_col_date],
+              to = data[nrow(data), index_col_date],
               by = 1)
 
   if (length(days) < 2) {
@@ -146,7 +146,7 @@ dfc <- function(
     # data, filtering by index would make errors)
 
 
-    data_week <- df[df[,1] >= days[index_start_day] & df[,1] <= days[index_end_day], ]
+    data_week <- data[data[,1] >= days[index_start_day] & data[,1] <= days[index_end_day], ]
 
     # Selecting the first column (datetime) and the activity column
     df_var <- data_week %>% select(1, `activity`)
