@@ -33,7 +33,7 @@ as follows:"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">digiRhythm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,7 +187,6 @@ HP &lt;- SSH / SUMALL</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ activity: num  -2.8 1.23 -3.45 2.11 4.04 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">my_lsp</span> <span class="op">&lt;-</span> <span class="fu">dfc</span><span class="op">(</span><span class="va">df</span>, <span class="st">"activity"</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, harm_cutoff <span class="op">=</span> <span class="fl">12</span>, plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Sampling DFC85 :  15"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              datetime  activity</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1970-01-01 00:00:00 -2.800087</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1970-01-01 00:15:00  1.229228</span>
@@ -195,64 +194,7 @@ HP &lt;- SSH / SUMALL</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 1970-01-01 00:45:00  2.112359</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 1970-01-01 01:00:00  4.037201</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 1970-01-01 01:15:00  5.730305</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-01  until  1970-01-07 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-1.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1970-01-01 1970-01-07   1 0.936195986445716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-02  until  1970-01-08 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-2.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1970-01-02 1970-01-08   1 0.933500421338975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-03  until  1970-01-09 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-3.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1970-01-03 1970-01-09   1 0.934895555566027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-04  until  1970-01-10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-4.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc               hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1970-01-04 1970-01-10   1 0.93057178167046</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-05  until  1970-01-11 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-5.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1970-01-05 1970-01-11   1 0.932534815882435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-06  until  1970-01-12 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-6.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1970-01-06 1970-01-12   1 0.927481003071164</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Processing dates  1970-01-07  until  1970-01-13 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct time format: </span>First column has a POSIXct Format </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Number of days good for DFC: </span>7 days &gt;= 2 days </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">v Correct numeric format - Column 2 ==&gt; activity</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">The data is digiRhythm friendly</span> </span>
-<span class="r-plt img"><img src="dfc-7.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         from         to dfc                hp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7 1970-01-07 1970-01-13   1 0.928497156662138</span>
-<span class="r-plt img"><img src="dfc-8.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in df[, 1]:</span> object of type 'closure' is not subsettable</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
