@@ -13,6 +13,6 @@ docs/
 /Meta/
 /jstatsoft
 /examples/figures
-/examples/data
+/examples/data/*.tiff
 *.csv
 docs
