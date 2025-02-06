@@ -16,3 +16,4 @@ docs/
 /examples/data/*.tiff
 *.csv
 docs
+/examples/figures_old/*
