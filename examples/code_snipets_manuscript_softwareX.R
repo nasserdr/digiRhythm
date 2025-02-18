@@ -29,6 +29,11 @@ library(digiRhythm)
 ################################## FIGURE: 1 ##################################
 ###############################################################################
 
+#' In this example, we generate three time series with different periods and
+#' composition and we show their Lomb-Scargle Periodogram. The first signal has
+#' a period of 24 hours, the second signal has a period of 12 hours and the
+#' third signal is the addition of the first two signals.
+
 # LSP on purely synthetic data ----------------------------
 #Creating time grid
 sampling = 15*60 #15 minutes
@@ -200,6 +205,7 @@ ggplot(data = lsp_df, aes(x = frequency_hz, y = power)) +
   xlab('Frequency (cycles/day)')+
   ylab('Power') +
   xlim(0, 10) +
+  ylim(0,1)+
   ggtitle(paste0('(', legend [position_legend], ')')) +
   theme(
     panel.background = element_rect(fill = "white"),
@@ -247,7 +253,10 @@ ggsave(
 ################################## FIGURE: 2 ##################################
 ###############################################################################
 
-#Real data
+#' In this code snippet, we show a real activity dataset and its Lomb-Scargle
+#' Periodogram. The dataset is a 7-day long dataset with a 15-minute sampling
+#' rate. The dataset is a subset of the data from the digiRhythm package.
+
 library(digiRhythm)
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
@@ -257,7 +266,7 @@ df <- df[1:672,c(1,2)]
 ggplot(data = df, aes(x = datetime, y = Motion.Index)) +
   geom_line() +
   xlab('Date') +
-  ylab('Motion Index') +
+  ylab('Activity') +
   ggtitle('') +
   theme(
     axis.text = element_text(color = "#000000"),
@@ -319,13 +328,10 @@ final_img <- image_append(c(img1_labeled, spacer, img2_labeled), stack = TRUE)
 image_write(final_img, "figures/Figure 2.png")
 
 ###############################################################################
-################################## FIGURE: 3 ##################################
+################################## FIGURE: 3.a ################################
 ###############################################################################
-# NA
 
-###############################################################################
-################################## FIGURE: 4 ##################################
-###############################################################################
+#' The below code snippet appears in Figure 3.a
 library(digiRhythm)
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
@@ -333,23 +339,28 @@ head(df)
 
 
 ###############################################################################
-################################## FIGURE: 5 ##################################
+################################## FIGURE: 3.b ################################
 ###############################################################################
+#' The below code snippet appears in Figure 3.b
+
 is_dgm_friendly(df, verbose = TRUE)
 
 
 ###############################################################################
-################################## FIGURE: 6 ##################################
+################################## FIGURE: 4 ##################################
 ###############################################################################
 
-#Verifying the datasets
+#' This code snippet shows how to load a dataset, resample it and compute its
+#' DFC. The output is a graph showing the DFC/HP as well as a dataframe containing
+#' all the output data in a tabular format.
+
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
 df <- resample_dgm(df, 15)
 activity = names(df)[2]
 
 my_dfc <- dfc(df, activity = activity,  alpha = 0.05, plot = FALSE, verbose = FALSE)
-name <- paste0('figures/Figure 6.png')
+name <- paste0('figures/Figure 4.png')
 ggsave(
   name,
   plot = last_plot(),
@@ -366,8 +377,12 @@ ggsave(
 
 
 ###############################################################################
-################################## FIGURE: 7 ##################################
+################################## FIGURE: 5 ##################################
 ###############################################################################
+
+#' We revisit the dataset df512b_2, we show its actogram and show its daily
+#' average activity.
+
 df <- df516b_2 # considering the whole dataset
 df <- resample_dgm(df, 15)
 activity = names(df)[2] # considering the first activity variable (second column usually)
@@ -375,7 +390,7 @@ start = "2020-05-01"
 end = "2020-06-15"
 my_actogram <- actogram(df, activity, activity_alias = 'Motion Index' , start, end, save = NULL)
 
-name <- paste0('figures/Figure7a.png')
+name <- paste0('figures/Figure5a.png')
 ggsave(
   name,
   plot = lsp <- last_plot(),
@@ -393,7 +408,7 @@ my_daa <- daily_average_activity(df,
                                  start,
                                  end,
                                  save = NULL)
-name <- paste0('figures/Figure7b.png')
+name <- paste0('figures/Figure5b.png')
 ggsave(
   name,
   plot = lsp <- last_plot(),
@@ -404,8 +419,8 @@ ggsave(
   dpi = dp,
   limitsize = TRUE)
 
-img1 <- image_read("figures/Figure7a.png")
-img2 <- image_read("figures/Figure7b.png")
+img1 <- image_read("figures/Figure5a.png")
+img2 <- image_read("figures/Figure5b.png")
 img1 <- image_trim(img1)
 img2 <- image_trim(img2)
 w1 <- image_info(img1)$width
@@ -422,16 +437,19 @@ img2_labeled <- image_annotate(img2, "(b)", size = 30, gravity = "northeast", co
 final_img <- image_append(c(img1_labeled, spacer, img2_labeled), stack = TRUE)
 
 # Save or display the image
-image_write(final_img, "figures/Figure 7.png")
+image_write(final_img, "figures/Figure 5.png")
 
 
 ###############################################################################
-################################## FIGURE: 7 ##################################8
+################################## FIGURE: 6 ##################################8
 ###############################################################################
+
+#' Here, we show the computation and plot of the diurnality index.
+
 day_time = c("06:30:00", "16:30:00")
 night_time = c("18:00:00", "T05:00:00")
 my_di <- diurnality(df, activity, day_time, night_time, save = NULL)
-name <- paste0('figures/Figure 7.png')
+name <- paste0('figures/Figure 6.png')
 ggsave(
   name,
   plot = lsp <- last_plot(),
