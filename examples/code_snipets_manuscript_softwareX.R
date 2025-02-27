@@ -22,7 +22,7 @@ setwd("~/projects/digiRhythm/examples")
 #devtools::install_github("nasserdr/digiRhythm", dependencies = TRUE)
 
 # To install the stable version from CRAN
-#install.packages('digiRhythm')
+install.packages('digiRhythm')
 library(digiRhythm)
 
 ###############################################################################
@@ -331,7 +331,8 @@ image_write(final_img, "figures/Figure 2.png")
 ################################## FIGURE: 3.a ################################
 ###############################################################################
 
-#' The below code snippet appears in Figure 3.a
+#' The below code snippet appears in Figure 3.a. The code was screenshot
+#' but the reader is invited to look at the code outcome.
 library(digiRhythm)
 data("df516b_2", package = 'digiRhythm')
 df <- df516b_2
@@ -341,7 +342,8 @@ head(df)
 ###############################################################################
 ################################## FIGURE: 3.b ################################
 ###############################################################################
-#' The below code snippet appears in Figure 3.b
+#' The below code snippet appears in Figure 3.b. The code was screenshot
+#' but the reader is invited to look at the code outcome.
 
 is_dgm_friendly(df, verbose = TRUE)
 
@@ -375,8 +377,26 @@ ggsave(
 ################################# Section 2.3 #################################
 ###############################################################################
 
+#' In the previous code snippet, the variable my_dfc is a ggplot2 object
+#' (Wickham, 2010), including both the data (my_dfc$data) and the plot (my_dfc).
+#' Because the returned object is a ggplot2, the plot can directly be modified,
+#' by adding a layer to the aesthetics of the my_dfc object and plotting it again.
+#' This serves as a simple, yet illustrative example of how the graphical outputs
+#' of the library can be repurposed. Such a feature becomes especially beneficial
+#' when researchers want to change their Figures to specific format required by
+#' a target journal. Importantly, this option is possible because the functions
+#' in the digiRhythm library are designed to return ggplot2 objects instead of
+#' standard R objects. As a dummy example, we show how to change the font size
+#' and color of the x-axis of the DFC plot + reducing the size of the font in the
+#' legend.
 
-###############################################################################
+my_dfc +
+  theme(
+    text=element_text(family="Times", size=8),
+    axis.text.y=element_text(size=25, colour="red"))
+
+
+red###############################################################################
 ################################## FIGURE: 5 ##################################
 ###############################################################################
 
@@ -459,3 +479,4 @@ ggsave(
   scale = 1,
   dpi = dp,
   limitsize = TRUE)
+
